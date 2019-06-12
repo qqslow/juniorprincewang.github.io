@@ -1,0 +1,901 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>Tmux终端复用 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="之前在Ubuntu下使用多个终端习惯了，方便来回切换，但通过SSH远程连接到服务器，无法开启多个终端，只能再次ssh连接一次。那么问题来了，怎么通过ssh连接Linux，使用多个终端呢？答案是终端模拟器Tmux。">
+<meta name="keywords" content="linux,tmux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tmux终端复用">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/01/24/tmux终端复用/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="之前在Ubuntu下使用多个终端习惯了，方便来回切换，但通过SSH远程连接到服务器，无法开启多个终端，只能再次ssh连接一次。那么问题来了，怎么通过ssh连接Linux，使用多个终端呢？答案是终端模拟器Tmux。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.277Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tmux终端复用">
+<meta name="twitter:description" content="之前在Ubuntu下使用多个终端习惯了，方便来回切换，但通过SSH远程连接到服务器，无法开启多个终端，只能再次ssh连接一次。那么问题来了，怎么通过ssh连接Linux，使用多个终端呢？答案是终端模拟器Tmux。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/24/tmux终端复用/" title="Tmux终端复用" itemprop="url">Tmux终端复用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-01-24T07:03:58.000Z" itemprop="datePublished"> Published 2018-01-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Tmux"><span class="toc-number">1.</span> <span class="toc-text">Tmux</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tmux基本概念"><span class="toc-number">3.</span> <span class="toc-text">Tmux基本概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基本操作"><span class="toc-number">4.</span> <span class="toc-text">基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#session管理"><span class="toc-number">4.1.</span> <span class="toc-text">session管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#window管理"><span class="toc-number">4.2.</span> <span class="toc-text">window管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pane管理"><span class="toc-number">4.3.</span> <span class="toc-text">pane管理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">5.</span> <span class="toc-text">参考文献</span></a></li></ol>
+		
+		</div>
+		
+		<p>之前在Ubuntu下使用多个终端习惯了，方便来回切换，但通过SSH远程连接到服务器，无法开启多个终端，只能再次ssh连接一次。那么问题来了，怎么通过ssh连接Linux，使用多个终端呢？答案是终端模拟器Tmux。</p>
+<a id="more"></a>
+<h1 id="Tmux"><a href="#Tmux" class="headerlink" title="Tmux"></a>Tmux</h1><p>Tmux（”Terminal Multiplexer”的简称）是一款BSD 协议发布的终端复用软件，用来在服务器端托管同时运行的 Shell，可以让我们在单个屏幕的灵活布局下开出很多终端。</p>
+<p>使用Tmux的好处不仅可以在一个终端复用多个终端，Tmux还有一个session的概念，在session中可以保存当前的终端。在SSH连接终端再连接服务器之后，通过连接上次session可以恢复SSH断开前的状态。这简直是远程办公的神器。</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>在Ubuntu下安装很简单。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install tmux</span><br></pre></td></tr></table></figure>
+
+<h1 id="Tmux基本概念"><a href="#Tmux基本概念" class="headerlink" title="Tmux基本概念"></a>Tmux基本概念</h1><p>Tmux的元素共分为三层。</p>
+<ol>
+<li>Session：一组窗口的集合，通常用来概括同一个任务。session可以有自己的名字便于任务之间的切换。</li>
+<li>Window：单个可见窗口。Windows有自己的编号，类似于Tab。</li>
+<li>Pane ：在Window中被划分成小块的窗口。</li>
+</ol>
+<h1 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h1><p>基本操作分为在Tmux之外通过tmux执行的命令和在Tmux内通过<code>prefix</code>执行的命令。</p>
+<h2 id="session管理"><a href="#session管理" class="headerlink" title="session管理"></a>session管理</h2><p>使用Tmux的最好方式是使用会话的方式，这样你就可以以你想要的方式，将任务和应用组织到不同的会话中。如果你想改变一个会话，会话里面的任何工作都无须停止或者杀掉。<br>而在Tmux之外的常用命令就是开启session和连接session。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tmux new -s blog</td>
+<td>创建一个叫做blog的session</td>
+</tr>
+<tr>
+<td>tmux attach -t blog</td>
+<td>重新开启叫做blog的session</td>
+</tr>
+<tr>
+<td>tmux switch -t project</td>
+<td>转换到叫做project的session</td>
+</tr>
+<tr>
+<td>tmux list-sessions / tmux ls</td>
+<td>列出现有的所有 session</td>
+</tr>
+<tr>
+<td>tmux detach</td>
+<td>离开当前开启的 session</td>
+</tr>
+<tr>
+<td>tmux kill-server</td>
+<td>关闭所有 session</td>
+</tr>
+</tbody></table>
+<p>更常用的是在 tmux 中直接通过<strong>Prefix-Command</strong>前置操作：所有下面介绍的快捷键，都必须以前置操作开始。tmux默认的前置操作是<code>CTRL+b</code>。例如，我们想要新建一个窗体，就需要先在键盘上摁下<code>CTRL+b</code>，松开后再摁下<code>c</code>键。</p>
+<p>下面所有操作的<code>prefix</code>均代表<strong><code>CTRL+b</code></strong>，也就是书说需要先摁<code>CTRL+b</code>再摁以下操作。</p>
+<p>seesion的常用操作可以简化为如下命令。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>?</td>
+<td># 快捷键帮助列表</td>
+</tr>
+<tr>
+<td>:new<cr></cr></td>
+<td># 创建新的 Session，其中 : 是进入 Tmux 命令行的快捷键</td>
+</tr>
+<tr>
+<td>s</td>
+<td># 列出所有 Session，可通过 j, k, 回车切换</td>
+</tr>
+<tr>
+<td>d</td>
+<td># detach，退出 Tmux Session，回到父级 Shell</td>
+</tr>
+<tr>
+<td>$</td>
+<td># 为当前 Tmux Session 命名</td>
+</tr>
+</tbody></table>
+<h2 id="window管理"><a href="#window管理" class="headerlink" title="window管理"></a>window管理</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c</td>
+<td># 创建 Window</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td># 关闭当前Window</td>
+</tr>
+<tr>
+<td>[0-9]</td>
+<td># 切换到第 n 个 Window</td>
+</tr>
+<tr>
+<td>,</td>
+<td># 为当前 Window 重命名</td>
+</tr>
+<tr>
+<td>p</td>
+<td># 切换至上一窗口</td>
+</tr>
+<tr>
+<td>n</td>
+<td># 切换至下一窗口</td>
+</tr>
+<tr>
+<td>l</td>
+<td># 前后窗口间互相切换</td>
+</tr>
+<tr>
+<td>w</td>
+<td># 通过窗口列表切换窗口</td>
+</tr>
+<tr>
+<td>.</td>
+<td># 修改当前窗口编号，相当于重新排序</td>
+</tr>
+<tr>
+<td>f</td>
+<td># 在所有窗口中查找关键词，便于窗口多了切换</td>
+</tr>
+</tbody></table>
+<h2 id="pane管理"><a href="#pane管理" class="headerlink" title="pane管理"></a>pane管理</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%</td>
+<td># 左右切分 Pane</td>
+</tr>
+<tr>
+<td>“</td>
+<td># 上下切分 Pane</td>
+</tr>
+<tr>
+<td>space键</td>
+<td># 切换 Pane 布局</td>
+</tr>
+<tr>
+<td>z</td>
+<td># 暂时把一个窗体放到最大</td>
+</tr>
+<tr>
+<td>x</td>
+<td># 关闭当前分屏</td>
+</tr>
+<tr>
+<td>!</td>
+<td># 将当前面板置于新窗口,即新建一个窗口,其中仅包含当前面板</td>
+</tr>
+<tr>
+<td>ctrl+方向键</td>
+<td># 以1个单元格为单位移动边缘以调整当前面板大小</td>
+</tr>
+<tr>
+<td>alt+方向键</td>
+<td># 以5个单元格为单位移动边缘以调整当前面板大小</td>
+</tr>
+<tr>
+<td>q</td>
+<td># 显示面板编号</td>
+</tr>
+<tr>
+<td>o</td>
+<td># 选择当前窗口中下一个面板</td>
+</tr>
+<tr>
+<td>方向键</td>
+<td># 移动光标选择对应面板</td>
+</tr>
+<tr>
+<td>{</td>
+<td># 向前置换当前面板</td>
+</tr>
+<tr>
+<td>}</td>
+<td># 向后置换当前面板</td>
+</tr>
+<tr>
+<td>alt+o</td>
+<td># 逆时针旋转当前窗口的面板</td>
+</tr>
+<tr>
+<td>ctrl+o</td>
+<td># 顺时针旋转当前窗口的面板</td>
+</tr>
+<tr>
+<td>page up</td>
+<td># 向上滚动屏幕，q 退出</td>
+</tr>
+<tr>
+<td>page down</td>
+<td># 向下滚动屏幕，q 退出</td>
+</tr>
+</tbody></table>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="http://cenalulu.github.io/linux/tmux/" target="_blank" rel="noopener">Tmux - Linux从业者必备利器</a></li>
+<li><a href="http://wdxtub.com/2016/03/30/tmux-guide/" target="_blank" rel="noopener">tmux 指南</a></li>
+<li><a href="http://harttle.land/2015/11/06/tmux-startup.html" target="_blank" rel="noopener">优雅地使用命令行：Tmux 终端复用</a></li>
+<li><a href="https://linux.cn/article-3952-1.html" target="_blank" rel="noopener">如何使用Tmux提高终端环境下的效率</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/tmux/">tmux</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/01/24/tmux终端复用/" data-title="Tmux终端复用 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/01/29/vim插件/" title="vim插件">
+  <strong>上一篇：</strong><br>
+  <span>
+  vim插件</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/13/NVidia产品和微架构/" title="NVidia产品和微架构">
+ <strong>下一篇：</strong><br> 
+ <span>NVidia产品和微架构
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Tmux"><span class="toc-number">1.</span> <span class="toc-text">Tmux</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tmux基本概念"><span class="toc-number">3.</span> <span class="toc-text">Tmux基本概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#基本操作"><span class="toc-number">4.</span> <span class="toc-text">基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#session管理"><span class="toc-number">4.1.</span> <span class="toc-text">session管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#window管理"><span class="toc-number">4.2.</span> <span class="toc-text">window管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pane管理"><span class="toc-number">4.3.</span> <span class="toc-text">pane管理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">5.</span> <span class="toc-text">参考文献</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

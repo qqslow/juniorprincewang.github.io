@@ -1,0 +1,981 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>shell脚本编程简介 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="本篇博客介绍shell脚本的语法知识。">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell脚本编程简介">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/04/16/shell脚本编程简介/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="本篇博客介绍shell脚本的语法知识。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.275Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell脚本编程简介">
+<meta name="twitter:description" content="本篇博客介绍shell脚本的语法知识。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/16/shell脚本编程简介/" title="shell脚本编程简介" itemprop="url">shell脚本编程简介</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-04-16T01:43:08.000Z" itemprop="datePublished"> Published 2018-04-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#解释器"><span class="toc-number">1.</span> <span class="toc-text">解释器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-number">2.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义变量"><span class="toc-number">2.1.</span> <span class="toc-text">定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用变量"><span class="toc-number">2.2.</span> <span class="toc-text">使用变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重定义变量"><span class="toc-number">2.3.</span> <span class="toc-text">重定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊变量"><span class="toc-number">2.4.</span> <span class="toc-text">特殊变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-number">4.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单引号"><span class="toc-number">4.1.</span> <span class="toc-text">单引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双引号"><span class="toc-number">4.2.</span> <span class="toc-text">双引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串操作"><span class="toc-number">4.3.</span> <span class="toc-text">字符串操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拼接字符串"><span class="toc-number">4.3.1.</span> <span class="toc-text">拼接字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取字符串长度："><span class="toc-number">4.3.2.</span> <span class="toc-text">获取字符串长度：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#提取子字符串"><span class="toc-number">4.3.3.</span> <span class="toc-text">提取子字符串</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多"><span class="toc-number">4.4.</span> <span class="toc-text">更多</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试"><span class="toc-number">5.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-number">6.</span> <span class="toc-text">条件判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#流程控制"><span class="toc-number">6.1.</span> <span class="toc-text">流程控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if-else"><span class="toc-number">6.2.</span> <span class="toc-text">if else</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#if"><span class="toc-number">6.2.1.</span> <span class="toc-text">if</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-1"><span class="toc-number">6.2.2.</span> <span class="toc-text">if else</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-if-else"><span class="toc-number">6.2.3.</span> <span class="toc-text">if else-if else</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-while"><span class="toc-number">6.3.</span> <span class="toc-text">for while</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for"><span class="toc-number">6.3.1.</span> <span class="toc-text">for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C风格的for"><span class="toc-number">6.3.2.</span> <span class="toc-text">C风格的for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#while"><span class="toc-number">6.3.3.</span> <span class="toc-text">while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无限循环"><span class="toc-number">6.3.4.</span> <span class="toc-text">无限循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#until"><span class="toc-number">6.3.5.</span> <span class="toc-text">until</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#case"><span class="toc-number">6.4.</span> <span class="toc-text">case</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#amp-amp-和"><span class="toc-number">6.5.</span> <span class="toc-text">&amp;&amp; 和 ||</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件包含"><span class="toc-number">7.</span> <span class="toc-text">文件包含</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户输入"><span class="toc-number">8.</span> <span class="toc-text">用户输入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#执行脚本时传入"><span class="toc-number">8.1.</span> <span class="toc-text">执行脚本时传入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本运行中输入"><span class="toc-number">8.2.</span> <span class="toc-text">脚本运行中输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select菜单"><span class="toc-number">8.3.</span> <span class="toc-text">select菜单</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stdin和stdout"><span class="toc-number">9.</span> <span class="toc-text">stdin和stdout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用的命令"><span class="toc-number">10.</span> <span class="toc-text">常用的命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">10.1.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep"><span class="toc-number">10.2.</span> <span class="toc-text">grep</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排除grep自身"><span class="toc-number">10.2.1.</span> <span class="toc-text">排除grep自身</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找与target相邻的结果"><span class="toc-number">10.2.2.</span> <span class="toc-text">查找与target相邻的结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#awk"><span class="toc-number">10.3.</span> <span class="toc-text">awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">10.4.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入"><span class="toc-number">10.4.1.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换"><span class="toc-number">10.4.2.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-number">10.4.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xargs"><span class="toc-number">10.5.</span> <span class="toc-text">xargs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#curl"><span class="toc-number">10.6.</span> <span class="toc-text">curl</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">11.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">12.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>本篇博客介绍shell脚本的语法知识。</p>
+<a id="more"></a>
+
+<h1 id="解释器"><a href="#解释器" class="headerlink" title="解释器"></a>解释器</h1><p>第一行一般是这样：</p>
+<pre><code>#!/bin/bash
+#!/usr/bin/php</code></pre><p><code>#!</code> 是一个约定的标记，它告诉系统这个脚本需要什么解释器来执行。</p>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><h2 id="定义变量"><a href="#定义变量" class="headerlink" title="定义变量"></a>定义变量</h2><p>定义变量时，变量名不加美元符号 <code>$</code>，如：</p>
+<pre><code>your_name=&quot;test&quot;</code></pre><p>注意，<strong>变量名和等号之间不能有空格</strong>。</p>
+<p>除了显式地直接赋值，还可以用语句给变量赋值，如：</p>
+<pre><code>for file in `ls /etc`</code></pre><h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><p>使用一个定义过的变量，只要在变量名前面加美元符号 <code>$</code> 即可，如：</p>
+<pre><code>your_name=&quot;test&quot;
+echo $your_name
+echo ${your_name}</code></pre><p>变量名外面的花括号是可选的，加不加都行，加花括号是为了帮助解释器识别变量的边界，比如下面这种情况：</p>
+<pre><code>for skill in Python C Shell Java; do
+    echo &quot;I am good at ${skill}Script&quot;
+done</code></pre><p>如果不给 <code>skill</code> 变量加花括号，写成 <code>echo &quot;I am good at $skillScript&quot;</code> ，解释器就会把 <code>$skillScript</code> 当成一个变量（其值为空），代码执行结果就不是我们期望的样子了。</p>
+<p>推荐给所有变量加上花括号，这是个好的编程习惯。</p>
+<h2 id="重定义变量"><a href="#重定义变量" class="headerlink" title="重定义变量"></a>重定义变量</h2><p>已定义的变量，可以被重新定义，如：</p>
+<pre><code>your_name=&quot;test&quot;
+echo $your_name
+
+your_name=&quot;foo&quot;
+echo $your_name</code></pre><p>这样写是合法的，但注意，第二次赋值的时候不能写 <code>$your_name=&quot;foo&quot;</code> ，使用变量的时候才加美元符。</p>
+<h2 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h2><ul>
+<li><code>$0</code> - Bash 脚本的名字.</li>
+<li><code>$1</code> - <code>$9</code> - 传入 Bash 脚本的第1个到第9个参数.</li>
+<li><code>$#</code> - 传入 Bash 脚本的参数个数.</li>
+<li><code>$*</code> - 传入 Bash 脚本所有参数.</li>
+<li><code>$@</code> - 传递给脚本或函数的所有参数。被双引号(“ “)包含时，与 $* 稍有不同。</li>
+<li><code>$?</code> - 上个命令的退出状态，或函数的返回值.</li>
+<li><code>$$</code> - 当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。.</li>
+<li>$USER - The username of the user running the script.</li>
+<li>$HOSTNAME - The hostname of the machine the script is running on.</li>
+<li>$SECONDS - The number of seconds since the script was started.</li>
+<li>$RANDOM - Returns a different random number each time is it referred to.</li>
+<li>$LINENO - Returns the current line number in the Bash script.</li>
+</ul>
+<h1 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h1><p><code>BASH</code> 文件，单行注释用 <code>#</code> ，多行注释可以用 <code>&lt;&lt;COMMENT ……   COMMENT</code> 来包裹需要注释的命令行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;COMMENT</span><br><span class="line"></span><br><span class="line">something else.</span><br><span class="line"></span><br><span class="line">COMMENT</span><br></pre></td></tr></table></figure>
+
+<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>字符串是 <code>shell</code> 编程中最常用最有用的数据类型，字符串可以用单引号，也可以用双引号，也可以不用引号。单双引号的区别跟PHP类似。</p>
+<h2 id="单引号"><a href="#单引号" class="headerlink" title="单引号"></a>单引号</h2><pre><code>str=&apos;this is a string&apos;</code></pre><p>单引号字符串的限制：</p>
+<ul>
+<li>单引号里的任何字符都会原样输出，单引号字符串中的变量是无效的</li>
+<li>单引号字串中不能出现单引号（对单引号使用转义符后也不行）</li>
+</ul>
+<h2 id="双引号"><a href="#双引号" class="headerlink" title="双引号"></a>双引号</h2><pre><code>your_name=&apos;test&apos;
+str=&quot;Hello, I know your are \&quot;$your_name\&quot;! \n&quot;</code></pre><ul>
+<li>双引号里可以有变量</li>
+<li>双引号里可以出现转义字符</li>
+</ul>
+<h2 id="字符串操作"><a href="#字符串操作" class="headerlink" title="字符串操作"></a>字符串操作</h2><h3 id="拼接字符串"><a href="#拼接字符串" class="headerlink" title="拼接字符串"></a>拼接字符串</h3><pre><code>your_name=&quot;test&quot;
+greeting=&quot;hello, &quot;$your_name&quot; !&quot;
+greeting_1=&quot;hello, ${your_name} !&quot;
+
+echo $greeting $greeting_1</code></pre><h3 id="获取字符串长度："><a href="#获取字符串长度：" class="headerlink" title="获取字符串长度："></a>获取字符串长度：</h3><pre><code>string=&quot;abcd&quot;
+echo ${#string} #输出：4</code></pre><h3 id="提取子字符串"><a href="#提取子字符串" class="headerlink" title="提取子字符串"></a>提取子字符串</h3><pre><code>string=&quot;foos bar&quot;
+echo ${string:1:3} #输出：foo</code></pre><h2 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h2><p>参见本文档末尾的参考资料中<a href="http://tldp.org/LDP/abs/html/string-manipulation.html" target="_blank" rel="noopener">Advanced Bash-Scripting Guid Chapter 10.1</a></p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>内置命令 test 根据表达式expr 求值的结果返回 <code>0（真）</code> 或 <code>1（假）</code> 。<br>也可以使用方括号： <code>test expr</code> 和 <code>[ expr ]</code> 是等价的。 可以用 <code>$?</code> 检查返回值；可以使用 <code>&amp;&amp;</code> 和 <code>||</code> 操作返回值；也可以用后面介绍的各种条件结构测试返回值。</p>
+<p>常见的测试命令选项：</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>特征</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>! EXPRESSION</td>
+<td>EXPRESSION 条件为假</td>
+</tr>
+<tr>
+<td>-n STRING</td>
+<td>STRING 长度大于0</td>
+</tr>
+<tr>
+<td>-z STRING</td>
+<td>STRING 长度为0</td>
+</tr>
+<tr>
+<td>STRING1 = STRING2</td>
+<td>STRING1 与 STRING2 字符串相同</td>
+</tr>
+<tr>
+<td>STRING1 != STRING2</td>
+<td>STRING1 与 STRING2 字符串不同</td>
+</tr>
+<tr>
+<td>INTEGER1 -eq INTEGER2</td>
+<td>INTEGER1 数值上与 INTEGER2相等</td>
+</tr>
+<tr>
+<td>INTEGER1 -gt INTEGER2</td>
+<td>INTEGER1 数值上比 INTEGER2 大</td>
+</tr>
+<tr>
+<td>INTEGER1 -lt INTEGER2</td>
+<td>INTEGER1 数值上比 INTEGER2 小</td>
+</tr>
+<tr>
+<td>-d FILE</td>
+<td>FILE 目录存在</td>
+</tr>
+<tr>
+<td>-e FILE</td>
+<td>FILE 存在.</td>
+</tr>
+<tr>
+<td>-r FILE</td>
+<td>FILE 存在并且可读.</td>
+</tr>
+<tr>
+<td>-s FILE</td>
+<td>FILE 存在并且非空.</td>
+</tr>
+<tr>
+<td>-w FILE</td>
+<td>FILE 存在并且可写.</td>
+</tr>
+<tr>
+<td>-x FILE</td>
+<td>FILE 存在并且可执行.</td>
+</tr>
+<tr>
+<td>-f FILE</td>
+<td>FILE普通文件</td>
+</tr>
+<tr>
+<td>-h FILE</td>
+<td>FILE符号连接（也可以用 -L）</td>
+</tr>
+<tr>
+<td>-p FILE</td>
+<td>FILE命名管道</td>
+</tr>
+<tr>
+<td>-S FILE</td>
+<td>FILE套接字</td>
+</tr>
+<tr>
+<td>-N FILE</td>
+<td>FILE从上次读取之后已经做过修改</td>
+</tr>
+</tbody></table>
+<p>需要注意的是 <code>=</code> 与 <code>-eq</code> 略有不同， <code>=</code> 作字符串比较， <code>-eq</code> 作数值比较。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@PowerEdge-R610:~/tools# test 001 = 1</span><br><span class="line">root@PowerEdge-R610:~/tools# echo $?</span><br><span class="line">1</span><br><span class="line">root@PowerEdge-R610:~/tools# test 001 -eq 1</span><br><span class="line">root@PowerEdge-R610:~/tools# echo $?</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<h1 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h1><h2 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h2><p>和Java、PHP等语言不一样，<code>bash</code> 的流程控制不可为空，如：</p>
+<pre><code>&lt;?php
+if (isset($_GET[&quot;q&quot;])) {
+    search(q);
+}
+else {
+    //do nothing
+}</code></pre><p>在 <code>bash shell</code> 里可不能这么写，如果else分支没有语句执行，就不要写这个else。</p>
+<p>还要注意，<code>BASH</code> 里的 <code>if [ $foo -eq 0 ]</code>，这个方括号跟 <code>Java/PHP</code> 里 <code>if</code> 后面的圆括号大不相同，它是一个可执行程序（和 <code>ls</code> , <code>grep</code> 一样），想不到吧？在CentOS上，它在 <code>/usr/bin</code> 目录下：</p>
+<pre><code>ll /usr/bin/[
+-rwxr-xr-x. 1 root root 33408 4月  16 2018 /usr/bin/[</code></pre><p>正因为方括号在这里是一个可执行程序，方括号后面必须加空格，不能写成 <code>if [$foo -eq 0]</code>。</p>
+<h2 id="if-else"><a href="#if-else" class="headerlink" title="if else"></a>if else</h2><h3 id="if"><a href="#if" class="headerlink" title="if"></a>if</h3><pre><code>if condition
+then
+    command1 
+    command2
+    ...
+    commandN 
+fi</code></pre><p>写成一行（适用于终端命令提示符）：</p>
+<pre><code>if `ps -ef | grep ssh`;  then echo hello; fi</code></pre><p>末尾的fi就是if倒过来拼写，后面还会遇到类似的</p>
+<h3 id="if-else-1"><a href="#if-else-1" class="headerlink" title="if else"></a>if else</h3><pre><code>if condition
+then
+    command1 
+    command2
+    ...
+    commandN
+else
+    command
+fi</code></pre><h3 id="if-else-if-else"><a href="#if-else-if-else" class="headerlink" title="if else-if else"></a>if else-if else</h3><pre><code>if condition1
+then
+    command1
+elif condition2
+    command2
+else
+    commandN
+fi</code></pre><h2 id="for-while"><a href="#for-while" class="headerlink" title="for while"></a>for while</h2><h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>在开篇的示例里演示过了：</p>
+<pre><code>for var in item1 item2 ... itemN
+do
+    command1
+    command2
+    ...
+    commandN
+done</code></pre><p>写成一行：</p>
+<pre><code>for var in item1 item2 ... itemN; do command1; command2… done;</code></pre><h3 id="C风格的for"><a href="#C风格的for" class="headerlink" title="C风格的for"></a>C风格的for</h3><pre><code>for (( EXP1; EXP2; EXP3 ))
+do
+    command1
+    command2
+    command3
+done</code></pre><h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><pre><code>while condition
+do
+    command
+done</code></pre><h3 id="无限循环"><a href="#无限循环" class="headerlink" title="无限循环"></a>无限循环</h3><pre><code>while :
+do
+    command
+done</code></pre><p>或者</p>
+<pre><code>while true
+do
+    command
+done</code></pre><p>或者</p>
+<pre><code>for (( ; ; ))</code></pre><h3 id="until"><a href="#until" class="headerlink" title="until"></a>until</h3><pre><code>until condition
+do
+    command
+done</code></pre><h2 id="case"><a href="#case" class="headerlink" title="case"></a>case</h2><pre><code>case &quot;${opt}&quot; in
+    &quot;Install-Puppet-Server&quot; )
+        install_master $1
+        exit
+    ;;
+
+    &quot;Install-Puppet-Client&quot; )
+        install_client $1
+        exit
+    ;;
+
+    &quot;Config-Puppet-Server&quot; )
+        config_puppet_master
+        exit
+    ;;
+
+    &quot;Config-Puppet-Client&quot; )
+        config_puppet_client
+        exit
+    ;;
+
+    &quot;Exit&quot; )
+        exit
+    ;;
+
+    * ) echo &quot;Bad option, please choose again&quot;
+esac</code></pre><p>case的语法和C family语言差别很大，它需要一个esac（就是case反过来）作为结束标记，每个case分支用右圆括号，用两个分号表示break</p>
+<h2 id="amp-amp-和"><a href="#amp-amp-和" class="headerlink" title="&amp;&amp; 和 ||"></a><code>&amp;&amp;</code> 和 <code>||</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">if [ -r $1 ] &amp;&amp; [ -s $1 ]</span><br><span class="line">then</span><br><span class="line">	echo &quot;This file is useful.&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><p>可以使用source和.关键字，如：</p>
+<pre><code>source ./function.sh
+. ./function.sh</code></pre><p>在bash里，source和.是等效的，他们都是读入function.sh的内容并执行其内容（类似PHP里的include），为了更好的可移植性，推荐使用第二种写法。</p>
+<p>包含一个文件和执行一个文件一样，也要写这个文件的路径，不能光写文件名，比如上述例子中:</p>
+<pre><code>. ./function.sh</code></pre><p>不可以写作：</p>
+<pre><code>. function.sh</code></pre><p>如果function.sh是用户传入的参数，如何获得它的绝对路径呢？方法是：</p>
+<pre><code>real_path=`readlink -f $1`#$1是用户输入的参数，如function.sh
+. $real_path</code></pre><h1 id="用户输入"><a href="#用户输入" class="headerlink" title="用户输入"></a>用户输入</h1><h2 id="执行脚本时传入"><a href="#执行脚本时传入" class="headerlink" title="执行脚本时传入"></a>执行脚本时传入</h2><h2 id="脚本运行中输入"><a href="#脚本运行中输入" class="headerlink" title="脚本运行中输入"></a>脚本运行中输入</h2><h2 id="select菜单"><a href="#select菜单" class="headerlink" title="select菜单"></a>select菜单</h2><h1 id="stdin和stdout"><a href="#stdin和stdout" class="headerlink" title="stdin和stdout"></a>stdin和stdout</h1><h1 id="常用的命令"><a href="#常用的命令" class="headerlink" title="常用的命令"></a>常用的命令</h1><p>sh脚本结合系统命令便有了强大的威力，在字符处理领域，有grep、awk、sed三剑客，grep负责找出特定的行，awk能将行拆分成多个字段，sed则可以实现更新插入删除等写操作。</p>
+<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>查看进程列表</p>
+<h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><h3 id="排除grep自身"><a href="#排除grep自身" class="headerlink" title="排除grep自身"></a>排除grep自身</h3><h3 id="查找与target相邻的结果"><a href="#查找与target相邻的结果" class="headerlink" title="查找与target相邻的结果"></a>查找与target相邻的结果</h3><h2 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h2><h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><h3 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h3><h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h2 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h2><h2 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h2><h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><ul>
+<li>set environment variables in existing shell</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&quot;/home/path/to/bin/:$PATH&quot;</span><br></pre></td></tr></table></figure>
+
+<p>直接运行脚本只会在子进程 subshell 里面执行，不会对当前shell设置环境变量。  </p>
+<p>在当前shell中设置环境变量有两种办法： <code>source</code> or <code>.</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ./myscript.sh</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. ./myscript.sh</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://stackoverflow.com/a/18548047" target="_blank" rel="noopener">Shell script to set environment variables</a></p>
+<ul>
+<li>单独以root执行某一命令</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo -u &lt;username&gt; &lt;command&gt;</span><br><span class="line">su &lt;otheruser&gt; -c &lt;command &gt;</span><br><span class="line"># 例如： su root -c &apos;echo  &quot;hello from $USER&quot;&apos;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://unix.stackexchange.com/a/264239" target="_blank" rel="noopener">How can I execute a script as root, execute some commands in it as a specific user and just one command as root</a><br><a href="https://askubuntu.com/questions/294736/run-a-shell-script-as-another-user-that-has-no-password" target="_blank" rel="noopener">Run a shell script as another user that has no password</a><br><a href="https://stackoverflow.com/a/10220200" target="_blank" rel="noopener">How to write a shell script that runs some commands as superuser and some commands not as superuser, without having to babysit it?</a>  </p>
+<ul>
+<li>比较版本</li>
+</ul>
+<p><a href="https://unix.stackexchange.com/a/285928" target="_blank" rel="noopener">How to compare a program’s version in a shell script?</a><br><a href="https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash" target="_blank" rel="noopener">How to compare two strings in dot separated version format in Bash?</a></p>
+<p>比较gcc得版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">currentver=&quot;$(gcc -dumpversion)&quot;</span><br><span class="line">requiredver=&quot;5.0.0&quot;</span><br><span class="line"> if [ &quot;$(printf &apos;%s\n&apos; &quot;$requiredver&quot; &quot;$currentver&quot; | sort -V | head -n1)&quot; = &quot;$requiredver&quot; ]; then </span><br><span class="line">        echo &quot;Greater than or equal to 5.0.0&quot;</span><br><span class="line"> else</span><br><span class="line">        echo &quot;Less than 5.0.0&quot;</span><br><span class="line"> fi</span><br></pre></td></tr></table></figure>
+
+<p>使用<a href="https://unix.stackexchange.com/users/135943/wildcard" target="_blank" rel="noopener">通配符匹配</a>  </p>
+<ul>
+<li>判断文件是否存在</li>
+</ul>
+<p><a href="https://stackoverflow.com/a/59839" target="_blank" rel="noopener">Check if a directory exists in a shell script</a>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if [ -d &quot;$DIRECTORY&quot; ]; then</span><br><span class="line">  # Control will enter here if $DIRECTORY exists.</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://github.com/qinjx/30min_guides/blob/master/shell.md" target="_blank" rel="noopener">Shell脚本编程30分钟入门</a></li>
+<li><a href="http://tldp.org/LDP/abs/html/" target="_blank" rel="noopener">Advanced Bash-Scripting Guide</a>，非常详细，非常易读，大量example，既可以当入门教材，也可以当做工具书查阅</li>
+<li><a href="http://www.tutorialspoint.com/unix/unix-shell.htm" target="_blank" rel="noopener">Unix Shell Programming</a></li>
+<li><a href="http://bash.cyberciti.biz/guide/Main_Page" target="_blank" rel="noopener">Linux Shell Scripting Tutorial - A Beginner’s handbook</a></li>
+<li><a href="https://ryanstutorials.net/bash-scripting-tutorial/bash-variables.php" target="_blank" rel="noopener">Bash Scripting Tutorial - 2. Variables</a></li>
+<li><a href="https://ryanstutorials.net/bash-scripting-tutorial/bash-if-statements.php" target="_blank" rel="noopener">Bash Scripting Tutorial - 5. If Statements</a></li>
+<li><a href="http://c.biancheng.net/cpp/view/2739.html" target="_blank" rel="noopener">Shell特殊变量：Shell $0, $#, $*, $@, $?, $$和命令行参数</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/shell/">shell</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shell/">shell</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/04/16/shell脚本编程简介/" data-title="shell脚本编程简介 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/04/18/实验吧-web-writeup/" title="实验吧 web writeup">
+  <strong>上一篇：</strong><br>
+  <span>
+  实验吧 web writeup</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/13/kvm虚拟机磁盘扩容/" title="kvm虚拟机磁盘扩容">
+ <strong>下一篇：</strong><br> 
+ <span>kvm虚拟机磁盘扩容
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#解释器"><span class="toc-number">1.</span> <span class="toc-text">解释器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-number">2.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义变量"><span class="toc-number">2.1.</span> <span class="toc-text">定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用变量"><span class="toc-number">2.2.</span> <span class="toc-text">使用变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重定义变量"><span class="toc-number">2.3.</span> <span class="toc-text">重定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊变量"><span class="toc-number">2.4.</span> <span class="toc-text">特殊变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-number">4.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单引号"><span class="toc-number">4.1.</span> <span class="toc-text">单引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双引号"><span class="toc-number">4.2.</span> <span class="toc-text">双引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串操作"><span class="toc-number">4.3.</span> <span class="toc-text">字符串操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拼接字符串"><span class="toc-number">4.3.1.</span> <span class="toc-text">拼接字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取字符串长度："><span class="toc-number">4.3.2.</span> <span class="toc-text">获取字符串长度：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#提取子字符串"><span class="toc-number">4.3.3.</span> <span class="toc-text">提取子字符串</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多"><span class="toc-number">4.4.</span> <span class="toc-text">更多</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试"><span class="toc-number">5.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-number">6.</span> <span class="toc-text">条件判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#流程控制"><span class="toc-number">6.1.</span> <span class="toc-text">流程控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if-else"><span class="toc-number">6.2.</span> <span class="toc-text">if else</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#if"><span class="toc-number">6.2.1.</span> <span class="toc-text">if</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-1"><span class="toc-number">6.2.2.</span> <span class="toc-text">if else</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-if-else"><span class="toc-number">6.2.3.</span> <span class="toc-text">if else-if else</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-while"><span class="toc-number">6.3.</span> <span class="toc-text">for while</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for"><span class="toc-number">6.3.1.</span> <span class="toc-text">for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C风格的for"><span class="toc-number">6.3.2.</span> <span class="toc-text">C风格的for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#while"><span class="toc-number">6.3.3.</span> <span class="toc-text">while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无限循环"><span class="toc-number">6.3.4.</span> <span class="toc-text">无限循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#until"><span class="toc-number">6.3.5.</span> <span class="toc-text">until</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#case"><span class="toc-number">6.4.</span> <span class="toc-text">case</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#amp-amp-和"><span class="toc-number">6.5.</span> <span class="toc-text">&amp;&amp; 和 ||</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件包含"><span class="toc-number">7.</span> <span class="toc-text">文件包含</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户输入"><span class="toc-number">8.</span> <span class="toc-text">用户输入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#执行脚本时传入"><span class="toc-number">8.1.</span> <span class="toc-text">执行脚本时传入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本运行中输入"><span class="toc-number">8.2.</span> <span class="toc-text">脚本运行中输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select菜单"><span class="toc-number">8.3.</span> <span class="toc-text">select菜单</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stdin和stdout"><span class="toc-number">9.</span> <span class="toc-text">stdin和stdout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用的命令"><span class="toc-number">10.</span> <span class="toc-text">常用的命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">10.1.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep"><span class="toc-number">10.2.</span> <span class="toc-text">grep</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排除grep自身"><span class="toc-number">10.2.1.</span> <span class="toc-text">排除grep自身</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找与target相邻的结果"><span class="toc-number">10.2.2.</span> <span class="toc-text">查找与target相邻的结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#awk"><span class="toc-number">10.3.</span> <span class="toc-text">awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">10.4.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入"><span class="toc-number">10.4.1.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换"><span class="toc-number">10.4.2.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-number">10.4.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xargs"><span class="toc-number">10.5.</span> <span class="toc-text">xargs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#curl"><span class="toc-number">10.6.</span> <span class="toc-text">curl</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">11.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">12.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

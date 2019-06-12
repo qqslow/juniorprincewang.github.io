@@ -1,0 +1,1262 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>linux操作 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。">
+<meta name="keywords" content="linux,ssh,scp,ip,zsh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux操作">
+<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/13/linux操作/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://juniorprincewang.github.io/2017/08/13/linux%E6%93%8D%E4%BD%9C/bash%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%91%BD%E4%BB%A4.jpg">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.247Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux操作">
+<meta name="twitter:description" content="对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。">
+<meta name="twitter:image" content="http://juniorprincewang.github.io/2017/08/13/linux%E6%93%8D%E4%BD%9C/bash%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%91%BD%E4%BB%A4.jpg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/08/13/linux操作/" title="linux操作" itemprop="url">linux操作</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2017-08-13T01:48:19.000Z" itemprop="datePublished"> Published 2017-08-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-终端命令行快捷键"><span class="toc-number">1.</span> <span class="toc-text">Linux 终端命令行快捷键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#man"><span class="toc-number">2.</span> <span class="toc-text">man</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查找软件源"><span class="toc-number">3.</span> <span class="toc-text">查找软件源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#更新软件源"><span class="toc-number">3.1.</span> <span class="toc-text">更新软件源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找不确定的软件包"><span class="toc-number">3.2.</span> <span class="toc-text">查找不确定的软件包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络操作"><span class="toc-number">4.</span> <span class="toc-text">网络操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置静态ip"><span class="toc-number">4.1.</span> <span class="toc-text">配置静态ip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过IPv6访问Google等"><span class="toc-number">4.2.</span> <span class="toc-text">通过IPv6访问Google等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网桥bridge"><span class="toc-number">4.3.</span> <span class="toc-text">网桥bridge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加网卡-网桥"><span class="toc-number">4.3.1.</span> <span class="toc-text">添加网卡/网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除网卡-网桥"><span class="toc-number">4.3.2.</span> <span class="toc-text">删除网卡/网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netplan-配置网桥"><span class="toc-number">4.3.3.</span> <span class="toc-text">netplan 配置网桥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scp"><span class="toc-number">4.4.</span> <span class="toc-text">scp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表示格式为"><span class="toc-number">4.4.1.</span> <span class="toc-text">表示格式为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令参数"><span class="toc-number">4.4.2.</span> <span class="toc-text">命令参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">4.4.3.</span> <span class="toc-text">实例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件操作"><span class="toc-number">5.</span> <span class="toc-text">文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tar"><span class="toc-number">5.1.</span> <span class="toc-text">tar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tar用法"><span class="toc-number">5.1.1.</span> <span class="toc-text">tar用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tar实例"><span class="toc-number">5.1.2.</span> <span class="toc-text">tar实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ulimit"><span class="toc-number">5.2.</span> <span class="toc-text">ulimit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find"><span class="toc-number">5.3.</span> <span class="toc-text">find</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#params选项"><span class="toc-number">5.3.1.</span> <span class="toc-text">params选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-1"><span class="toc-number">5.3.2.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看文件系统大小"><span class="toc-number">5.4.</span> <span class="toc-text">查看文件系统大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较文件夹"><span class="toc-number">5.5.</span> <span class="toc-text">比较文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#patch打补丁"><span class="toc-number">5.6.</span> <span class="toc-text">patch打补丁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进程管理"><span class="toc-number">6.</span> <span class="toc-text">进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查看进程和端口"><span class="toc-number">6.1.</span> <span class="toc-text">查看进程和端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#列出目前所有的正在内存当中的程序"><span class="toc-number">6.1.1.</span> <span class="toc-text">列出目前所有的正在内存当中的程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netstat"><span class="toc-number">6.1.2.</span> <span class="toc-text">netstat</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#让进程后台运行"><span class="toc-number">6.2.</span> <span class="toc-text">让进程后台运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">6.2.1.</span> <span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nohup"><span class="toc-number">6.2.2.</span> <span class="toc-text">nohup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setsid"><span class="toc-number">6.2.3.</span> <span class="toc-text">setsid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp"><span class="toc-number">6.2.4.</span> <span class="toc-text">&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跟后台进程有关的操作"><span class="toc-number">6.2.5.</span> <span class="toc-text">跟后台进程有关的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注销"><span class="toc-number">6.3.</span> <span class="toc-text">注销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LD-PRELOAD"><span class="toc-number">6.4.</span> <span class="toc-text">LD_PRELOAD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核操作"><span class="toc-number">7.</span> <span class="toc-text">内核操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU"><span class="toc-number">7.1.</span> <span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统内核信息"><span class="toc-number">7.2.</span> <span class="toc-text">当前操作系统内核信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#删除老版本的内核"><span class="toc-number">7.2.1.</span> <span class="toc-text">删除老版本的内核</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统发行版本"><span class="toc-number">7.3.</span> <span class="toc-text">当前操作系统发行版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前CPU运行模式"><span class="toc-number">7.4.</span> <span class="toc-text">当前CPU运行模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内核编译选项查看"><span class="toc-number">7.5.</span> <span class="toc-text">内核编译选项查看</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件下查看"><span class="toc-number">7.5.1.</span> <span class="toc-text">文件下查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从系统-boot目录下获取"><span class="toc-number">7.5.2.</span> <span class="toc-text">从系统/boot目录下获取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tools"><span class="toc-number">8.</span> <span class="toc-text">tools</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell—zsh"><span class="toc-number">8.1.</span> <span class="toc-text">shell—zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove-zsh"><span class="toc-number">8.2.</span> <span class="toc-text">remove zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASH-SHELL-for-Windows10"><span class="toc-number">8.3.</span> <span class="toc-text">BASH SHELL for Windows10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件系统交互"><span class="toc-number">8.3.1.</span> <span class="toc-text">文件系统交互</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<p>对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。</p>
+<a id="more"></a>
+
+<h1 id="Linux-终端命令行快捷键"><a href="#Linux-终端命令行快捷键" class="headerlink" title="Linux 终端命令行快捷键"></a>Linux 终端命令行快捷键</h1><ul>
+<li><code>Ctrl R</code> : 再按历史命令中出现过的字符串：按字符串寻找历史命令（重度推荐）</li>
+<li><code>Tab</code> : 自动补齐（重度推荐）<br>移动</li>
+<li><code>Ctrl A</code> ： 移动光标到命令行首</li>
+<li><code>Ctrl E</code> : 移动光标到命令行尾</li>
+<li><code>Ctrl B</code> : 光标后退一个<code>字符</code></li>
+<li><code>Ctrl F</code> : 光标前进一个<code>字符</code></li>
+<li><code>Alt F</code> : 光标前进一个<code>单词</code></li>
+<li><code>Alt B</code> : 光标后退一个<code>单词</code><br>编辑</li>
+<li><code>Ctrl H</code> : 删除光标的前一个字符</li>
+<li><code>Ctrl D</code> : 删除当前光标所在字符</li>
+<li><code>Alt D</code> : 删除光标之后的一个 <code>单词</code></li>
+<li><code>Ctrl W</code> : 删除光标前的 <code>单词</code> (Word, 不包含空格的字符串)</li>
+<li><code>Ctrl K</code> ：删除光标之后所有字符</li>
+<li><code>Ctrl U</code> : 清空当前键入的命令</li>
+<li><code>Ctrl Y</code> : 粘贴 <code>Ctrl W</code> 或 <code>Ctrl K</code> 删除的内容</li>
+</ul>
+<p>盗图一张…<strong>Ctrl U 命令应当是清空所有输入命令，而非光标之前所有字符！</strong><br><img src="../linux%E6%93%8D%E4%BD%9C/bash%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%91%BD%E4%BB%A4.jpg" alt="bash命令行命令操作"></p>
+<h1 id="man"><a href="#man" class="headerlink" title="man"></a>man</h1><p>有时候查阅函数时，比如<code>write</code>系统调用，通过<code>man write</code>查出的结果不对。</p>
+<pre><code>WRITE(1)
+NAME
+     write — send a message to another user
+
+SYNOPSIS
+     write user [tty]</code></pre><p>原因是<code>man</code>是按照手册的章节号的顺序进行搜索的，比如：<br>使用<code>man -k write</code>命令可以查阅所有关于<code>write</code>的内容。</p>
+<pre><code>...
+write (1)            - send a message to another user
+===&gt; write (2)            - write to a file descriptor
+writev (2)           - read or write data into multiple buffers
+...</code></pre><p>其中查询出得每条结果后面数字代表得意义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1       可执行程序或 shell 命令</span><br><span class="line">2       系统调用(内核提供的函数)</span><br><span class="line">3       库调用(程序库中的函数)</span><br><span class="line">4       特殊文件(通常位于 /dev)</span><br><span class="line">5       文件格式和规范，如 /etc/passwd</span><br><span class="line">6       游戏</span><br><span class="line">7       杂项(包括宏包和规范，如 man(7)，groff(7))</span><br><span class="line">8       系统管理命令(通常只针对 root 用户)</span><br><span class="line">9       内核例程 [非标准</span><br></pre></td></tr></table></figure>
+
+<p><code>man write</code>是<code>write</code>命令手册，我们可以定位到<code>write (2)</code>是我们想要的库函数。可以在命令行输入<code>2</code>来查阅第二个<code>write</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">man 2 write</span><br></pre></td></tr></table></figure>
+
+<h1 id="查找软件源"><a href="#查找软件源" class="headerlink" title="查找软件源"></a>查找软件源</h1><h2 id="更新软件源"><a href="#更新软件源" class="headerlink" title="更新软件源"></a>更新软件源</h2><p><code>ubuntu 14.04</code> 的软件源配置文件是 <code>/etc/apt/sources.list</code> 。将系统自带的该文件做个备份，将该文件替换为下面内容。</p>
+<ul>
+<li>更新为清华源</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-updates main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-backports main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-security main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line"># 预发布软件源，不建议启用</span><br><span class="line"># deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-proposed main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>更新软件包</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+
+<p><code>ubuntu</code> 其他系列如 <code>ubuntu16.04</code> 需要的软件源参考<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a>。</p>
+<h2 id="查找不确定的软件包"><a href="#查找不确定的软件包" class="headerlink" title="查找不确定的软件包"></a>查找不确定的软件包</h2><p>比如查找 支持 <code>gd</code> 的 <code>php</code> 软件包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-cache search gd | grep php</span><br></pre></td></tr></table></figure>
+
+<h1 id="网络操作"><a href="#网络操作" class="headerlink" title="网络操作"></a>网络操作</h1><h2 id="配置静态ip"><a href="#配置静态ip" class="headerlink" title="配置静态ip"></a>配置静态ip</h2><p>操作网络服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/networking stop #停止</span><br><span class="line">/etc/init.d/networking start #开启</span><br><span class="line">/etc/init.d/networking restart #重启</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置静态IP  </li>
+</ul>
+<p><strong>Ubuntu16.04使用</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/network/interfaces # 打开配置文件</span><br><span class="line">#在打开的文件中输入以下</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line">auto eth0</span><br><span class="line"># 设置IPv4</span><br><span class="line">iface eth0 inet static</span><br><span class="line">    address 192.168.1.188</span><br><span class="line">    netmask 255.255.255.0</span><br><span class="line">    gateway 192.168.1.1</span><br><span class="line">    dns-nameserver 8.8.8.8</span><br><span class="line"># 设置IPv6</span><br><span class="line">iface eth0 inet6 static</span><br><span class="line">    address 2a04:f80:0754:168:225:218:171:0/112</span><br><span class="line">    gateway 2a04:f80:0754::1</span><br><span class="line">    dns-nameservers 2001:4860:4860::8888</span><br></pre></td></tr></table></figure>
+
+<p>需要说明的是：</p>
+<ol>
+<li><code>auto eth0</code>表示让网卡<code>eth0</code>开机自动挂载<code>eth0</code>。</li>
+<li><code>eth0</code>是通过<code>ifconfig</code>得出的网卡名称。</li>
+<li>将<code>eth0</code>的IP分配方式修改为静态分配(static)后，为其制定IP、网关、子网掩码、DNS等信息。</li>
+</ol>
+<p><strong>注意</strong>：<em>dns-nameservers</em> 设置不起作用，我设置了两个dns，不知道为啥。</p>
+<p>设置DNS。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/resolv.conf</span><br><span class="line">#添加以下记录</span><br><span class="line">nameserver dns的ip地址,如8.8.8.8</span><br><span class="line">#重启服务</span><br><span class="line">sudo /etc/init.d/networking restart</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong> ：上面设置的文件重启后会覆盖，如果要持久的保存，需要修改：<em>/etc/resolvconf/resolv.conf.d/base</em> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/resolvconf/resolv.conf.d/base</span><br><span class="line">nameserver 172.16.3.4 </span><br><span class="line">nameserver 172.16.3.3</span><br></pre></td></tr></table></figure>
+
+<p>使DNS生效  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/resolvconf restart</span><br></pre></td></tr></table></figure>
+
+<p>** Ubuntu18.04 **</p>
+<p>在18.04上在 <em>/etc/network/interfaces文件</em> 配置ip地址也是可以用的，<code>但是要重启才能生效</code>。通过 <code>service networking restart</code> 无效。  </p>
+<p>18.04上新采用的netplan命令。网卡信息配置在 <em>/etc/netplan/01-network-manager-all.yaml</em> 文件，需做如下配置: </p>
+<pre><code># Let NetworkManager manage all devices on this system
+network:
+  version: 2
+  # renderer: NetworkManager
+  ethernets:
+          enp4s0:
+                dhcp4: no
+                addresses: [192.168.0.123/24]
+                gateway4: 192.168.0.1
+                nameservers:
+                        addresses: [8.8.8.8, 8.8.4.4]</code></pre><p>然后使用以下命令使配置立即生效。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo netplan apply</span><br></pre></td></tr></table></figure>
+
+<p>查看IP是否设置成功。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip a</span><br></pre></td></tr></table></figure>
+
+<p>这里有几点需要注意： </p>
+<ol>
+<li>将renderer: NetworkManager注释，否则netplan命令无法生效； </li>
+<li>ip配置信息要按如上格式，使用yaml语法格式，每个配置项使用 <strong>空格缩进表示层级</strong>；  </li>
+<li>对应配置项后跟着 <strong>冒号，之后要接个空格</strong> ，否则netplan命令也会报错。</li>
+</ol>
+<p>参考：<br><a href="https://blog.csdn.net/u010039418/article/details/80934346" target="_blank" rel="noopener">Ubuntu 18.04 LTS设置固定ip</a></p>
+<p>** Ubuntu18.04 DNS**</p>
+<p>在<strong>Ubuntu 18.04</strong>中通过 <em>/etc/resolv.conf</em> 设置DNS后，重启不起作用。这是一个自动生成文件，来自于进程 <em>systemd-resolved</em>。  </p>
+<blockquote>
+<p>This file is managed by man:systemd-resolved(8). Do not edit.</p>
+</blockquote>
+<p>通过修改配置文件 <em>/etc/systemd/resolved.conf</em> 可以修改 DNS。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/systemd/resolved.conf</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[Resolve]<br>DNS=8.8.8.8</p>
+</blockquote>
+<p>重启服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart systemd-resolved</span><br></pre></td></tr></table></figure>
+
+<p>查看DNS配置信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemd-resolve --status</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Global<br>DNS Servers: 8.8.8.8</p>
+</blockquote>
+<p>参考 <a href="https://vqiu.cn/ubuntu-18-04-dns-config/" target="_blank" rel="noopener">Ubuntu-18.04 DNS 配置</a>  </p>
+<h2 id="通过IPv6访问Google等"><a href="#通过IPv6访问Google等" class="headerlink" title="通过IPv6访问Google等"></a>通过IPv6访问Google等</h2><p>在有IPv6支持的网络中，设置自己的静态IPv6。<br>如果没有IPv6网络支持，可以使用miredo网络工具。这是一款主要用于BSD和Linux的IPV6 Teredo隧道链接，可以转换不支持IPV6的网络连接IPV6，内核中需要有IPV6和TUN隧道支持。<br>安装也很简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install miredo</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>ifconfig</code>可以查看到多了一个<code>teredo</code>网卡。<br>接下来就可以<code>ping</code>通google的IPv6地址了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping6 ipv6.google.com</span><br></pre></td></tr></table></figure>
+
+<p>然后再在<code>/etc/hosts</code>中追加访问地址。幸好github上有开源项目：<a href="https://github.com/lennylxx/ipv6-hosts" target="_blank" rel="noopener">https://github.com/lennylxx/ipv6-hosts</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br><span class="line">curl https://github.com/lennylxx/ipv6-hosts/raw/master/hosts -L &gt;&gt; /etc/hosts</span><br><span class="line">/etc/init.d/networking restart</span><br><span class="line">ping6 ipv6.google.com</span><br></pre></td></tr></table></figure>
+
+<p>若hosts中出现 <em>^M 字符</em>，是由于基于 DOS/Windows 的文本文件在每一行末尾有一个 CR（回车）和 LF（换行），而 UNIX 文本只有一个换行,即win每行结尾为\r\n，而linux只有一个\n 。<br>那么在VIM中替换掉即可。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:%s/\r//g</span><br></pre></td></tr></table></figure>
+
+<p>参考：<br>[1] <a href="http://blog.csdn.net/scylhy/article/details/72699166" target="_blank" rel="noopener">ubuntu16.04使用ipv6</a><br>[2] <a href="http://blog.letow.top/2017/11/05/ubuntu-%E5%BC%80%E5%90%AF-ipv6/" target="_blank" rel="noopener">ubuntu 使用 ipv6 隧道</a><br>[3] <a href="https://newdee.cf/posts/8544442c/" target="_blank" rel="noopener">IPv4下使用IPv6</a></p>
+<h2 id="网桥bridge"><a href="#网桥bridge" class="headerlink" title="网桥bridge"></a>网桥bridge</h2><p>安装两个配置网络所需软件包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install bridge-utils        # 虚拟网桥工具</span><br><span class="line">apt-get install uml-utilities       # UML（User-mode linux）工具</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加网卡-网桥"><a href="#添加网卡-网桥" class="headerlink" title="添加网卡/网桥"></a>添加网卡/网桥</h3><p>网桥是一个虚拟的交换机，而tap接口就是在这个虚拟交换机上用来和虚拟机连接的那个口。虚拟机就通过这么一个连接的方式和主机连接。</p>
+<p>创建网桥，名字是virbr0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo brctl addbr virbr0</span><br><span class="line">sudo ifconfig virbr0 192.168.122.1 net mask 255.255.255.0 up</span><br></pre></td></tr></table></figure>
+
+<p>创建一张虚拟TUN网卡，名字为tap0。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tunctl -t tap0 -u &lt;username&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将网卡设置为任何人都有权限使用  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod 0666 /dev/net/tun</span><br></pre></td></tr></table></figure>
+
+<p>为tap0网卡设置一个IP地址，不要与真实的IP地址在同一个网段。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig tap0 &lt;0.0.0.0&gt; up</span><br></pre></td></tr></table></figure>
+
+<p>添加到网桥。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brctl addif virbr0 tap0</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除网卡-网桥"><a href="#删除网卡-网桥" class="headerlink" title="删除网卡/网桥"></a>删除网卡/网桥</h3><p>刪除虚拟网卡</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tunctl -d &lt;虚拟网卡名&gt;</span><br></pre></td></tr></table></figure>
+
+<p>刪除虚拟网桥</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ifconfig &lt;网桥名&gt; down</span><br><span class="line">brctl delbr &lt;网桥名&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将网卡tap0, eth0 移出bridge(br0)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brctl delif br0 tap0</span><br><span class="line">brctl delif br0 eth0</span><br></pre></td></tr></table></figure>
+
+<h3 id="netplan-配置网桥"><a href="#netplan-配置网桥" class="headerlink" title="netplan 配置网桥"></a>netplan 配置网桥</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/netplan/50-cloud-init.yaml</span><br></pre></td></tr></table></figure>
+
+<p>在里面添加如下内容：</p>
+<pre><code>network:
+  version: 2
+  ethernets:
+    ens33:
+      dhcp4: no
+      dhcp6: no
+
+  bridges:
+    br0:
+      interfaces: [ens33]
+      dhcp4: no
+      addresses: [192.168.0.51/24]
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [192.168.0.1]</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo netplan apply</span><br></pre></td></tr></table></figure>
+
+<p>确认网络桥接状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo networkctl status -a</span><br></pre></td></tr></table></figure>
+
+<h2 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h2><p><code>scp</code>是<code>secure copy</code>的缩写，用于远程文件的安全拷贝，使用ssh传输，认证。<br>主机上的文件前可能需要用户名和主机指定并通过<code>:</code>连接文件。本地文件可通过相对或绝对路径表示。</p>
+<h3 id="表示格式为"><a href="#表示格式为" class="headerlink" title="表示格式为"></a>表示格式为</h3><p><code>scp [参数] [原路径] [目标路径]</code></p>
+<h3 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h3><p>命令参数：</p>
+<pre><code>-1  强制scp命令使用协议ssh1  
+-2  强制scp命令使用协议ssh2  
+-4  强制scp命令只使用IPv4寻址  
+-6  强制scp命令只使用IPv6寻址  
+-B  使用批处理模式（传输过程中不询问传输口令或短语）  
+-C  允许压缩。（将-C标志传递给ssh，从而打开压缩功能）  
+-p 保留原文件的修改时间，访问时间和访问权限。  
+-q  不显示传输进度条。  
+**-r**  递归复制整个目录。  
+-v 详细方式显示输出。scp和ssh(1)会显示出整个过程的调试信息。这些信息用于调试连接，验证和配置问题。   
+-c cipher  以cipher将数据传输进行加密，这个选项将直接传递给ssh。   
+-F ssh_config  指定一个替代的ssh配置文件，此参数直接传递给ssh。  
+-i identity_file  从指定文件中读取传输时使用的密钥文件，此参数直接传递给ssh。    
+-l limit  限定用户所能使用的带宽，以Kbit/s为单位。     
+-o ssh_option  如果习惯于使用ssh_config(5)中的参数传递方式，   
+**-P** port  注意是大写的P, port是指定数据传输用到的端口号   
+-S program  指定加密传输时所使用的程序。此程序必须能够理解ssh(1)的选项。</code></pre><p>需要关注的是文件夹<code>-r</code>和端口<code>-P</code>参数。</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>复制本地文件到远端服务器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P 2222 local_file remote_username@remote_ip:remote_folder</span><br></pre></td></tr></table></figure>
+
+<p>复制本地文件夹到远端服务器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P 2222 -r local_folder remote_username@remote_ip:remote_folder</span><br></pre></td></tr></table></figure>
+
+<p>从远端服务器到本地，只需要把参数颠倒即可。</p>
+<p>[1] <a href="http://www.cnblogs.com/peida/archive/2013/03/15/2960802.html" target="_blank" rel="noopener">每天一个linux命令（60）：scp命令</a></p>
+<h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><h2 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h2><p>tar命令可以为linux的文件和目录创建档案。利用tar命令，可以把一大堆的文件和目录全部打包成一个文件。<br>首先要把打包和压缩两个概念搞清楚，打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过一些压缩算法变成一个小文件。<br>为什么要区分这两个概念呢？这源于Linux中很多压缩程序只能针对一个文件进行压缩，这样当你想要压缩一大堆文件时，你得先将这一大堆文件先打成一个包（tar命令），然后再用压缩程序进行压缩（gzip bzip2命令）。</p>
+<h3 id="tar用法"><a href="#tar用法" class="headerlink" title="tar用法"></a>tar用法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar &lt;选项&gt; (打包的文件或目录列表)</span><br></pre></td></tr></table></figure>
+
+<p>选项为：</p>
+<pre><code>-A或--catenate：新增文件到以存在的备份文件；
+-B：设置区块大小；
+-c或--create：建立新的备份文件；
+-C &lt;目录&gt;：这个选项用在解压缩，若要在特定目录解压缩，可以使用这个选项。
+-d：记录文件的差别；
+-x或--extract或--get：从备份文件中还原文件；
+-t或--list：列出备份文件的内容；
+-z或--gzip或--ungzip：通过gzip指令处理备份文件；
+-Z或--compress或--uncompress：通过compress指令处理备份文件；
+-f&lt;备份文件&gt;或--file=&lt;备份文件&gt;：指定备份文件；
+-v或--verbose：显示指令执行过程；
+-r：添加文件到已经压缩的文件；
+-u：添加改变了和现有的文件到已经存在的压缩文件；
+-j：支持bzip2解压文件；
+-v：显示操作过程；
+-l：文件系统边界设置；
+-k：保留原有文件不覆盖；
+-m：保留文件不被覆盖；
+-w：确认压缩文件的正确性；
+-p或--same-permissions：用原来的文件权限还原文件；
+-P或--absolute-names：文件名使用绝对名称，不移除文件名称前的“/”号；
+-N &lt;日期格式&gt; 或 --newer=&lt;日期时间&gt;：只将较指定日期更新的文件保存到备份文件里；
+--exclude=&lt;范本样式&gt;：排除符合范本样式的文件。</code></pre><h3 id="tar实例"><a href="#tar实例" class="headerlink" title="tar实例"></a>tar实例</h3><p>将文件全部打包成tar包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf log.tar log2012.log    #仅打包，不压缩！ </span><br><span class="line">tar -zcvf log.tar.gz log2012.log   #打包后，以 gzip 压缩 </span><br><span class="line">tar -jcvf log.tar.bz2 log2012.log  #打包后，以 bzip2 压缩</span><br></pre></td></tr></table></figure>
+
+<p>在选项f之后的文件档名是自己取的，我们习惯上都用 .tar 来作为辨识。 如果加z选项，则以.tar.gz或.tgz来代表gzip压缩过的tar包；如果加j选项，则以.tar.bz2来作为tar包名。</p>
+<p>将tar包解压缩：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf /opt/soft/test/log.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>其实最简单的使用 tar 就只要记住底下的方式即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">压　缩：tar -jcv -f filename.tar.bz2 要被压缩的文件或目录名称</span><br><span class="line">查　询：tar -jtv -f filename.tar.bz2</span><br><span class="line">解压缩：tar -jxv -f filename.tar.bz2 -C 欲解压缩的目录</span><br></pre></td></tr></table></figure>
+
+<p>解压缩xz压缩包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar xJvf filename.tar.xz</span><br></pre></td></tr></table></figure>
+
+<p>解压缩zip包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip filename.zip</span><br></pre></td></tr></table></figure>
+
+<p>解压缩tar包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf file.tar</span><br></pre></td></tr></table></figure>
+
+<h2 id="ulimit"><a href="#ulimit" class="headerlink" title="ulimit"></a>ulimit</h2><p>ulimit命令用来限制系统用户对shell资源的访问。</p>
+<p>ulimit 用于限制 shell 启动进程所占用的资源，支持以下各种类型的限制：所创建的内核文件的大小、进程数据块的大小、Shell 进程创建文件的大小、内存锁住的大小、常驻内存集的大小、打开文件描述符的数量、分配堆栈的最大大小、CPU 时间、单个用户的最大线程数、Shell 进程所能使用的最大虚拟内存。同时，它支持硬资源和软资源的限制。</p>
+<p>作为临时限制，ulimit 可以作用于通过使用其命令登录的 shell 会话，在会话终止时便结束限制，并不影响于其他 shell 会话。而对于长期的固定限制，ulimit 命令语句又可以被添加到由登录 shell 读取的文件中，作用于特定的 shell 用户。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-a：显示目前资源限制的设定； </span><br><span class="line">-c ：设定core文件的最大值，单位为区块； </span><br><span class="line">-d &lt;数据节区大小&gt;：程序数据节区的最大值，单位为KB； </span><br><span class="line">-f &lt;文件大小&gt;：shell所能建立的最大文件，单位为区块； </span><br><span class="line">-H：设定资源的硬性限制，也就是管理员所设下的限制； </span><br><span class="line">-m &lt;内存大小&gt;：指定可使用内存的上限，单位为KB； </span><br><span class="line">-n &lt;文件数目&gt;：指定同一时间最多可开启的文件数； </span><br><span class="line">-p &lt;缓冲区大小&gt;：指定管道缓冲区的大小，单位512字节； </span><br><span class="line">-s &lt;堆叠大小&gt;：指定堆叠的上限，单位为KB； </span><br><span class="line">-S：设定资源的弹性限制； </span><br><span class="line">-t ：指定CPU使用时间的上限，单位为秒； </span><br><span class="line">-u &lt;程序数目&gt;：用户最多可开启的程序数目； </span><br><span class="line">-v &lt;虚拟内存大小&gt;：指定可使用的虚拟内存上限，单位为KB。</span><br></pre></td></tr></table></figure>
+
+<p>[1] <a href="http://man.linuxde.net/ulimit" target="_blank" rel="noopener">ulimit命令</a></p>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p><code>find</code>命令用于查找指定文件夹下的文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find [dir path] [params]</span><br></pre></td></tr></table></figure>
+
+<h3 id="params选项"><a href="#params选项" class="headerlink" title="params选项"></a>params选项</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-atime&lt;24小时数&gt;：查找在指定时间曾被存取过的文件或目录，单位以24小时计算；</span><br><span class="line">-ctime&lt;24小时数&gt;：查找在指定时间之时被更改的文件或目录，单位以24小时计算；</span><br><span class="line">-mtime&lt;24小时数&gt;：查找在指定时间曾被更改过的文件或目录，单位以24小时计算；</span><br><span class="line">-exec&lt;执行指令&gt;：假设find指令的回传值为True，就执行该指令；</span><br><span class="line">-name&lt;范本样式&gt;：指定字符串作为寻找文件或目录的范本样式；</span><br><span class="line">-iname&lt;范本样式&gt;：此参数的效果和指定“-name”参数类似，但忽略字符大小写的差别；</span><br><span class="line">-gid&lt;群组识别码&gt;：查找符合指定之群组识别码的文件或目录；</span><br><span class="line">-path&lt;范本样式&gt;：指定字符串作为寻找目录的范本样式；</span><br><span class="line">-perm&lt;权限数值&gt;：查找符合指定的权限数值的文件或目录；</span><br><span class="line">-print：假设find指令的回传值为Ture，就将文件或目录名称列出到标准输出。格式为每列一个名称，每个名称前皆有&quot;./&quot;字符串；</span><br><span class="line">-size&lt;文件大小&gt;：查找符合指定的文件大小的文件；</span><br><span class="line">-uid&lt;用户识别码&gt;：查找符合指定的用户识别码的文件或目录；</span><br><span class="line">-user&lt;拥有者名称&gt;：查找符和指定的拥有者名称的文件或目录；</span><br></pre></td></tr></table></figure>
+
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>可以根据文件或正则表达式匹配。</p>
+<p>在当前目录查找后缀名为<code>txt</code>的文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*.txt&quot;</span><br></pre></td></tr></table></figure>
+
+<p>找出后缀名不是<code>txt</code>的文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . ! -name &quot;*.txt&quot;</span><br></pre></td></tr></table></figure>
+
+<p>详情参考：<a href="http://man.linuxde.net/find" target="_blank" rel="noopener">find命令</a></p>
+<h2 id="查看文件系统大小"><a href="#查看文件系统大小" class="headerlink" title="查看文件系统大小"></a>查看文件系统大小</h2><ul>
+<li>产看文件大小  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -sh filename</span><br></pre></td></tr></table></figure>
+
+<p>其中</p>
+<blockquote>
+<p>-s 表示查看文件的size<br>-h 表示以 <code>human readable</code> 的格式显示</p>
+</blockquote>
+<ul>
+<li>查看文件夹大小</li>
+</ul>
+<p>返回该目录的大小  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh</span><br></pre></td></tr></table></figure>
+
+<p>参数 <code>-sh</code> 同上。  </p>
+<ul>
+<li>查看磁盘空间大小和剩余大小  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -hl</span><br></pre></td></tr></table></figure>
+
+<p>得到的结果为：</p>
+<pre><code>Filesystem      Size  Used Avail Use% Mounted on
+udev            7.8G     0  7.8G   0% /dev
+tmpfs           1.6G  1.7M  1.6G   1% /run
+/dev/sda2       164G   34G  123G  22% /
+tmpfs           7.9G  216K  7.9G   1% /dev/shm
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs           7.9G     0  7.9G   0% /sys/fs/cgroup
+...</code></pre><p><code>/dev/sda2       164G   34G  123G  22% /</code> 表示： SATA硬盘接口的第一个硬盘（<code>a</code>），第二个分区（<code>2</code>），容量是<code>164G</code>，用了<code>34G</code>，可用是<code>123G</code>，因此利用率是<code>22%</code>， 被挂载到根分区目录上（<code>/</code>）。</p>
+<p><a href="https://o-my-chenjian.com/2017/05/10/Play-Disk-On-Linux/" target="_blank" rel="noopener">玩转Linux之硬盘分区格式化挂载与合并</a>  </p>
+<ul>
+<li>查看硬盘的分区  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure>
+
+<h2 id="比较文件夹"><a href="#比较文件夹" class="headerlink" title="比较文件夹"></a>比较文件夹</h2><p>linux中比较文件的命令为 <code>diff</code> ，<code>diff</code> 命令也可以<a href="https://blog.csdn.net/fengxianger/article/details/52936773" target="_blank" rel="noopener">比较两个文件夹</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">diff -urNa dir1 dir2</span><br><span class="line">-a  Treat  all  files  as text and compare them     </span><br><span class="line">    line-by-line, even if they do not seem to be text.</span><br><span class="line"></span><br><span class="line">-N, --new-file</span><br><span class="line">    In  directory  comparison, if a file is found in</span><br><span class="line">    only one directory, treat it as present but empty</span><br><span class="line">    in the other directory.</span><br><span class="line"></span><br><span class="line">-r  When comparing directories, recursively compare</span><br><span class="line">    any subdirectories found.</span><br><span class="line">-u  Use the unified output format.</span><br></pre></td></tr></table></figure>
+
+<p>这里结果的格式采用的是 <code>合并格式的diff</code> ，这里可以<a href="http://www.ruanyifeng.com/blog/2012/08/how_to_read_diff.html" target="_blank" rel="noopener">读懂diff</a> 。<br>显示结果如下：</p>
+<pre><code>　　--- f1    2012-08-29 16:45:41.000000000 +0800
+　　+++ f2    2012-08-29 16:45:51.000000000 +0800
+　　@@ -1,7 +1,7 @@
+　　 a
+　　 a
+　　 a
+　　-a
+　　+b
+　　 a
+　　 a
+　　 a</code></pre><p>它的第一部分，也是文件的基本信息。</p>
+<pre><code>　　--- f1    2012-08-29 16:45:41.000000000 +0800
+　　+++ f2    2012-08-29 16:45:51.000000000 +0800</code></pre><p>“—“表示变动前的文件，”+++”表示变动后的文件。</p>
+<p>第二部分，变动的位置用两个@作为起首和结束。</p>
+<pre><code>　　@@ -1,7 +1,7 @@</code></pre><p>前面的”-1,7”分成三个部分：减号表示第一个文件（即f1），”1”表示第1行，”7”表示连续7行。合在一起，就表示下面是第一个文件从第1行开始的连续7行。同样的，”+1,7”表示变动后，成为第二个文件从第1行开始的连续7行。</p>
+<p>第三部分是变动的具体内容。</p>
+<pre><code>　　 a
+　　 a
+　　 a
+　　-a
+　　+b
+　　 a
+　　 a
+　　 a</code></pre><p>除了有变动的那些行以外，也是上下文各显示3行。它将两个文件的上下文，合并显示在一起，所以叫做”合并格式”。每一行最前面的标志位，空表示无变动，减号表示第一个文件删除的行，加号表示第二个文件新增的行。</p>
+<ul>
+<li>仅仅输出不同的文件名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-q   Report only whether the files differ, not the details of the differences.</span><br><span class="line">-r   When comparing directories, recursively compare any subdirectories found.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff -qr dir1 dir2</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>Files dir1/different and dir2/different differ
+Only in dir1: only-1
+Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722" target="_blank" rel="noopener">diff to output only the file names</a></p>
+<h2 id="patch打补丁"><a href="#patch打补丁" class="headerlink" title="patch打补丁"></a>patch打补丁</h2><p>通常对 <code>diff</code> 的结果，可以使用 <code>patch</code> 命令来自动补齐变动的内容。 <code>patch</code> 通过读入 <code>patch</code> 命令文件（可以从标准输入），对目标文件进行修改。</p>
+<p><code>patch</code> 的标准格式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patch [options] [originalfile] [patchfile]</span><br></pre></td></tr></table></figure>
+
+<p>patch文件的样子：</p>
+<pre><code>diff -Nur linux-2.4.15/Makefile linux/Makefile
+--- linux-2.4.15/Makefile       Thu Nov 22 17:22:58 2001
++++ linux/Makefile      Sat Nov 24 16:21:53 2001
+@@ -1,7 +1,7 @@
+ VERSION = 2
+ PATCHLEVEL = 4
+-SUBLEVEL = 15
+-EXTRAVERSION =-greased-turkey
++SUBLEVEL = 16
++EXTRAVERSION =
+ KERNELRELEASE=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)</code></pre><p>绝大多数情况下，<code>patch</code> 都用以下这种简单的方式使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patch -p[num] &lt;patchfile</span><br></pre></td></tr></table></figure>
+
+<p><code>-p</code> 参数决定了是否使用读出的源文件名的前缀目录信息，不提供-p参数，则忽略所有目录信息。<br><code>-p0</code>（或者 <code>-p 0</code>）表示使用全部的路径信息，<code>-p1</code> 将忽略第一个”/“以前的目录，依此类推。 如 <em>/usr/src/linux-2.4.15/Makefile</em> 这样的文件名，在提供 <code>-p3</code> 参数时将使用 <em>linux-2.4.15/Makefile</em> 作为所要patch的文件。</p>
+<p>使用 <code>-R</code> 选项可以取消补丁。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patch -p[num] &lt;patchfile -R</span><br></pre></td></tr></table></figure>
+
+<p>需要留意以下几点：</p>
+<ol>
+<li>一次打多个patch的话，一般这些patch有先后顺序，得按次序打才行。</li>
+<li>在patch之前不要对原文件进行任何修改。</li>
+<li>如果patch中记录的原始文件和你得到的原始文件版本不匹配(很容易出现)，那么你可以尝试使用patch, 如果幸运的话，可以成功。大部分情况下，会有不匹配的情况，此时patch会生成rej文件，记录失败的地方，你可以手工修改。</li>
+</ol>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-diffp/index.html" target="_blank" rel="noopener">用Diff和Patch工具维护源码</a><br><a href="https://www.cnblogs.com/tobeprogramer/archive/2013/04/28/3049561.html" target="_blank" rel="noopener">diff和patch用法</a></p>
+<h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><h2 id="查看进程和端口"><a href="#查看进程和端口" class="headerlink" title="查看进程和端口"></a>查看进程和端口</h2><p>查看进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep 进程名</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UID        PID  PPID  C STIME TTY          TIME CMD</span><br><span class="line"></span><br><span class="line">root         1     0  0 Nov02 ?        00:00:00 init [3]</span><br></pre></td></tr></table></figure>
+
+<p>查看端口占用情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nap | grep 端口号</span><br></pre></td></tr></table></figure>
+
+<h3 id="列出目前所有的正在内存当中的程序"><a href="#列出目前所有的正在内存当中的程序" class="headerlink" title="列出目前所有的正在内存当中的程序"></a>列出目前所有的正在内存当中的程序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux</span><br></pre></td></tr></table></figure>
+
+<p>得到的结果展示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span><br><span class="line"></span><br><span class="line">root         1  0.0  0.0  10368   676 ?        Ss   Nov02   0:00 init [3]</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>USER：使用者账号名</li>
+<li>PID ：进程ID号，可以根据此来kill掉进程， <code>kill -9 PID</code></li>
+<li>%CPU：使用掉的 CPU 资源百分比</li>
+<li>%MEM：占用的物理内存百分比</li>
+<li>VSZ ：使用掉的虚拟内存量 (Kbytes)</li>
+<li>RSS ：占用的固定的内存量 (Kbytes)</li>
+<li>TTY ：该 process 是在那个终端机上面运作，若与终端机无关，则显示 ?，另外， tty1-tty6 是本机上面的登入者程序，若为 pts/0 等等的，则表示为由网络连接进主机的程序。</li>
+<li>STAT：该程序目前的状态，主要的状态有<ul>
+<li>R ：该程序目前正在运作，或者是可被运作</li>
+<li>S ：该程序目前正在睡眠当中 (可说是 idle 状态)，但可被某些讯号 (signal) 唤醒。</li>
+<li>T ：该程序目前正在侦测或者是停止了</li>
+<li>Z ：该程序应该已经终止，但是其父程序却无法正常的终止他，造成 zombie (疆尸) 程序的状态</li>
+</ul>
+</li>
+<li>START：被触发启动的时间</li>
+<li>TIME ：实际使用 CPU 运作的时间</li>
+<li>COMMAND：该程序的实际指令</li>
+</ul>
+<h3 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h3><p><code>netstat</code> 用来打印Linux中网络系统的状态信息，显示各种网络相关信息，如网络连接，接口状态，路由表， (Interface Statistics)，masquerade 连接，多播成员 (Multicast Memberships) 等等。Netstat用于显示与IP、TCP、UDP和ICMP协议相关的统计数据，一般用于检验本机各端口的网络连接情况。。 常用到的选项为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">-a或--all：                       显示所有连线中的Socket；</span><br><span class="line">-A&lt;网络类型&gt;或--&lt;网络类型&gt;：        列出该网络类型连线中的相关地址；</span><br><span class="line">-c或--continuous：                持续列出网络状态；</span><br><span class="line">-C或--cache：                     显示路由器配置的快取信息；</span><br><span class="line">-e或--extend：                    显示网络其他相关信息；</span><br><span class="line">-F或--fib：                       显示FIB；</span><br><span class="line">-g或--groups：                    显示多重广播功能群组组员名单；</span><br><span class="line">-h或--help：                      在线帮助；</span><br><span class="line">-i或--interfaces：                显示网络界面信息表单；</span><br><span class="line">-l或--listening：                 显示监控中的服务器的Socket；</span><br><span class="line">-n或--numeric：                   直接使用ip地址，而不通过域名服务器；</span><br><span class="line">-N或--netlink或--symbolic：       显示网络硬件外围设备的符号连接名称；</span><br><span class="line">-o或--timers：                    显示计时器；</span><br><span class="line">-p或--programs：                  显示正在使用Socket的程序识别码和程序名称；</span><br><span class="line">-r或--route：                     显示Routing Table；</span><br><span class="line">-s或--statistice：                显示网络工作信息统计表；</span><br><span class="line">-t或--tcp：                       显示TCP传输协议的连线状况；</span><br><span class="line">-u或--udp：                       显示UDP传输协议的连线状况；</span><br><span class="line">-v或--verbose：                   显示指令执行过程；</span><br><span class="line">-V或--version：                   显示版本信息；</span><br><span class="line">-x或--unix：                      此参数的效果和指定&quot;-A unix&quot;参数相同；</span><br><span class="line">--ip或--inet：                    此参数的效果和指定&quot;-A inet&quot;参数相同。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>列出所有端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有 tcp 端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -antp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出所有 udp 端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anup</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只显示所有监听端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -lnp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只列出所有监听 tcp 端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ltnp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只列出所有监听 udp 端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -lunp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>只列出所有监听 UNIX 端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -lxnp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找出程序运行的端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp | grep ssh</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote>
+<p>NOTE:并不是所有的进程都能找到，没有权限的会不显示，使用 root 权限查看所有的信息。</p>
+</blockquote>
+<ul>
+<li><p>找出运行在指定端口的进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp | grep &apos;:3306&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>持续输出 netstat 信息(每隔一秒输出网络信息)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -cnp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示所有端口的统计信息 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -s</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="让进程后台运行"><a href="#让进程后台运行" class="headerlink" title="让进程后台运行"></a>让进程后台运行</h2><p>之前通过ssh登陆Linux服务器，在服务器上运行程序遇到这样一个问题，就是ssh连接中断或退出后，运行的程序会中止。因此，怎样才能让进程在后台长时间的运行呢？</p>
+<p>经过查询<a href="https://www.ibm.com/developerworks/cn/linux/l-cn-nohup/" target="_blank" rel="noopener">Linux 技巧：让进程在后台可靠运行的几种方法</a>,总算找到了解决办法。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>当用户注销（logout）或者网络断开时，终端会收到 HUP（hangup）信号从而关闭其所有子进程。因此，我们的解决办法就有两种途径：要么让进程忽略 HUP 信号，要么让进程运行在新的会话里从而成为不属于此终端的子进程。</p>
+<h3 id="nohup"><a href="#nohup" class="headerlink" title="nohup"></a>nohup</h3><p>nohup 的用途就是让提交的命令忽略 hangup 信号。需在要处理的命令前加上 nohup即可，标准输出和标准错误缺省会被重定向到nohup.out文件中。一般我们可在结尾加上”&amp;”来将命令同时放入后台运行，也可用”&gt;filename 2&gt;&amp;1”来更改缺省的重定向文件名。</p>
+<h3 id="setsid"><a href="#setsid" class="headerlink" title="setsid"></a>setsid</h3><p>nohup 无疑能通过忽略 HUP 信号来使我们的进程避免中途被中断，但如果进程不属于接受 HUP 信号的终端的子进程，那么NOHUP 指令将无效。幸运的是setsid 就能帮助我们做到这一点。仅在命令前加setsid即可。</p>
+<h3 id="amp"><a href="#amp" class="headerlink" title="&amp;"></a>&amp;</h3><p>将一个或多个命名包含在“()”中就能让这些命令在子 shell 中运行中，当我们将”&amp;”也放入”()”内之后，就会发现所提交的作业并不在作业列表中，也就是说，是无法通过jobs来查看的。</p>
+<h3 id="跟后台进程有关的操作"><a href="#跟后台进程有关的操作" class="headerlink" title="跟后台进程有关的操作"></a>跟后台进程有关的操作</h3><p>Linux Jobs等前后台运行命令解</p>
+<ol>
+<li>command &amp; ：让进程在后台运行</li>
+<li>ctrl + z ：可以将一个正在前台执行的命令放到后台，并且暂停</li>
+<li>jobs ：查看后台运行的进程</li>
+<li>fg %number ：让后台运行的序号为number（不是pid）的进程到前台来</li>
+<li>bg %number ：让进程号为number的进程到后台去。</li>
+</ol>
+<h2 id="注销"><a href="#注销" class="headerlink" title="注销"></a>注销</h2><p>ubuntu 11.10及其以上版本，注销的命令行为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gnome-session-quit</span><br></pre></td></tr></table></figure>
+
+<h2 id="LD-PRELOAD"><a href="#LD-PRELOAD" class="headerlink" title="LD_PRELOAD"></a>LD_PRELOAD</h2><p>LD_PRELOAD是linux的环境变量，用于动态库的加载，动态库加载的优先级最高。加载顺序为LD_PRELOAD&gt;LD_LIBRARY_PATH&gt;/etc/ld.so.cache&gt;/lib&gt;/usr/lib。</p>
+<p>举例为：</p>
+<ol>
+<li><p>首先通过gcc把源文件打包成动态库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -shared -fpic -o libpreload.so preload.c</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用LD_PRELOAD加载*.so文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LD_PRELOAD=./libpreload.so ./test</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="内核操作"><a href="#内核操作" class="headerlink" title="内核操作"></a>内核操作</h1><h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>可以直接得到CPU详细的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cat /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+
+<p>查看物理CPU的个数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cat /proc/cpuinfo |grep &quot;physical id&quot; | sort | uniq |wc -l</span><br></pre></td></tr></table></figure>
+
+<p>查看逻辑CPU的个数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/cpuinfo |grep &quot;processor&quot;|wc -l</span><br></pre></td></tr></table></figure>
+
+<p>查看CPU是几核</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/cpuinfo |grep &quot;cores&quot;|uniq</span><br></pre></td></tr></table></figure>
+
+
+<p>查看CPU的主频</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/cpuinfo |grep MHz|uniq</span><br></pre></td></tr></table></figure>
+
+<h2 id="当前操作系统内核信息"><a href="#当前操作系统内核信息" class="headerlink" title="当前操作系统内核信息"></a>当前操作系统内核信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -a</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除老版本的内核"><a href="#删除老版本的内核" class="headerlink" title="删除老版本的内核"></a>删除老版本的内核</h3><p>在安装了新内核后，旧版本的内核不会自动的删除。 它们会继续占用磁盘空间，并且占用着 Grub root menu。</p>
+<p>对于 Ubuntu 操作系统，可以利用 <code>purge-old-kernels</code> bash 脚本来执行，它位于 <code>byobu</code> 包中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install byobu</span><br></pre></td></tr></table></figure>
+
+<p>然后执行 <code>purge-old-kernels</code> 即可。</p>
+<p>它会默认保留两个最近的kernel 版本，当然也可以自己设置保留多少。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo purge-old-kernels --keep 3 -qy</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.pontikis.net/blog/remove-old-kernels-debian-ubuntu" target="_blank" rel="noopener">How to Remove Old Kernels in Debian and Ubuntu</a></p>
+<h2 id="当前操作系统发行版本"><a href="#当前操作系统发行版本" class="headerlink" title="当前操作系统发行版本"></a>当前操作系统发行版本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue</span><br></pre></td></tr></table></figure>
+
+<p>得到更详细的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lsb_release -a</span><br></pre></td></tr></table></figure>
+
+<h2 id="当前CPU运行模式"><a href="#当前CPU运行模式" class="headerlink" title="当前CPU运行模式"></a>当前CPU运行模式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getconf LONG_BIT</span><br></pre></td></tr></table></figure>
+
+<p>如果是32，说明当前CPU运行在32bit模式下, 但不代表CPU不支持64bit。<br>如果是64，说明当前CPU支持64bit。</p>
+<h2 id="内核编译选项查看"><a href="#内核编译选项查看" class="headerlink" title="内核编译选项查看"></a>内核编译选项查看</h2><p>ubuntu 操作系统下的查看方式为：</p>
+<h3 id="文件下查看"><a href="#文件下查看" class="headerlink" title="文件下查看"></a>文件下查看</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /usr/src/linux-headers-$(uname -r)/.config | grep NOUVEAU</span><br></pre></td></tr></table></figure>
+
+<h3 id="从系统-boot目录下获取"><a href="#从系统-boot目录下获取" class="headerlink" title="从系统/boot目录下获取"></a>从系统/boot目录下获取</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /boot/config-$(uname -r) | grep NOUVEAU</span><br></pre></td></tr></table></figure>
+
+<p>参考</p>
+<p><a href="https://www.cnblogs.com/xd502djj/archive/2011/02/28/1967350.html" target="_blank" rel="noopener">linux 下查看机器是cpu是几核的</a></p>
+<h1 id="tools"><a href="#tools" class="headerlink" title="tools"></a>tools</h1><h2 id="shell—zsh"><a href="#shell—zsh" class="headerlink" title="shell—zsh"></a>shell—zsh</h2><p><a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH" target="_blank" rel="noopener">安装步骤</a>：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install zsh</span><br></pre></td></tr></table></figure>
+
+<p>把默认的Shell改成zsh  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+
+<p>logout 再登录。  </p>
+<p>安装 zsh 配置工具 <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">Oh My ZSH</a>。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>可以按照 <a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Themes" target="_blank" rel="noopener">Oh My ZSH</a> 更改zsh的主题。</p>
+<p>参考：<br><a href="https://novnan.github.io/Linux/install-zsh-shell-ubuntu-18-04/" target="_blank" rel="noopener">Ubuntu 18.04 LTS中安装和美化ZSH Shell</a>  </p>
+<h2 id="remove-zsh"><a href="#remove-zsh" class="headerlink" title="remove zsh"></a>remove zsh</h2><p>在删除zsh前，将默认shell恢复成其他shell。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>删除 zsh。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get --purge remove zsh</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://askubuntu.com/a/958124" target="_blank" rel="noopener">Remove Zsh from Ubuntu 16.04</a></p>
+<h2 id="BASH-SHELL-for-Windows10"><a href="#BASH-SHELL-for-Windows10" class="headerlink" title="BASH SHELL for Windows10"></a>BASH SHELL for Windows10</h2><p>从 PowerShell 启动 支持Linux的Windows子系统。  </p>
+<ol>
+<li><p>以 administrator 启动 Windows PowerShell。  </p>
+</li>
+<li><p>将以下命令输入PowerShell中以启动Win10中的Bash。  </p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</span><br></pre></td></tr></table></figure>
+
+<pre><code>按照提示，重启reboot。  </code></pre><ol start="3">
+<li>从 Windows 商店中搜索 linux，在搜索结果中下载不同的发行版本，这里选择 Ubuntu 应用。  </li>
+<li>启动Ubuntu即可，这里默认以 root 用户登录。</li>
+</ol>
+<h3 id="文件系统交互"><a href="#文件系统交互" class="headerlink" title="文件系统交互"></a>文件系统交互</h3><p>Ubuntu默认把磁盘挂载到/mnt目录下，可以直接<code>cd /mnt/c</code> 进入C盘，进而操作文件。</p>
+<p>参考：<br><a href="https://itsfoss.com/install-bash-on-windows/" target="_blank" rel="noopener">How to Install Linux Bash Shell on Windows 10</a>  </p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/ssh/">ssh</a><a href="/tags/scp/">scp</a><a href="/tags/ip/">ip</a><a href="/tags/zsh/">zsh</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2017/08/13/linux操作/" data-title="linux操作 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2017/08/13/pwnable-kr笔记/" title="pwnable.kr笔记">
+  <strong>上一篇：</strong><br>
+  <span>
+  pwnable.kr笔记</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/08/09/mysql知识点拾遗/" title="mysql知识点拾遗">
+ <strong>下一篇：</strong><br> 
+ <span>mysql知识点拾遗
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-终端命令行快捷键"><span class="toc-number">1.</span> <span class="toc-text">Linux 终端命令行快捷键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#man"><span class="toc-number">2.</span> <span class="toc-text">man</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查找软件源"><span class="toc-number">3.</span> <span class="toc-text">查找软件源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#更新软件源"><span class="toc-number">3.1.</span> <span class="toc-text">更新软件源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找不确定的软件包"><span class="toc-number">3.2.</span> <span class="toc-text">查找不确定的软件包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络操作"><span class="toc-number">4.</span> <span class="toc-text">网络操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置静态ip"><span class="toc-number">4.1.</span> <span class="toc-text">配置静态ip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过IPv6访问Google等"><span class="toc-number">4.2.</span> <span class="toc-text">通过IPv6访问Google等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网桥bridge"><span class="toc-number">4.3.</span> <span class="toc-text">网桥bridge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加网卡-网桥"><span class="toc-number">4.3.1.</span> <span class="toc-text">添加网卡/网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除网卡-网桥"><span class="toc-number">4.3.2.</span> <span class="toc-text">删除网卡/网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netplan-配置网桥"><span class="toc-number">4.3.3.</span> <span class="toc-text">netplan 配置网桥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scp"><span class="toc-number">4.4.</span> <span class="toc-text">scp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表示格式为"><span class="toc-number">4.4.1.</span> <span class="toc-text">表示格式为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令参数"><span class="toc-number">4.4.2.</span> <span class="toc-text">命令参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">4.4.3.</span> <span class="toc-text">实例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件操作"><span class="toc-number">5.</span> <span class="toc-text">文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tar"><span class="toc-number">5.1.</span> <span class="toc-text">tar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tar用法"><span class="toc-number">5.1.1.</span> <span class="toc-text">tar用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tar实例"><span class="toc-number">5.1.2.</span> <span class="toc-text">tar实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ulimit"><span class="toc-number">5.2.</span> <span class="toc-text">ulimit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find"><span class="toc-number">5.3.</span> <span class="toc-text">find</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#params选项"><span class="toc-number">5.3.1.</span> <span class="toc-text">params选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-1"><span class="toc-number">5.3.2.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看文件系统大小"><span class="toc-number">5.4.</span> <span class="toc-text">查看文件系统大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较文件夹"><span class="toc-number">5.5.</span> <span class="toc-text">比较文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#patch打补丁"><span class="toc-number">5.6.</span> <span class="toc-text">patch打补丁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进程管理"><span class="toc-number">6.</span> <span class="toc-text">进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查看进程和端口"><span class="toc-number">6.1.</span> <span class="toc-text">查看进程和端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#列出目前所有的正在内存当中的程序"><span class="toc-number">6.1.1.</span> <span class="toc-text">列出目前所有的正在内存当中的程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netstat"><span class="toc-number">6.1.2.</span> <span class="toc-text">netstat</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#让进程后台运行"><span class="toc-number">6.2.</span> <span class="toc-text">让进程后台运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">6.2.1.</span> <span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nohup"><span class="toc-number">6.2.2.</span> <span class="toc-text">nohup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setsid"><span class="toc-number">6.2.3.</span> <span class="toc-text">setsid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp"><span class="toc-number">6.2.4.</span> <span class="toc-text">&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跟后台进程有关的操作"><span class="toc-number">6.2.5.</span> <span class="toc-text">跟后台进程有关的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注销"><span class="toc-number">6.3.</span> <span class="toc-text">注销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LD-PRELOAD"><span class="toc-number">6.4.</span> <span class="toc-text">LD_PRELOAD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核操作"><span class="toc-number">7.</span> <span class="toc-text">内核操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU"><span class="toc-number">7.1.</span> <span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统内核信息"><span class="toc-number">7.2.</span> <span class="toc-text">当前操作系统内核信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#删除老版本的内核"><span class="toc-number">7.2.1.</span> <span class="toc-text">删除老版本的内核</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统发行版本"><span class="toc-number">7.3.</span> <span class="toc-text">当前操作系统发行版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前CPU运行模式"><span class="toc-number">7.4.</span> <span class="toc-text">当前CPU运行模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内核编译选项查看"><span class="toc-number">7.5.</span> <span class="toc-text">内核编译选项查看</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件下查看"><span class="toc-number">7.5.1.</span> <span class="toc-text">文件下查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从系统-boot目录下获取"><span class="toc-number">7.5.2.</span> <span class="toc-text">从系统/boot目录下获取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tools"><span class="toc-number">8.</span> <span class="toc-text">tools</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell—zsh"><span class="toc-number">8.1.</span> <span class="toc-text">shell—zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove-zsh"><span class="toc-number">8.2.</span> <span class="toc-text">remove zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASH-SHELL-for-Windows10"><span class="toc-number">8.3.</span> <span class="toc-text">BASH SHELL for Windows10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件系统交互"><span class="toc-number">8.3.1.</span> <span class="toc-text">文件系统交互</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

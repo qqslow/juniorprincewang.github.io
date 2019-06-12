@@ -1,0 +1,989 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>virtio学习 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="涉及到virtio的使用和原理学习。">
+<meta name="keywords" content="QEMU,virtio,libvirt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="virtio学习">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/03/01/virtio学习/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="涉及到virtio的使用和原理学习。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/architecture.gif">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/virtiolayer.png">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/structure.gif">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/datachangeflow1.png">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/datachangeflow2.png">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/datachangeflow3.png">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/datachangeflow4.png">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/datachangeflow5.png">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/virtio.jpg">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/virtiopath.gif">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.280Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="virtio学习">
+<meta name="twitter:description" content="涉及到virtio的使用和原理学习。">
+<meta name="twitter:image" content="http://juniorprincewang.github.io/2018/03/01/virtio%E5%AD%A6%E4%B9%A0/architecture.gif">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/01/virtio学习/" title="virtio学习" itemprop="url">virtio学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-03-01T02:51:38.000Z" itemprop="datePublished"> Published 2018-03-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#virtio"><span class="toc-number">1.</span> <span class="toc-text">virtio</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#virtio原理"><span class="toc-number">2.</span> <span class="toc-text">virtio原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#virtio的架构"><span class="toc-number">2.1.</span> <span class="toc-text">virtio的架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#层次结构"><span class="toc-number">2.1.1.</span> <span class="toc-text">层次结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码层次结构"><span class="toc-number">2.1.2.</span> <span class="toc-text">代码层次结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#virtqueue"><span class="toc-number">2.1.3.</span> <span class="toc-text">virtqueue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#host与guest操作系统之间数据交换流程"><span class="toc-number">2.1.4.</span> <span class="toc-text">host与guest操作系统之间数据交换流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#virtio-ring"><span class="toc-number">2.1.5.</span> <span class="toc-text">virtio_ring</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#virtio的使用"><span class="toc-number">3.</span> <span class="toc-text">virtio的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU模拟I-O设备的基本原理"><span class="toc-number">3.1.</span> <span class="toc-text">QEMU模拟I/O设备的基本原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用virtio-net"><span class="toc-number">3.1.1.</span> <span class="toc-text">使用virtio_net</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#检查QEMU是否支持virtio类型的网卡"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">检查QEMU是否支持virtio类型的网卡</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配置虚拟网桥"><span class="toc-number">3.1.1.2.</span> <span class="toc-text">配置虚拟网桥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配置TAP设备操作"><span class="toc-number">3.1.1.3.</span> <span class="toc-text">配置TAP设备操作:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#启动客户机，指定分配virtio网卡设备"><span class="toc-number">3.1.1.4.</span> <span class="toc-text">启动客户机，指定分配virtio网卡设备</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#virtio-Serial"><span class="toc-number">3.1.2.</span> <span class="toc-text">virtio Serial</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检查客户端是否启用-virtio-console-ko"><span class="toc-number">3.1.3.</span> <span class="toc-text">检查客户端是否启用 virtio_console.ko</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QEMU客户端模式的-UNIX-chardev"><span class="toc-number">3.1.4.</span> <span class="toc-text">QEMU客户端模式的 UNIX chardev</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QEMU服务器模式的-UNIX-chardev"><span class="toc-number">3.1.5.</span> <span class="toc-text">QEMU服务器模式的 UNIX chardev</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#qemu创建虚拟机"><span class="toc-number">3.2.</span> <span class="toc-text">qemu创建虚拟机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#qemu-img创建虚拟机镜像"><span class="toc-number">3.2.1.</span> <span class="toc-text">qemu-img创建虚拟机镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检查KVM是否可用"><span class="toc-number">3.2.2.</span> <span class="toc-text">检查KVM是否可用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装操作系统。"><span class="toc-number">3.2.3.</span> <span class="toc-text">安装操作系统。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动虚拟机"><span class="toc-number">3.2.4.</span> <span class="toc-text">启动虚拟机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qemu-monitor"><span class="toc-number">3.2.5.</span> <span class="toc-text">qemu monitor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>涉及到virtio的使用和原理学习。</p>
+<a id="more"></a>
+<h1 id="virtio"><a href="#virtio" class="headerlink" title="virtio"></a>virtio</h1><p><code>virtio</code>是半虚拟化的解决方案，对半虚拟化Hypervisor的一组通用I/O设备的抽象。它提供了一套上层应用与各 Hypervisor 虚拟化设备（KVM，Xen，VMware等）之间的通信框架和编程接口，减少跨平台所带来的兼容性问题，大大提高驱动程序开发效率。</p>
+<p>在完全虚拟化的解决方案中，guest VM 要使用底层 host 资源，需要 Hypervisor 来截获所有的请求指令，然后模拟出这些指令的行为，这样势必会带来很多性能上的开销。半虚拟化通过底层硬件辅助的方式，将部分没必要虚拟化的指令通过硬件来完成，Hypervisor 只负责完成部分指令的虚拟化，要做到这点，需要 guest 来配合，guest 完成不同设备的前端驱动程序，Hypervisor 配合 guest 完成相应的后端驱动程序，这样两者之间通过某种交互机制就可以实现高效的虚拟化过程。</p>
+<p>由于不同 guest 前端设备其工作逻辑大同小异（如块设备、网络设备、PCI设备、balloon驱动等），单独为每个设备定义一套接口实属没有必要，而且还要考虑扩平台的兼容性问题，另外，不同后端 Hypervisor 的实现方式也大同小异（如KVM、Xen等），这个时候，就需要一套通用框架和标准接口（协议）来完成两者之间的交互过程，virtio 就是这样一套标准，它极大地解决了这些不通用的问题。</p>
+<h1 id="virtio原理"><a href="#virtio原理" class="headerlink" title="virtio原理"></a>virtio原理</h1><h2 id="virtio的架构"><a href="#virtio的架构" class="headerlink" title="virtio的架构"></a>virtio的架构</h2><p>virto由大神Rusty Russell编写（现已转向区块链了。。。），是在Hypervisor之上的抽象API接口，客户机需要知道自己运行在虚拟化环境中，进而根据virtio标准和Hypervisor协作，提高客户机的性能（特别是I/O性能）。</p>
+<p><img src="../virtio%E5%AD%A6%E4%B9%A0/architecture.gif" alt="virtio基本架构"></p>
+<p>前端驱动（Front-end driver）是在客户机中存在的驱动程序模块，而后端处理器程序（Back-end driver）是在QEMU中实现的。</p>
+<p>virtio是半虚拟化驱动的方式，其I/O性能几乎可以达到和native差不多的I/O性能。但是virtio必须要客户机安装特定的virtio驱动使其知道是运行在虚拟化环境中，并按照virtio的规定格式进行数据传输。</p>
+<p>Linux2.6.24及其以上版本的内核都支持virtio。由于virtio的后端处理程序是在位于用户空间的QEMU中实现的，所以宿主机中只需要比较新的内核即可，不需要特别地编译与virtio相关地驱动。但是客户机需要有特定地virtio驱动程序支持，以便客户机处理I/O操作请求时调用virtio驱动。</p>
+<h3 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h3><p><img src="../virtio%E5%AD%A6%E4%B9%A0/virtiolayer.png" alt="virtio 层次结构"></p>
+<p>每一个virtio设备（例如：块设备或网卡），在系统层面看来，都是一个pci设备。这些设备之间，有共性部分，也有差异部分。</p>
+<ol>
+<li><p>共性部分：<br>这些设备都需要挂接相应的buffer队列操作virtqueue_ops，都需要申请若干个buffer队列，当执行io输出时，需要向队列写入数据；都需要执行pci_iomap将设备配置寄存器区间映射到内存区间；都需要设置中断处理；等中断来了，都需要从队列读出数据，并通知虚拟机系统，数据已入队。</p>
+</li>
+<li><p>差异部分：<br>设备中系统中，如何与业务关联起来。各个设备不相同。例如，网卡在内核中是一个net_device，与协议栈系统关联起来。同时，向队列中写入什么数据，数据的含义如何，各个设备不相同。队列中来了数据，是什么含义，如何处理，各个设备不相同。</p>
+</li>
+</ol>
+<p>如果每个virtio设备都完整实现自己的功能，又会形成浪费。<br>针对这个现象，virtio又设计了 <code>virtio_pci</code> 模块，以处理所有virtio设备的共性部分。这样一来，所有的virtio设备，在系统层面看来，都是一个pci设备，其设备驱动都是virtio_pci。<br>但是，virtio_pci并不能完整的驱动任何一个设备。因此，<code>virtio_pci</code> 在probe（接管）每一个设备时，根据每个pci设备的subsystem vendor/device id来识别出这具体是哪一种virtio设备，然后相应的向内核注册一个 virtio 设备。当然，在注册 virtio 设备之前， virtio_pci 驱动已经为此设备做了诸多共性的操作。同时，还为设备提供了各种操作的适配接口，例如，一些常用的pci设备操作，还有申请buffer队列的操作。这些操作，都通过 <code>virtio_config_ops</code> 结构变量来适配。</p>
+<h3 id="代码层次结构"><a href="#代码层次结构" class="headerlink" title="代码层次结构"></a>代码层次结构</h3><p>从虚拟机的角度看，virtio的类层次结构如下图所示。[8]</p>
+<p>在顶级的是 <code>virtio_driver</code>，它在虚拟机操作系统中表示前端驱动程序。与该驱动程序匹配的设备由 <code>virtio_device</code>（设备在虚拟机操作系统中的表示）封装。这引用 <code>virtio_config_ops</code> 结构（它定义配置 virtio 设备的操作）。 <code>virtio_device</code> 由 <code>virtqueue</code> 引用（它包含一个到它服务的 <code>virtio_device</code> 的引用）。最后，每个 <code>virtqueue</code> 对象引用 virtqueue_ops 对象，后者定义处理 hypervisor 的驱动程序的底层队列操作。这里需要说明的是，Linux并没有实现论文[10]中的<code>struct virtqueue_ops</code>，但是实现了对于<code>virtqueue</code>操作的函数。下面会讲到。</p>
+<p><img src="../virtio%E5%AD%A6%E4%B9%A0/structure.gif" alt="virtio基本数据结构层次"></p>
+<p>该流程以创建 <code>virtio_driver</code> 并通过 <code>register_virtio_driver</code> 进行注册开始。<code>virtio_driver</code> 结构定义上层设备驱动程序(struct device_driver driver)、驱动程序支持的设备 ID 的列表（struct virtio_device_id *id_table）、一个特性表单（取决于设备类型）（feature_table）和一个回调函数列表。当 hypervisor 识别到与设备列表中的设备 ID 相匹配的新设备时，将调用 <code>probe</code> 函数（由 <code>virtio_driver</code> 对象提供）来传入 <code>virtio_device</code> 对象。将这个对象和设备的管理数据缓存起来（以独立于驱动程序的方式缓存）。可能要调用 <code>virtio_config_ops</code>函数来获取或设置特定于设备的选项，例如，为 <code>virtio_blk</code> 设备获取磁盘的 <code>Read/Write</code>状态或设置块设备的块大小，具体情况取决于启动器的类型。</p>
+<p>注意，<code>virtio_device</code> 不包含到 <code>virtqueue</code> 的引用（但 <code>virtqueue</code> 确实引用了 <code>virtio_device</code>）。要识别与该 <code>virtio_device</code> 相关联的 <code>virtqueue</code>，需要结合使用 <code>virtio_config_ops</code> 对象和 <code>find_vq</code> 函数。该对象返回与这个 <code>virtio_device</code> 实例相关联的虚拟队列。<code>find_vq</code> 函数还允许为 <code>virtqueue</code> 指定一个回调函数。</p>
+<p><code>virtio_driver</code> 有自己的PCI总线 <code>virtio_bus</code>。<code>probe</code>函数用于PCI总线发现设备。比如启动 <code>virtio_blk</code> 时，当通过<code>qemu</code>启动<code>guest</code>的时候如果指定<code>-device virtio-blk-device</code>，就会调用<code>virtio_blk</code>的 <code>virtblk_probe</code> 函数。</p>
+<h3 id="virtqueue"><a href="#virtqueue" class="headerlink" title="virtqueue"></a>virtqueue</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * virtqueue - a queue to register buffers for sending or receiving.</span><br><span class="line"> * @list: the chain of virtqueues for this device</span><br><span class="line"> * @callback: the function to call when buffers are consumed (can be NULL).</span><br><span class="line"> * @name: the name of this virtqueue (mainly for debugging)</span><br><span class="line"> * @vdev: the virtio device this queue was created for.</span><br><span class="line"> * @priv: a pointer for the virtqueue implementation to use.</span><br><span class="line"> * @index: the zero-based ordinal number for this queue.</span><br><span class="line"> * @num_free: number of elements we expect to be able to fit.</span><br><span class="line"> *</span><br><span class="line"> * A note on @num_free: with indirect buffers, each buffer needs one</span><br><span class="line"> * element in the queue, otherwise a buffer will need one element per</span><br><span class="line"> * sg element.</span><br><span class="line"> */</span><br><span class="line">struct virtqueue &#123;</span><br><span class="line">	struct list_head list;</span><br><span class="line">	void (*callback)(struct virtqueue *vq);</span><br><span class="line">	const char *name;</span><br><span class="line">	struct virtio_device *vdev;</span><br><span class="line">	unsigned int index;</span><br><span class="line">	unsigned int num_free;</span><br><span class="line">	void *priv;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>virtqueue</code> 是guest操作系统内存的一部分，用作户前端驱动和后端驱动的数据传输缓存。<br>它包括了一个可选的回调函数（在 hypervisor 使用缓冲池时调用）、一个到 <code>virtio_device</code> 的引用、队列的索引，以及一个引用要使用的底层实现的特殊 <code>priv</code> 引用。虽然 <code>callback</code> 是可选的，但是它能够动态地启用或禁用回调。</p>
+<p>针对 virtqueue 的操作包括<code>add_buf</code>、<code>kick</code>、<code>get_buf</code>、<code>disable_cb</code>、<code>enable_cb</code>等，定义了在guest操作系统和 hypervisor 之间移动命令和数据的方式：</p>
+<ul>
+<li>virtqueue_add_buf()<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int virtqueue_add(struct virtqueue *_vq,</span><br><span class="line">				struct scatterlist *sgs[],</span><br><span class="line">				unsigned int total_sg,</span><br><span class="line">				unsigned int out_sgs,</span><br><span class="line">				unsigned int in_sgs,</span><br><span class="line">				void *data,</span><br><span class="line">				void *ctx,</span><br><span class="line">				gfp_t gfp)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>add_buf()用于向 queue 中添加一个新的 buffer，参数 data 是一个非空的令牌，用于识别 buffer，当 buffer 内容被消耗后，data 会返回。</p>
+<p>该请求以散集列表的形式存在。对于 <code>add_buf</code>，guest操作系统提供用于将请求添加到队列的 <code>virtqueue</code>、散集列表（地址和长度数组）、用作输出条目（目标是底层 hypervisor）的缓冲池数量，以及用作输入条目（hypervisor 将为它们储存数据并返回到guest操作系统）的缓冲池数量，以及数据。</p>
+<ul>
+<li>virtqueue_kick()：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bool virtqueue_kick(struct virtqueue *vq);</span><br><span class="line">bool virtqueue_notify(struct virtqueue *vq);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>当通过 add_buf 向 hypervisor 发出请求时，guest操作系统能够通过 <code>kick</code> 函数通知 hypervisor 新的请求。为了获得最佳的性能，guest操作系统应该在通过 kick 发出通知之前将尽可能多的缓冲池装载到 virtqueue。Guest 再调用 <code>virtqueue_notify()</code>来通知 host。</p>
+<ul>
+<li>virtqueue_get_buf()<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void *virtqueue_get_buf(struct virtqueue *_vq, unsigned int *len)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>guest操作系统仅需调用该函数或通过提供的 <code>virtqueue callback</code> 函数等待通知就可以实现轮询。当guest操作系统知道缓冲区可用时，调用 get_buf 返回完成的缓冲区。</p>
+<p>该函数返回使用过的 buffer，len 为写入到 buffer 中数据的长度。获取数据，释放 buffer，更新 vring 描述符表格中的 index。</p>
+<ul>
+<li>virtqueue_disable_cb()<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void virtqueue_disable_cb(struct virtqueue *vq);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>示意 guest 不再需要再知道一个 buffer 已经使用了，也就是关闭 device 的中断。驱动会在初始化时注册一个回调函数（在 virtqueue 中由 virtqueue 初始化的 callback 函数），disable_cb()通常在这个 virtqueue 回调函数中使用，用于关闭再次的回调发生。</p>
+<ul>
+<li>virtqueue_enable_cb()<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bool virtqueue_enable_cb(struct virtqueue *vq);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>与 disable_cb()刚好相反，用于重新开启设备中断的上报。</p>
+<h3 id="host与guest操作系统之间数据交换流程"><a href="#host与guest操作系统之间数据交换流程" class="headerlink" title="host与guest操作系统之间数据交换流程"></a>host与guest操作系统之间数据交换流程</h3><ol>
+<li>guest 添加数据<br><img src="../virtio%E5%AD%A6%E4%B9%A0/datachangeflow1.png" alt="virtio 数据交换流-guest add buf"></li>
+<li>guest 通知 host<br><img src="../virtio%E5%AD%A6%E4%B9%A0/datachangeflow2.png" alt="virtio 数据交换流-guest 通知 host"></li>
+<li>host读取缓存数据<br><img src="../virtio%E5%AD%A6%E4%B9%A0/datachangeflow3.png" alt="virtio 数据交换流-host读取缓存数据"></li>
+<li>host写入缓存数据<br><img src="../virtio%E5%AD%A6%E4%B9%A0/datachangeflow4.png" alt="virtio 数据交换流-host写入缓存数据"></li>
+<li>guest读取返回数据<br><img src="../virtio%E5%AD%A6%E4%B9%A0/datachangeflow5.png" alt="virtio 数据交换流-guest get buf"></li>
+</ol>
+<h3 id="virtio-ring"><a href="#virtio-ring" class="headerlink" title="virtio_ring"></a>virtio_ring</h3><p>guest 操作系统（前端）驱动程序通过<code>virtqueue</code>与 hypervisor 交互，实现数据的共享。对于 I/O，guest 操作系统提供一个或多个表示请求的缓冲池。</p>
+<p><code>vring</code> 是 <code>virtqueue</code> 的具体实现方式，在host和guest操作系统之间作内存映射，针对 vring 会有相应的描述符表格进行描述。框架如下图所示：</p>
+<p><img src="../virtio%E5%AD%A6%E4%B9%A0/virtio.jpg" alt="virtqueue实现"></p>
+<p>virtio_ring 是 virtio 传输机制的实现，<code>vring</code> 引入 <code>ring buffers</code> 来作为我们数据传输的载体。每个buffer在内部被表示为一个散集列表（scatter-gather），列表中的每个条目表示一个地址和一个长度。</p>
+<p>virtio_ring 包含 3 部分：</p>
+<ul>
+<li>vring_desc</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/* Virtio ring descriptors: 16 bytes.  These can chain together via &quot;next&quot;. */</span><br><span class="line">struct vring_desc &#123;</span><br><span class="line">	/* Address (guest-physical). */</span><br><span class="line">	__virtio64 addr;</span><br><span class="line">	/* Length. */</span><br><span class="line">	__virtio32 len;</span><br><span class="line">	/* The flags as indicated above. */</span><br><span class="line">	__virtio16 flags;</span><br><span class="line">	/* We chain unused descriptors via this, too */</span><br><span class="line">	__virtio16 next;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>描述符数组（descriptor table）用于存储一些关联的描述符，每个描述符都是一个对 buffer 的描述，包含一个 address/length 的配对、下个buffer的指针、两个标志位（下个buffer是否有效和当前buffer是可读/写）。</p>
+<ul>
+<li>vring_avail</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct vring_avail &#123;</span><br><span class="line">	__virtio16 flags;</span><br><span class="line">	__virtio16 idx;</span><br><span class="line">	__virtio16 ring[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可用的 ring(available ring)用于 guest 端表示哪些描述符链当前是可用的。</p>
+<ul>
+<li>vring_used<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/* u32 is used here for ids for padding reasons. */</span><br><span class="line">struct vring_used_elem &#123;</span><br><span class="line">	/* Index of start of used descriptor chain. */</span><br><span class="line">	__virtio32 id;</span><br><span class="line">	/* Total length of the descriptor chain which was used (written to) */</span><br><span class="line">	__virtio32 len;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct vring_used &#123;</span><br><span class="line">	__virtio16 flags;</span><br><span class="line">	__virtio16 idx;</span><br><span class="line">	struct vring_used_elem ring[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>使用过的 ring(used ring)用于表示 Host 端表示哪些描述符已经使用。</p>
+<p>Ring 的数目必须是 2 的次幂。</p>
+<p>而vring的格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct vring &#123;</span><br><span class="line">	unsigned int num;</span><br><span class="line"></span><br><span class="line">	struct vring_desc *desc;</span><br><span class="line"></span><br><span class="line">	struct vring_avail *avail;</span><br><span class="line"></span><br><span class="line">	struct vring_used *used;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>需要指出的是缓冲区的格式、顺序和内容仅对前端和后端驱动程序有意义。内部传输（当前实现中的连接点）仅移动缓冲区，并且不知道它们的内部表示。</p>
+<h1 id="virtio的使用"><a href="#virtio的使用" class="headerlink" title="virtio的使用"></a>virtio的使用</h1><p>由于传统的QEMU/KVM方式是使用QEMU纯软件模拟I/O设备（网卡、磁盘、显卡），导致效率并不高。在KVM中，可以在客户机使用半虚拟化（paravirtualized drivers）来提高客户机的性能。</p>
+<h2 id="QEMU模拟I-O设备的基本原理"><a href="#QEMU模拟I-O设备的基本原理" class="headerlink" title="QEMU模拟I/O设备的基本原理"></a>QEMU模拟I/O设备的基本原理</h2><p>当客户机的设备驱动程序（Device Driver）发起I/O请求时，KVM模块中的I/O操作捕获代码会拦截这次I/O请求，然后经过处理后将本次I/O请求的信息存放到I/O共享页（sharing page），并通知用户控件的QEMU程序。QEMU模拟程序获得I/O操作的具体信息后，交给硬件模拟代码（Emulation Code）来模拟出本次的I/O操作，完成后把结果放回I/O共享页中，并通知KVM模块中的I/O操作捕获代码。最后由KVM模块中的捕获代码读取I/O共享页中的操作结果，把结果返回给客户机中。当然，这个操作过程中客户机作为一个QEMU进程在等待I/O时也可能被阻塞。</p>
+<p>另外，当客户机通过DMA访问大块I/O时，QEMU模拟程序不会把操作结果放到I/O共享页中，而是通过内存映射的方法将结果直接写到客户机的内存去，然后通过KVM模块高速客户机DMA操作已经完成。</p>
+<p>QEMU模拟I/O设备不需要修改客户端操作系统，可以模拟各种各样的硬件设备，但是每次I/O操作的路径比较长，有太多的VMEntry和VMExit发生，需要多次上下文切换（context switch），多次的数据复制。性能方面很差。</p>
+<p>virtio 有分为guest 中的前端程序和qemu中的后端程序。<br>virtio中的五种前端程序为</p>
+<blockquote>
+<p>virtio-blk:/drivers/block/virtio-blk.c<br>virtio-net:/drivers/net/virtio-net.c<br>virtio-pci:/drivers/virtio/virtio-pci.c<br>virtio-ballon:/drivers/virtio/virtio-ballon.c<br>virtio-console:/drivers/virtio/virtio-console.c</p>
+</blockquote>
+<p>这五种往下调用<code>/drivers/virtio/virtio.c</code> -&gt; <code>/drivers/virtio/virtio_ring.c</code></p>
+<p>总结一下virtio的flow：<code>guest-&gt;qemu-&gt;host kernel -&gt;hw</code>，如下图所示。</p>
+<p><img src="../virtio%E5%AD%A6%E4%B9%A0/virtiopath.gif" alt="virtio 通信架构"></p>
+<h3 id="使用virtio-net"><a href="#使用virtio-net" class="headerlink" title="使用virtio_net"></a>使用virtio_net</h3><p>为了让虚拟机能够与外界通信，QEMU为虚拟机提供了网络设备，支持的网络设备为：<code>ne2k_pci,i82551,i82557b,i82559er,rtl8139,e1000,pcnet,virtio</code>。
+虚拟机的网络设备连接在QEMU虚拟的VLAN中。每个QEMU的运行实例是宿主机中的一个进程，而每个这样的进程中可以虚拟一些VLAN，虚拟机网络设备接入这些VLAN中。当某个VLAN上连接的网络设备发送数据帧，与它在同一个VLAN中的其它网路设备都能接收到数据帧。对虚拟机的网卡没有指定其连接的VLAN号时，QEMU默认会将该网卡连入vlan0。</p>
+<p>使用virtio_net半虚拟化驱动，可以提高网络吞吐量（throughput）和降低网络延迟（latency），达到原生网卡的性能。</p>
+<p>使用virtio_net需要宿主机中的QEMU工具和客户机的virtio_net驱动支持。</p>
+<h4 id="检查QEMU是否支持virtio类型的网卡"><a href="#检查QEMU是否支持virtio类型的网卡" class="headerlink" title="检查QEMU是否支持virtio类型的网卡"></a>检查QEMU是否支持virtio类型的网卡</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># qemu-system-x86_64 -net nic,model=?</span><br><span class="line">qemu: Supported NIC models: ne2k_pci,i82551,i82557b,i82559er,rtl8139,e1000,pcnet,virtio</span><br></pre></td></tr></table></figure>
+
+<p>从输出的支持网卡类型可知，当前qemu-kvm支持virtio网卡类型。</p>
+<h4 id="配置虚拟网桥"><a href="#配置虚拟网桥" class="headerlink" title="配置虚拟网桥"></a>配置虚拟网桥</h4><p>本系统的网卡为enp4s0，启动了DHCP。[6]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo ifconfig enp4s0 down # 关闭enp4s0接口，之后ifconfig命令不显示enp4s0接口</span><br><span class="line">sudo brctl addbr br0	# 增加一个虚拟网桥br0</span><br><span class="line">sudo brctl addif br0 enp4s0	# 在br0中添加一个接口enp4s0</span><br><span class="line">sudo brctl stp br0 off	# 由于只有一个网桥，所以关闭生成树协议</span><br><span class="line">sudo brctl setfd br0 1	#设置br0的转发延迟</span><br><span class="line">sudo brctl sethello br0 1	#设置br0的hello时间</span><br><span class="line">sudo ifconfig br0 0.0.0.0 promisc up	# 打开br0接口</span><br><span class="line">sudo ifconfig enp4s0 0.0.0.0 promisc up	# 打开enp4s0接口</span><br><span class="line">sudo dhclient br0	# 从dhcp服务器获得br0的IP地址</span><br></pre></td></tr></table></figure>
+
+<p>查看虚拟网桥列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brctl show br0</span><br></pre></td></tr></table></figure>
+
+<pre><code>bridge name    bridge id        STP enabled    interfaces
+br0        8000.60a44ce7203e    no        enp4s0</code></pre><p>查看br0的各个接口信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brctl showstp br0</span><br></pre></td></tr></table></figure>
+
+<pre><code>br0
+ bridge id        8000.60a44ce7203e
+ designated root    8000.60a44ce7203e
+ root port           0            path cost           0
+ max age          20.00            bridge max age          20.00
+ hello time           1.00            bridge hello time       1.00
+ forward delay           1.00            bridge forward delay       1.00
+ ageing time         300.00
+ hello timer           0.00            tcn timer           0.00
+ topology change timer       0.00            gc timer         232.85
+ flags            
+
+
+enp4s0 (1)
+ port id        8001            state             forwarding
+ designated root    8000.60a44ce7203e    path cost           4
+ designated bridge    8000.60a44ce7203e    message age timer       0.00
+ designated port    8001            forward delay timer       0.00
+ designated cost       0            hold timer           0.00
+ flags            </code></pre><h4 id="配置TAP设备操作"><a href="#配置TAP设备操作" class="headerlink" title="配置TAP设备操作:"></a>配置TAP设备操作:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo tunctl -t tap1	# 创建一个tap1接口，默认允许root用户访问</span><br><span class="line">sudo brctl addif br0 tap1	 # 在虚拟网桥中增加一个tap1接口</span><br><span class="line">sudo ifconfig tap1 0.0.0.0 promisc up	# 打开tap1接口</span><br></pre></td></tr></table></figure>
+
+<p>显示br0的各个接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brctl showstp br0</span><br></pre></td></tr></table></figure>
+
+<pre><code>br0
+ bridge id        8000.46105353cee8
+ designated root    8000.46105353cee8
+ root port           0            path cost           0
+ max age          20.00            bridge max age          20.00
+ hello time           1.00            bridge hello time       1.00
+ forward delay           1.00            bridge forward delay       1.00
+ ageing time         300.00
+ hello timer           0.00            tcn timer           0.00
+ topology change timer       0.00            gc timer          98.28
+ flags            
+
+
+enp4s0 (1)
+ port id        8001            state             forwarding
+ designated root    8000.46105353cee8    path cost           4
+ designated bridge    8000.46105353cee8    message age timer       0.00
+ designated port    8001            forward delay timer       0.00
+ designated cost       0            hold timer           0.00
+ flags            
+
+tap1 (2)
+ port id        8002            state               disabled
+ designated root    8000.46105353cee8    path cost         100
+ designated bridge    8000.46105353cee8    message age timer       0.00
+ designated port    8002            forward delay timer       0.00
+ designated cost       0            hold timer           0.00
+ flags        </code></pre><p>为了在系统启动时能够自动配置虚拟网桥和TAP设备，需要重新编辑<code>/etc/network/interfaces</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">auto enp4s0</span><br><span class="line">iface enp4s0 inet dhcp                  </span><br><span class="line">auto br0</span><br><span class="line">iface br0 inet dhcp</span><br><span class="line">#iface br0 inet static</span><br><span class="line">#address 192.168.0.1</span><br><span class="line">#netmask 255.255.255.0 </span><br><span class="line">#gateway 192.168.0.254 </span><br><span class="line">#dns-nameserver 8.8.8.8</span><br><span class="line">bridge_ports enp4s0</span><br><span class="line">bridge_fd 1</span><br><span class="line">bridge_hello 1</span><br><span class="line">bridge_stp off</span><br><span class="line">                                                                                                                                       </span><br><span class="line">auto tap0</span><br><span class="line">iface tap0 inet manual</span><br><span class="line">#iface tap0 inet static</span><br><span class="line">#address 192.168.0.2 </span><br><span class="line">#netmask 255.255.255.0 </span><br><span class="line">#gateway 192.168.0.254                                                                                                               </span><br><span class="line">#dns-nameserver 8.8.8.8</span><br><span class="line">pre-up tunctl -t tap0 -u root </span><br><span class="line">pre-up ifconfig tap0 0.0.0.0 promisc up</span><br><span class="line">post-up brctl addif br0 tap0</span><br></pre></td></tr></table></figure>
+
+<p>当然还可以参考<a href="https://www.linux-kvm.org/page/Networking" target="_blank" rel="noopener">7</a>，写脚本来设置网络。</p>
+<h4 id="启动客户机，指定分配virtio网卡设备"><a href="#启动客户机，指定分配virtio网卡设备" class="headerlink" title="启动客户机，指定分配virtio网卡设备"></a>启动客户机，指定分配virtio网卡设备</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo qemu-system-x86_64 -enable-kvm -boot c -drive file=ubuntu16.04.qcow2,if=virtio -m 1024 -netdev type=tap,ifname=tap1,script=no,id=net0 -device virtio-net-pci,netdev=net0</span><br></pre></td></tr></table></figure>
+
+<p>qemu-system-x86-64命令行解释</p>
+<ul>
+<li><code>–enable-kvm</code> 创建x86的虚拟机需要用到qemu-system-x86_64这个命令，并需要加上<code>–enable-kvm</code>来支持kvm加速，不适用KVM加速虚拟机会非常缓慢。</li>
+<li><code>boot</code> 磁盘相关参数，设置客户机启动时的各种选项。<code>c</code>表示第一个硬盘。</li>
+<li><code>drive</code> 配置驱动。使用<code>file</code>文件作为镜像文件加载到客户机的驱动器中。<code>if</code>指定驱动器使用的接口类型，包括了virtio在内。</li>
+<li><code>m</code> 设置客户机内存大小，单位默认为<code>MB</code>。也可以用<code>G</code>为单位。</li>
+<li><code>netdev</code> 新型的网络配置方法，在宿主机中建立一个网络后端驱动。<code>TAP</code>是虚拟网络设备，它仿真了一个数据链路层设备。<code>TAP</code>用于创建一个网络桥，使用网桥连接和NAT模式网络的客户机都会用到<code>TAP</code>参数。<code>ifname</code>指接口名称。<code>script</code>用于设置宿主机在启动客户机时自动执行的网络配置脚本，如果不指定，默认为<code>/etc/qemu-ifup</code>，如果不需要执行脚本，则设置<code>script=no</code>。<code>id</code>用于在宿主机中指定的TAP虚拟设备的<code>ID</code>。</li>
+<li><code>device</code> 为虚拟机添加设备。这里添加了<code>virtio-net-pci</code>设备，使用了<code>net0</code>的TAP虚拟网卡。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">-device driver[,prop[=value][,...]]</span><br><span class="line">                add device (based on driver)</span><br><span class="line">                prop=value,... sets driver properties</span><br><span class="line">                use &apos;-device help&apos; to print all possible drivers</span><br><span class="line">                use &apos;-device driver,help&apos; to print all possible properties</span><br><span class="line"></span><br><span class="line">name &quot;virtio-net-pci&quot;, bus PCI, alias &quot;virtio-net&quot;</span><br><span class="line"></span><br><span class="line">-netdev tap,id=str[,fd=h][,fds=x:y:...:z][,ifname=name][,script=file][,downscript=dfile]</span><br><span class="line">         [,helper=helper][,sndbuf=nbytes][,vnet_hdr=on|off][,vhost=on|off]</span><br><span class="line">         [,vhostfd=h][,vhostfds=x:y:...:z][,vhostforce=on|off][,queues=n]</span><br><span class="line">                configure a host TAP network backend with ID &apos;str&apos;</span><br><span class="line">                use network scripts &apos;file&apos; (default=/etc/qemu-ifup)</span><br><span class="line">                to configure it and &apos;dfile&apos; (default=/etc/qemu-ifdown)</span><br><span class="line">                to deconfigure it</span><br><span class="line">                use &apos;[down]script=no&apos; to disable script execution</span><br><span class="line">                use network helper &apos;helper&apos; (default=/usr/lib/qemu/qemu-bridge-helper) to</span><br><span class="line">                configure it</span><br><span class="line">                use &apos;fd=h&apos; to connect to an already opened TAP interface</span><br><span class="line">                use &apos;fds=x:y:...:z&apos; to connect to already opened multiqueue capable TAP interfaces</span><br><span class="line">                use &apos;sndbuf=nbytes&apos; to limit the size of the send buffer (the</span><br><span class="line">                default is disabled &apos;sndbuf=0&apos; to enable flow control set &apos;sndbuf=1048576&apos;)</span><br><span class="line">                use vnet_hdr=off to avoid enabling the IFF_VNET_HDR tap flag</span><br><span class="line">                use vnet_hdr=on to make the lack of IFF_VNET_HDR support an error condition</span><br><span class="line">                use vhost=on to enable experimental in kernel accelerator</span><br><span class="line">                    (only has effect for virtio guests which use MSIX)</span><br><span class="line">                use vhostforce=on to force vhost on for non-MSIX virtio guests</span><br><span class="line">                use &apos;vhostfd=h&apos; to connect to an already opened vhost net device</span><br><span class="line">                use &apos;vhostfds=x:y:...:z to connect to multiple already opened vhost net devices</span><br><span class="line">                use &apos;queues=n&apos; to specify the number of queues to be created for multiqueue TAP</span><br></pre></td></tr></table></figure>
+
+<h3 id="virtio-Serial"><a href="#virtio-Serial" class="headerlink" title="virtio Serial"></a>virtio Serial</h3><p>串口通信的样例代码是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-device virtio-serial-pci \</span><br><span class="line">-chardev socket,path=/tmp/foo,server,nowait,id=foo \</span><br><span class="line">-device virtserialport,chardev=foo,name=org.fedoraproject.port.0</span><br></pre></td></tr></table></figure>
+
+<p>QEMU的chardev分为backend和frontend。这会向guest创建设备并暴露出串口端口。 <code>-device virtio-serial</code> 选项向虚拟机添加了 <code>virtio-serial-pci</code> 设备，<code>-chardev socket,path=/tmp/foo,server,nowait,id=foo</code> 创建了backend，以 <code>/tmp/foo</code> 为path的 UNIX SOCKET用于通信，id为 foo。  <code>-device virtserialport,chardev=foo,name=org.fedoraproject.port.0</code> 创建了frontend，它打开了为此设备打开了一个端口，端口名称为“org.fedoraproject.port.0”，并且将foo的chardev 添加到那个port。 来自<a href="https://wiki.archlinux.org/index.php/QEMU_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" target="_blank" rel="noopener">QEMU (简体中文) #Copy and paste</a></p>
+<p>客户端需要载入 <code>virtio_console.ko</code> 内核模块并将端口 <code>/dev/vport0p1</code> 提供给用户态程序。<br>文件系统属性的位置在 <code>/sys/class/virtio-ports/vport0p1/name</code> ，它包含了文本 “org.fedoraproject.port.0”。<br>添加udev规则，在 <code>/dev/virtio-ports</code> 中添加一条链接，<code>/dev/virtio-ports/org.fedoraproject.port.0 -&gt; /dev/vport0p1</code> ，写入主机 <code>/tmp/foo</code> 的数据会被转发到虚拟机，虚拟机中的应用程序就能够从 <code>/dev/vport0p1</code> 或者 <code>/dev/virtio-ports/org.fedoraproject.port.0</code> 中读数据。 <code>/dev/vportNp0</code> 为首个 <code>virtio console</code> 预留。</p>
+<p>从<a href="https://www.cleancss.com/explain-command/kvm/108550" target="_blank" rel="noopener">kvm -chardev</a>中可以得到<code>-chardev</code> 的选项。 或者从<code>help</code> 选项获取，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-chardev socket,id=id[,host=host],port=port[,to=to][,ipv4][,ipv6][,nodelay][,reconnect=seconds]</span><br><span class="line">         [,server][,nowait][,telnet][,reconnect=seconds][,mux=on|off]</span><br><span class="line">         [,logfile=PATH][,logappend=on|off][,tls-creds=ID] (tcp)</span><br><span class="line">-chardev socket,id=id,path=path[,server][,nowait][,telnet][,reconnect=seconds]</span><br><span class="line">         [,mux=on|off][,logfile=PATH][,logappend=on|off] (unix)</span><br></pre></td></tr></table></figure>
+
+<p>创建双向socket流，可以是TCP或者UNIX socket，这取决与 <code>path</code> 路径是否设置。</p>
+<h3 id="检查客户端是否启用-virtio-console-ko"><a href="#检查客户端是否启用-virtio-console-ko" class="headerlink" title="检查客户端是否启用 virtio_console.ko"></a>检查客户端是否启用 virtio_console.ko</h3><p>检查内核模块是否包含virtio。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -i virtio /boot/config-$(uname -r)</span><br></pre></td></tr></table></figure>
+
+<pre><code>CONFIG_NET_9P_VIRTIO=m
+CONFIG_VIRTIO_BLK=y
+CONFIG_SCSI_VIRTIO=m
+CONFIG_VIRTIO_NET=y
+CONFIG_CAIF_VIRTIO=m
+CONFIG_VIRTIO_CONSOLE=y
+CONFIG_HW_RANDOM_VIRTIO=m
+CONFIG_DRM_VIRTIO_GPU=m
+CONFIG_VIRTIO=y
+# Virtio drivers
+CONFIG_VIRTIO_PCI=y
+CONFIG_VIRTIO_PCI_LEGACY=y
+CONFIG_VIRTIO_BALLOON=y
+CONFIG_VIRTIO_INPUT=m
+CONFIG_VIRTIO_MMIO=y
+CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES=y</code></pre><p><code>CONFIG_VIRTIO_CONSOLE=y</code> 表示 <code>virtio_console.ko</code> 已经编译到内核中，默认启动，不用作为可加载模块载入。</p>
+<h3 id="QEMU客户端模式的-UNIX-chardev"><a href="#QEMU客户端模式的-UNIX-chardev" class="headerlink" title="QEMU客户端模式的 UNIX chardev"></a>QEMU客户端模式的 UNIX chardev</h3><p>启动的参数为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">-chardev socket,path=/tmp/foo,id=foo \</span><br><span class="line">-device virtio-serial-pci </span><br><span class="line">-device virtserialport,chardev=foo,name=maxwell,nr=2 \</span><br></pre></td></tr></table></figure>
+
+<p>需要先在host上启动监听进程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socat UNIX-LISTEN:/tmp/foo  -</span><br></pre></td></tr></table></figure>
+
+<p>否则会报错</p>
+<blockquote>
+<p>qemu-system-x86_64: -chardev socket,path=/tmp/foo,id=foo: Failed to connect socket /tmp/foo: No such file or directory</p>
+</blockquote>
+<p>启动guest之后，在guest中向设备输入字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo foo &gt; /dev/virtio-ports/maxwell</span><br></pre></td></tr></table></figure>
+
+<p>host上会得到消息“foo”。</p>
+<h3 id="QEMU服务器模式的-UNIX-chardev"><a href="#QEMU服务器模式的-UNIX-chardev" class="headerlink" title="QEMU服务器模式的 UNIX chardev"></a>QEMU服务器模式的 UNIX chardev</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">-chardev socket,path=/tmp/foo,server,nowait,id=foo \</span><br><span class="line">-device virtio-serial-pci </span><br><span class="line">-device virtserialport,chardev=foo,name=maxwell,nr=2 \</span><br></pre></td></tr></table></figure>
+
+<p>需要先在host上启动监听进程，这里使用 <code>ipython</code> 交互程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line"> </span><br><span class="line">sock = socket.socket(socket.AF_UNIX)</span><br><span class="line">sock.connect(&quot;/tmp/foo&quot;)</span><br><span class="line">print sock.recv(1024)</span><br></pre></td></tr></table></figure>
+
+<p>在guest中，向virtio-serial port写数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf &apos;abcd&apos; | dd bs=4 status=none of=/dev/virtio-ports/maxwell count=1 seek=0</span><br></pre></td></tr></table></figure>
+
+<p>这样即可在host上收到消息“abcd”。</p>
+<p><a href="https://wiki.qemu.org/Features/ChardevFlowControl" target="_blank" rel="noopener">这里</a>还提到用管道的方式传输数据，我就不在这里实验了。</p>
+<p><a href="https://fedoraproject.org/wiki/Features/VirtioSerial#How_To_Test" target="_blank" rel="noopener">Features/VirtioSerial</a><br><a href="https://wiki.qemu.org/Features/ChardevFlowControl" target="_blank" rel="noopener">Features/ChardevFlowControl 字符设备控制流</a><br><a href="https://www.linux-kvm.org/page/Virtio-serial_API" target="_blank" rel="noopener">KVM中Virtio-serial_API</a></p>
+<h2 id="qemu创建虚拟机"><a href="#qemu创建虚拟机" class="headerlink" title="qemu创建虚拟机"></a>qemu创建虚拟机</h2><h3 id="qemu-img创建虚拟机镜像"><a href="#qemu-img创建虚拟机镜像" class="headerlink" title="qemu-img创建虚拟机镜像"></a>qemu-img创建虚拟机镜像</h3><p>虚拟机镜像用来模拟虚拟机的硬盘，在启动虚拟机之前需要创建镜像文件。qemu-img是QEMU的磁盘管理工具，可以用qemu-img创建虚拟机镜像。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-img create -f qcow2 ubuntu.qcow2 20G</span><br></pre></td></tr></table></figure>
+
+<p><code>-f</code>选项用于指定镜像的格式，<code>qcow2</code>格式是QEMU最常用的镜像格式，采用来写时复制技术来优化性能。<code>ubuntu.qcow2</code>是镜像文件的名字，<code>20G</code>是镜像文件大小。镜像文件创建完成后，可使用<code>qemu-system-x86</code>来启动<code>x86</code>架构的虚拟机</p>
+<h3 id="检查KVM是否可用"><a href="#检查KVM是否可用" class="headerlink" title="检查KVM是否可用"></a>检查KVM是否可用</h3><p>QEMU使用KVM来提升虚拟机性能，如果不启用KVM会导致性能损失。要使用KVM，首先要检查硬件是否有虚拟化支持：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E &apos;vmx|svm&apos; /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+
+<p>如果有输出则表示硬件有虚拟化支持。其次要检查kvm模块是否已经加载：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep kvm</span><br></pre></td></tr></table></figure>
+
+<pre><code>kvm_intel             1429990 
+kvm                   4443141 kvm_intel</code></pre><p>如果kvm_intel/kvm_amd、kvm模块被显示出来，则kvm模块已经加载。最好要确保qemu在编译的时候使能了KVM，即在执行configure脚本的时候加入了–enable-kvm选项。</p>
+<p>如果没有 <code>kvm_intel</code> 模块，再使用kvm功能启动QEMU客户端会报错：</p>
+<blockquote>
+<p>Could not access KVM kernel module: No such file or directory<br>qemu-system-x86_64: failed to initialize KVM: No such file or directory</p>
+</blockquote>
+<p>安装模块 <code>modprobe kvm-intel</code> 得到错误信息：</p>
+<blockquote>
+<p>modprobe: ERROR: could not insert ‘kvm_intel’: Operation not supported</p>
+</blockquote>
+<p>对于内核错误，通过查看日志文件找问题。 <code>dmesg</code></p>
+<blockquote>
+<p>kvm: disabled by bios</p>
+</blockquote>
+<p>那么好，关机，启动后设置BIOS，设置完成后一定要关机，再启动。万万不可重启。</p>
+<h3 id="安装操作系统。"><a href="#安装操作系统。" class="headerlink" title="安装操作系统。"></a>安装操作系统。</h3><p>准备好虚拟机操作系统ISO镜像。执行下面的命令启动带有cdrom的虚拟机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-x86_64 -m 2048 -enable-kvm ubuntu.qcow2 -cdrom ubuntu.iso</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-m</code>指定虚拟机内存大小，默认单位是MB， </li>
+<li><code>-enable-kvm</code>使用KVM进行加速，</li>
+<li><code>-cdrom</code>添加<code>ubuntu</code>的安装镜像。</li>
+</ul>
+<p>可在弹出的窗口中操作虚拟机，安装操作系统，安装完成后重起虚拟机便会从硬盘(ubuntu.qcow2 )启动。</p>
+<h3 id="启动虚拟机"><a href="#启动虚拟机" class="headerlink" title="启动虚拟机"></a>启动虚拟机</h3><p>启动虚拟机只需要执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-x86_64 -m 2048 -enable-kvm ubuntu.qcow2</span><br></pre></td></tr></table></figure>
+
+<p>即可。</p>
+<h3 id="qemu-monitor"><a href="#qemu-monitor" class="headerlink" title="qemu monitor"></a>qemu monitor</h3><p>QEMU 监控器是终端窗口，可以执行一些命令来查看当前启动的操作系统一些配置和运行状况。<br>可以通过 <code>-monitor stdio</code> 参数启动。<br>或者在QEMU窗口中使用快捷键 <code>Ctrl+Alt+2</code>， 使用 <code>Ctrl+Alt+1</code> 切换回普通的客户机。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1] <a href="http://www.linux-kvm.org/page/Virtio" target="_blank" rel="noopener">Virtio</a><br>[2] <a href="https://tthtlc.wordpress.com/2015/10/21/qemu-how-to-setup-tuntap-bridge-networking/]" target="_blank" rel="noopener">QEMU how to setup Tun/Tap + bridge networking</a><br>[3] <a href="https://my.oschina.net/kelvinxupt/blog/265108" target="_blank" rel="noopener">QEMU 1: 使用QEMU创建虚拟机</a><br>[4] Virtio: towards a de factor standard for virtual I/O devices<br>[5] <a href="http://blog.csdn.net/richardysteven/article/details/54807927" target="_blank" rel="noopener">访问qemu虚拟机的五种姿势</a><br>[6] <a href="http://blog.csdn.net/shendl/article/details/9468227" target="_blank" rel="noopener">qemu虚拟机与外部网络的通信</a><br>[7] <a href="https://www.linux-kvm.org/page/Networking" target="_blank" rel="noopener">Configuring Guest Networking</a><br>[8] <a href="https://www.ibm.com/developerworks/cn/linux/l-virtio/" target="_blank" rel="noopener">Virtio：针对 Linux 的 I/O 虚拟化框架</a><br>[9] <a href="https://www.ibm.com/developerworks/cn/linux/1402_caobb_virtio/" target="_blank" rel="noopener">Virtio 基本概念和设备操作</a><br>[10] virtio: Towards a De-Facto Standard For Virtual I/O Devices<br>[11] <a href="https://wiki.osdev.org/Virtio" target="_blank" rel="noopener">Virtio</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/虚拟化/">虚拟化</a>►<a class="article-category-link" href="/categories/虚拟化/virtio/">virtio</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/virtio/">virtio</a><a href="/tags/libvirt/">libvirt</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/03/01/virtio学习/" data-title="virtio学习 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/03/01/解决windows下的git-bash客户端中文乱码/" title="解决windows下的git bash客户端中文乱码">
+  <strong>上一篇：</strong><br>
+  <span>
+  解决windows下的git bash客户端中文乱码</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/08/python之pickle的任意代码执行漏洞/" title="python之pickle的任意代码执行漏洞">
+ <strong>下一篇：</strong><br> 
+ <span>python之pickle的任意代码执行漏洞
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#virtio"><span class="toc-number">1.</span> <span class="toc-text">virtio</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#virtio原理"><span class="toc-number">2.</span> <span class="toc-text">virtio原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#virtio的架构"><span class="toc-number">2.1.</span> <span class="toc-text">virtio的架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#层次结构"><span class="toc-number">2.1.1.</span> <span class="toc-text">层次结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码层次结构"><span class="toc-number">2.1.2.</span> <span class="toc-text">代码层次结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#virtqueue"><span class="toc-number">2.1.3.</span> <span class="toc-text">virtqueue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#host与guest操作系统之间数据交换流程"><span class="toc-number">2.1.4.</span> <span class="toc-text">host与guest操作系统之间数据交换流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#virtio-ring"><span class="toc-number">2.1.5.</span> <span class="toc-text">virtio_ring</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#virtio的使用"><span class="toc-number">3.</span> <span class="toc-text">virtio的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU模拟I-O设备的基本原理"><span class="toc-number">3.1.</span> <span class="toc-text">QEMU模拟I/O设备的基本原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用virtio-net"><span class="toc-number">3.1.1.</span> <span class="toc-text">使用virtio_net</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#检查QEMU是否支持virtio类型的网卡"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">检查QEMU是否支持virtio类型的网卡</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配置虚拟网桥"><span class="toc-number">3.1.1.2.</span> <span class="toc-text">配置虚拟网桥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配置TAP设备操作"><span class="toc-number">3.1.1.3.</span> <span class="toc-text">配置TAP设备操作:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#启动客户机，指定分配virtio网卡设备"><span class="toc-number">3.1.1.4.</span> <span class="toc-text">启动客户机，指定分配virtio网卡设备</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#virtio-Serial"><span class="toc-number">3.1.2.</span> <span class="toc-text">virtio Serial</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检查客户端是否启用-virtio-console-ko"><span class="toc-number">3.1.3.</span> <span class="toc-text">检查客户端是否启用 virtio_console.ko</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QEMU客户端模式的-UNIX-chardev"><span class="toc-number">3.1.4.</span> <span class="toc-text">QEMU客户端模式的 UNIX chardev</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QEMU服务器模式的-UNIX-chardev"><span class="toc-number">3.1.5.</span> <span class="toc-text">QEMU服务器模式的 UNIX chardev</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#qemu创建虚拟机"><span class="toc-number">3.2.</span> <span class="toc-text">qemu创建虚拟机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#qemu-img创建虚拟机镜像"><span class="toc-number">3.2.1.</span> <span class="toc-text">qemu-img创建虚拟机镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检查KVM是否可用"><span class="toc-number">3.2.2.</span> <span class="toc-text">检查KVM是否可用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装操作系统。"><span class="toc-number">3.2.3.</span> <span class="toc-text">安装操作系统。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动虚拟机"><span class="toc-number">3.2.4.</span> <span class="toc-text">启动虚拟机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qemu-monitor"><span class="toc-number">3.2.5.</span> <span class="toc-text">qemu monitor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

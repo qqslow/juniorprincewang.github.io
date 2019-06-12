@@ -1,0 +1,813 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>QEMU-KVM内存虚拟化 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 GPA 转换成 HVA 。">
+<meta name="keywords" content="QEMU,vm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QEMU-KVM内存虚拟化">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/20/qemu内存虚拟化/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 GPA 转换成 HVA 。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.260Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QEMU-KVM内存虚拟化">
+<meta name="twitter:description" content="qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 GPA 转换成 HVA 。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/20/qemu内存虚拟化/" title="QEMU-KVM内存虚拟化" itemprop="url">QEMU-KVM内存虚拟化</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-07-20T08:59:26.000Z" itemprop="datePublished"> Published 2018-07-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#词汇约定"><span class="toc-number">1.</span> <span class="toc-text">词汇约定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#页表"><span class="toc-number">2.</span> <span class="toc-text">页表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内存虚拟化"><span class="toc-number">3.</span> <span class="toc-text">QEMU内存虚拟化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SPT"><span class="toc-number">3.1.</span> <span class="toc-text">SPT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EPT-NPT"><span class="toc-number">3.2.</span> <span class="toc-text">EPT/NPT</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内存数据结构"><span class="toc-number">4.</span> <span class="toc-text">内存数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCDIMMDevice"><span class="toc-number">4.1.</span> <span class="toc-text">PCDIMMDevice</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HostMemoryBackend"><span class="toc-number">4.2.</span> <span class="toc-text">HostMemoryBackend</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegion"><span class="toc-number">4.3.</span> <span class="toc-text">MemoryRegion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AddressSpace"><span class="toc-number">4.4.</span> <span class="toc-text">AddressSpace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMBlock"><span class="toc-number">4.5.</span> <span class="toc-text">RAMBlock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMList"><span class="toc-number">4.6.</span> <span class="toc-text">RAMList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegionSection"><span class="toc-number">4.7.</span> <span class="toc-text">MemoryRegionSection</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 <code>GPA</code> 转换成 <code>HVA</code> 。</p>
+<a id="more"></a>
+
+<h1 id="词汇约定"><a href="#词汇约定" class="headerlink" title="词汇约定"></a>词汇约定</h1><table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VA</td>
+<td>Virtual Address, 虚拟地址</td>
+</tr>
+<tr>
+<td>PA</td>
+<td>Physical Address, 物理地址</td>
+</tr>
+<tr>
+<td>PML4</td>
+<td>Page Map Level 4</td>
+</tr>
+<tr>
+<td>PDPT</td>
+<td>Page Directory Table</td>
+</tr>
+<tr>
+<td>PD</td>
+<td>Page Directory</td>
+</tr>
+<tr>
+<td>PT</td>
+<td>Page Table</td>
+</tr>
+<tr>
+<td>PGD</td>
+<td>Page Global Directory</td>
+</tr>
+<tr>
+<td>PUD</td>
+<td>Page Upper Directory</td>
+</tr>
+<tr>
+<td>PMD</td>
+<td>Page Middle Directory</td>
+</tr>
+<tr>
+<td>GVA</td>
+<td>Guest Virtual Address</td>
+</tr>
+<tr>
+<td>GPA</td>
+<td>Guest Physical Address</td>
+</tr>
+<tr>
+<td>HVA</td>
+<td>Host Virtual Address</td>
+</tr>
+<tr>
+<td>HPA</td>
+<td>Host Physical Address</td>
+</tr>
+<tr>
+<td>GFN</td>
+<td>Guest Frame Number</td>
+</tr>
+<tr>
+<td>PFN</td>
+<td>Host Page Frame Number</td>
+</tr>
+<tr>
+<td>SPT</td>
+<td>Shadow Page Table，影子页表</td>
+</tr>
+</tbody></table>
+<h1 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h1><p>64位CPU上支持 48 位的虚拟地址寻址空间，和 52 位的物理地址寻址空间。Linux采用4级页表机制将虚拟地址（VA）转换成物理地址(PA)，先从页表的 <code>基地址寄存器 (CR3)</code> 中读取页表的起始地址，然后加上页号得到对应页的页表项，从中取出页的物理地址，再加上偏移量得到 PA。</p>
+<p>分级的查询页表过程为：<br>Page Map Level 4(PML4) =&gt; Page Directory Pointer Table(PDPT) =&gt; Page Directory(PD) =&gt; Page Table(PT)</p>
+<p>在某些地方被称为： Page Global Directory(PGD) =&gt; Page Upper Directory(PUD) =&gt; Page Middle Directory(PMD) =&gt; Page Table(PT)</p>
+<h1 id="QEMU内存虚拟化"><a href="#QEMU内存虚拟化" class="headerlink" title="QEMU内存虚拟化"></a>QEMU内存虚拟化</h1><p>QEMU 利用 mmap 系统调用，在进程的虚拟地址空间中申请连续的大小的空间，作为 Guest 的物理内存。</p>
+<p>在这样的架构下，内存地址访问有四层映射：</p>
+<blockquote>
+<p>GVA -&gt; GPA -&gt; HVA -&gt; HPA</p>
+</blockquote>
+<p>GVA - GPA 的映射由 guest OS 负责维护，而 HVA - HPA 由 host OS 负责维护。<br>我们重点要研究的是 <code>GPA -&gt; HVA</code> 的映射。<br>常用的实现有 <code>SPT(Shadow Page Table)</code> 和 <code>EPT/NPT</code> ，前者通过软件维护影子页表，后者通过硬件特性实现二级映射。</p>
+<h2 id="SPT"><a href="#SPT" class="headerlink" title="SPT"></a>SPT</h2><h2 id="EPT-NPT"><a href="#EPT-NPT" class="headerlink" title="EPT/NPT"></a>EPT/NPT</h2><h1 id="内存数据结构"><a href="#内存数据结构" class="headerlink" title="内存数据结构"></a>内存数据结构</h1><p>QEMU虚拟内存最重要的几个数据结构 <code>AddressSpace</code> 、 <code>MemoryRegion</code> 、 <code>MemoryRegionSection</code> 、 <code>RAMBlock</code> 、 <code>kvm_userspace_memory_region</code> 。</p>
+<p>![QEMU 内存结构图](../QEMU内存虚拟化/QEMU memory.png)</p>
+<h2 id="PCDIMMDevice"><a href="#PCDIMMDevice" class="headerlink" title="PCDIMMDevice"></a>PCDIMMDevice</h2><p>PC DIMM内存设备模拟，通过 QOM(qemu object model) 定义的虚拟内存条。可通过 QEMU 命令行进行管理。通过增加/移除该对象实现 VM 中内存的热插拔。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/include/hw/mem/pc-dimm.h</span><br><span class="line">/**</span><br><span class="line"> * PCDIMMDevice:</span><br><span class="line"> * @addr: starting guest physical address, where @PCDIMMDevice is mapped.</span><br><span class="line"> *         Default value: 0, means that address is auto-allocated.</span><br><span class="line"> * @node: numa node to which @PCDIMMDevice is attached.</span><br><span class="line"> * @slot: slot number into which @PCDIMMDevice is plugged in.</span><br><span class="line"> *        Default value: -1, means that slot is auto-allocated.</span><br><span class="line"> * @hostmem: host memory backend providing memory for @PCDIMMDevice</span><br><span class="line"> */</span><br><span class="line">typedef struct PCDIMMDevice &#123;</span><br><span class="line">    /* private */</span><br><span class="line">    DeviceState parent_obj;</span><br><span class="line"></span><br><span class="line">    /* public */</span><br><span class="line">    uint64_t addr;          // 映射到的起始 GPA</span><br><span class="line">    uint32_t node;             // 映射到的 numa 节点</span><br><span class="line">    int32_t slot;               // 插入的内存槽编号，默认为 -1，表示自动分配</span><br><span class="line">    HostMemoryBackend *hostmem;     // 对应的 backend</span><br><span class="line">&#125; PCDIMMDevice;</span><br></pre></td></tr></table></figure>
+
+<h2 id="HostMemoryBackend"><a href="#HostMemoryBackend" class="headerlink" title="HostMemoryBackend"></a>HostMemoryBackend</h2><p>通过 QOM 定义的一段 Host 内存，为虚拟内存条提供内存。可通过 QMP 或 QEMU 命令行进行管理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @HostMemoryBackend</span><br><span class="line"> *</span><br><span class="line"> * @parent: opaque parent object container</span><br><span class="line"> * @size: amount of memory backend provides</span><br><span class="line"> * @mr: MemoryRegion representing host memory belonging to backend</span><br><span class="line"> */</span><br><span class="line">struct HostMemoryBackend &#123;</span><br><span class="line">    /* private */</span><br><span class="line">    Object parent;</span><br><span class="line"></span><br><span class="line">    /* protected */</span><br><span class="line">    uint64_t size;      // 提供内存大小</span><br><span class="line">    bool merge, dump;</span><br><span class="line">    bool prealloc, force_prealloc, is_mapped, share;</span><br><span class="line">    DECLARE_BITMAP(host_nodes, MAX_NODES + 1);</span><br><span class="line">    HostMemPolicy policy;</span><br><span class="line"></span><br><span class="line">    MemoryRegion mr;        // 拥有的 MemoryRegion</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MemoryRegion"><a href="#MemoryRegion" class="headerlink" title="MemoryRegion"></a>MemoryRegion</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">struct MemoryRegion &#123;</span><br><span class="line">    Object parent_obj;           // 继承自 Object</span><br><span class="line"></span><br><span class="line">    /* All fields are private - violators will be prosecuted */</span><br><span class="line"></span><br><span class="line">    /* The following fields should fit in a cache line */</span><br><span class="line">    bool romd_mode;</span><br><span class="line">    bool ram;</span><br><span class="line">    bool subpage;</span><br><span class="line">    bool readonly; /* For RAM regions */</span><br><span class="line">    bool rom_device;</span><br><span class="line">    bool flush_coalesced_mmio;</span><br><span class="line">    bool global_locking;</span><br><span class="line">    uint8_t dirty_log_mask;</span><br><span class="line">    bool is_iommu;</span><br><span class="line">    RAMBlock *ram_block;        // 指向对应的 RAMBlock</span><br><span class="line">    Object *owner;</span><br><span class="line"></span><br><span class="line">    const MemoryRegionOps *ops;</span><br><span class="line">    void *opaque;</span><br><span class="line">    MemoryRegion *container;    // 指向父 MemoryRegion</span><br><span class="line">    Int128 size;</span><br><span class="line">    hwaddr addr;</span><br><span class="line">    void (*destructor)(MemoryRegion *mr);</span><br><span class="line">    uint64_t align;</span><br><span class="line">    bool terminates;</span><br><span class="line">    bool ram_device;</span><br><span class="line">    bool enabled;</span><br><span class="line">    bool warning_printed; /* For reservations */</span><br><span class="line">    uint8_t vga_logging_count;</span><br><span class="line">    MemoryRegion *alias;         // 指向实体 MemoryRegion</span><br><span class="line">    hwaddr alias_offset;        // 起始地址 (GPA) 在实体 MemoryRegion 中的偏移量</span><br><span class="line">    int32_t priority;</span><br><span class="line">    QTAILQ_HEAD(subregions, MemoryRegion) subregions;       // subregion 链表</span><br><span class="line">    QTAILQ_ENTRY(MemoryRegion) subregions_link;</span><br><span class="line">    QTAILQ_HEAD(coalesced_ranges, CoalescedMemoryRange) coalesced;</span><br><span class="line">    const char *name;</span><br><span class="line">    unsigned ioeventfd_nb;</span><br><span class="line">    MemoryRegionIoeventfd *ioeventfds;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>MemoryRegion</code> 是树状结构，有多种类型，可以表示一段 <code>ram</code> ，<code>rom</code> ，<code>MMIO</code> 。 <code>alias</code> 表示一个 <code>MemoryRegion</code> 的一部分区域。<br><code>MemoryRegion</code> 也可以表示一个container，这就表示它只是其他若干个 <code>MemoryRegion</code> 的容器。在 <code>MemoryRegion</code> 中，<code>ram_block</code>表示的是分配的实际内存。</p>
+<p><code>address_space_memory</code> 的 <code>root</code> 为 <code>system_memory</code> ，<code>address_space_io</code> 的 <code>root</code> 为 <code>system_io</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">static MemoryRegion *system_memory;</span><br><span class="line">static MemoryRegion *system_io;</span><br></pre></td></tr></table></figure>
+
+<h2 id="AddressSpace"><a href="#AddressSpace" class="headerlink" title="AddressSpace"></a>AddressSpace</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/include/exec/memory.h</span><br><span class="line">/**</span><br><span class="line"> * AddressSpace: describes a mapping of addresses to #MemoryRegion objects</span><br><span class="line"> */</span><br><span class="line">struct AddressSpace &#123;</span><br><span class="line">    /* All fields are private. */</span><br><span class="line">    struct rcu_head rcu;</span><br><span class="line">    char *name;</span><br><span class="line">    MemoryRegion *root;</span><br><span class="line"></span><br><span class="line">    /* Accessed via RCU.  */</span><br><span class="line">    struct FlatView *current_map;    // 指向当前维护的 FlatView，在 address_space_update_topology 时作为 old 比较</span><br><span class="line"></span><br><span class="line">    int ioeventfd_nb;</span><br><span class="line">    struct MemoryRegionIoeventfd *ioeventfds;</span><br><span class="line">    QTAILQ_HEAD(memory_listeners_as, MemoryListener) listeners;</span><br><span class="line">    QTAILQ_ENTRY(AddressSpace) address_spaces_link;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>AddressSpace</code> 表示的CPU/设备看到的地址空间，比如内存地址空间 <code>AddressSpace address_space_memory;</code> 和IO地址空间 <code>AddressSpace address_space_io;</code> 。<br>每个 <code>AddressSpace</code> 一般包含一系列 <code>MemoryRegion</code> ： AddressSpace 的 <code>root</code> 指向根级 <code>MemoryRegion</code> ，该 <code>MemoryRegion</code> 有可能有自己的若干个 <code>subregion</code> ，于是形成树状结构。<br>所有的 <code>AddressSpace</code> 通过结构中的 <code>address_spaces_link</code> 连接成链表，表头保存在全局的 <code>AddressSpace</code> 结构中。</p>
+<h2 id="RAMBlock"><a href="#RAMBlock" class="headerlink" title="RAMBlock"></a>RAMBlock</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/include/exec/ram_addr.h</span><br><span class="line"></span><br><span class="line">struct RAMBlock &#123;</span><br><span class="line">    struct rcu_head rcu;                // 用于保护 Read-Copy-Update</span><br><span class="line">    struct MemoryRegion *mr;            // 对应的 MemoryRegion</span><br><span class="line">    uint8_t *host;                       // 对应的 HVA</span><br><span class="line">    ram_addr_t offset;                   // 在 ram_list 地址空间中的偏移 (要把前面 block 的 size 都加起来)</span><br><span class="line">    ram_addr_t used_length;             // 当前使用的长度</span><br><span class="line">    ram_addr_t max_length;                  </span><br><span class="line">    void (*resized)(const char*, uint64_t length, void *host);</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    /* Protected by iothread lock.  */</span><br><span class="line">    char idstr[256];</span><br><span class="line">    /* RCU-enabled, writes protected by the ramlist lock */</span><br><span class="line">    QLIST_ENTRY(RAMBlock) next;</span><br><span class="line">    QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;</span><br><span class="line">    int fd;                                 // 映射文件的文件描述符</span><br><span class="line">    size_t page_size;                       // page 大小，一般和 host 保持一致</span><br><span class="line">    /* dirty bitmap used during migration */</span><br><span class="line">    unsigned long *bmap;</span><br><span class="line">    /* bitmap of pages that haven&apos;t been sent even once</span><br><span class="line">     * only maintained and used in postcopy at the moment</span><br><span class="line">     * where it&apos;s used to send the dirtymap at the start</span><br><span class="line">     * of the postcopy phase</span><br><span class="line">     */</span><br><span class="line">    unsigned long *unsentmap;</span><br><span class="line">    /* bitmap of already received pages in postcopy */</span><br><span class="line">    unsigned long *receivedmap;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，<code>host</code> 指向了动态分配的内存，用于表示实际的虚拟机物理内存，而 <code>offset</code> 表示了这块内存在虚拟机物理内存中的偏移。每一个 <code>ram_block</code> 还会被连接到全局的 <code>ram_list</code> 链表上。 </p>
+<p><code>AddressSpace</code> 的 <code>root</code>及其子树形成了一个虚拟机的物理地址，但是在往kvm进行设置的时候，需要将其转换为一个平坦的地址模型，也就是从0开始的。这个就用<code>FlatView</code> 表示，一个 <code>AddressSpace</code> 对应一个 <code>FlatView</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* Flattened global view of current active memory hierarchy.  Kept in sorted</span><br><span class="line"> * order.</span><br><span class="line"> */</span><br><span class="line">struct FlatView &#123;</span><br><span class="line">    struct rcu_head rcu;</span><br><span class="line">    unsigned ref;</span><br><span class="line">    FlatRange *ranges;</span><br><span class="line">    unsigned nr;</span><br><span class="line">    unsigned nr_allocated;</span><br><span class="line">    struct AddressSpaceDispatch *dispatch;</span><br><span class="line">    MemoryRegion *root;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="RAMList"><a href="#RAMList" class="headerlink" title="RAMList"></a>RAMList</h2><p><code>ram_list</code> 是一个全局变量，以链表的形式维护了所有的 <code>RAMBlock</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">include/exec/ramlist.h</span><br><span class="line">typedef struct RAMList &#123;</span><br><span class="line">    QemuMutex mutex;</span><br><span class="line">    RAMBlock *mru_block;</span><br><span class="line">    /* RCU-enabled, writes protected by the ramlist lock. */</span><br><span class="line">    QLIST_HEAD(, RAMBlock) blocks;</span><br><span class="line">    DirtyMemoryBlocks *dirty_memory[DIRTY_MEMORY_NUM];</span><br><span class="line">    uint32_t version;</span><br><span class="line">    QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;</span><br><span class="line">&#125; RAMList;</span><br><span class="line"></span><br><span class="line">exe.c</span><br><span class="line">RAMList ram_list = &#123; .blocks = QLIST_HEAD_INITIALIZER(ram_list.blocks) &#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MemoryRegionSection"><a href="#MemoryRegionSection" class="headerlink" title="MemoryRegionSection"></a>MemoryRegionSection</h2><p>在内存虚拟化中，还有一个重要的结构是 <code>MemoryRegionSection</code> ，这个结构通过函数 <code>section_from_flat_range</code> 可由 <code>FlatRange</code> 转换过来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * MemoryRegionSection: describes a fragment of a #MemoryRegion</span><br><span class="line"> *</span><br><span class="line"> * @mr: the region, or %NULL if empty</span><br><span class="line"> * @fv: the flat view of the address space the region is mapped in</span><br><span class="line"> * @offset_within_region: the beginning of the section, relative to @mr&apos;s start</span><br><span class="line"> * @size: the size of the section; will not exceed @mr&apos;s boundaries</span><br><span class="line"> * @offset_within_address_space: the address of the first byte of the section</span><br><span class="line"> *     relative to the region&apos;s address space</span><br><span class="line"> * @readonly: writes to this section are ignored</span><br><span class="line"> */</span><br><span class="line">struct MemoryRegionSection &#123;</span><br><span class="line">    MemoryRegion *mr;   // 指向所属 MemoryRegion</span><br><span class="line">    FlatView *fv;</span><br><span class="line">    hwaddr offset_within_region;     // 起始地址 (HVA) 在 MemoryRegion 内的偏移量</span><br><span class="line">    Int128 size;</span><br><span class="line">    hwaddr offset_within_address_space;  // 在 AddressSpace 内的偏移量，如果该 AddressSpace 为系统内存，则为 GPA 起始地址</span><br><span class="line">    bool readonly;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://www.anquanke.com/post/id/86412" target="_blank" rel="noopener">QEMU内存虚拟化源码分析</a></li>
+<li><a href="https://www.cnblogs.com/ck1020/p/6729224.html" target="_blank" rel="noopener">qemu-kvm内存虚拟化1</a></li>
+<li><a href="https://www.binss.me/blog/qemu-note-of-memory/" target="_blank" rel="noopener">QEMU学习笔记——内存</a></li>
+<li><a href="https://github.com/GiantVM/doc/blob/master/memory.md" target="_blank" rel="noopener">QEMU memory</a></li>
+<li><a href="http://blog.vmsplice.net/2016/01/qemu-internals-how-guest-physical-ram.html" target="_blank" rel="noopener">QEMU Internals: How guest physical RAM works</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/vm/">vm</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/07/20/qemu内存虚拟化/" data-title="QEMU-KVM内存虚拟化 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/07/23/qemu源码添加设备/" title="QEMU设备的对象模型QOM">
+  <strong>上一篇：</strong><br>
+  <span>
+  QEMU设备的对象模型QOM</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/18/nouveau资料整理/" title="nouveau资料整理">
+ <strong>下一篇：</strong><br> 
+ <span>nouveau资料整理
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#词汇约定"><span class="toc-number">1.</span> <span class="toc-text">词汇约定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#页表"><span class="toc-number">2.</span> <span class="toc-text">页表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内存虚拟化"><span class="toc-number">3.</span> <span class="toc-text">QEMU内存虚拟化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SPT"><span class="toc-number">3.1.</span> <span class="toc-text">SPT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EPT-NPT"><span class="toc-number">3.2.</span> <span class="toc-text">EPT/NPT</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内存数据结构"><span class="toc-number">4.</span> <span class="toc-text">内存数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCDIMMDevice"><span class="toc-number">4.1.</span> <span class="toc-text">PCDIMMDevice</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HostMemoryBackend"><span class="toc-number">4.2.</span> <span class="toc-text">HostMemoryBackend</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegion"><span class="toc-number">4.3.</span> <span class="toc-text">MemoryRegion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AddressSpace"><span class="toc-number">4.4.</span> <span class="toc-text">AddressSpace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMBlock"><span class="toc-number">4.5.</span> <span class="toc-text">RAMBlock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMList"><span class="toc-number">4.6.</span> <span class="toc-text">RAMList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegionSection"><span class="toc-number">4.7.</span> <span class="toc-text">MemoryRegionSection</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

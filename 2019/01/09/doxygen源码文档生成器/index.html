@@ -1,0 +1,859 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>doxygen源码文档生成器 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="苦于看内核驱动源码的烦恼，Doxygen工具很好的解决了此问题。  Doxygen可以很好的构建出类层次结构和全局变量，不同的用户定义类型，以及函数调用图分析等等。">
+<meta name="keywords" content="doxgen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="doxygen源码文档生成器">
+<meta property="og:url" content="http://juniorprincewang.github.io/2019/01/09/doxygen源码文档生成器/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="苦于看内核驱动源码的烦恼，Doxygen工具很好的解决了此问题。  Doxygen可以很好的构建出类层次结构和全局变量，不同的用户定义类型，以及函数调用图分析等等。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.231Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="doxygen源码文档生成器">
+<meta name="twitter:description" content="苦于看内核驱动源码的烦恼，Doxygen工具很好的解决了此问题。  Doxygen可以很好的构建出类层次结构和全局变量，不同的用户定义类型，以及函数调用图分析等等。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/01/09/doxygen源码文档生成器/" title="doxygen源码文档生成器" itemprop="url">doxygen源码文档生成器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2019-01-09T11:02:25.000Z" itemprop="datePublished"> Published 2019-01-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装-doxygen"><span class="toc-number">1.</span> <span class="toc-text">安装 doxygen</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu-Debian"><span class="toc-number">1.1.</span> <span class="toc-text">Ubuntu/Debian</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows"><span class="toc-number">1.2.</span> <span class="toc-text">Windows</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用-doxygen-生成文档"><span class="toc-number">2.</span> <span class="toc-text">使用 doxygen 生成文档</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#生成配置文件"><span class="toc-number">2.1.</span> <span class="toc-text">生成配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编辑配置文件"><span class="toc-number">2.2.</span> <span class="toc-text">编辑配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-1"><span class="toc-number">2.3.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行-doxygen"><span class="toc-number">2.4.</span> <span class="toc-text">运行 doxygen</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>苦于看内核驱动源码的烦恼，Doxygen工具很好的解决了此问题。  Doxygen可以很好的构建出类层次结构和全局变量，不同的用户定义类型，以及函数调用图分析等等。</p>
+<a id="more"></a>
+<p>Doxygen是一个适用于C++、C、Java、Objective-C、Python、IDL（CORBA和Microsoft flavors）、Fortran、VHDL、PHP、C#和D语言的文档生成器。   </p>
+<p>可产生出来的文档格式有：HTML、 XML、 LaTeX、 RTF、 CHM 。</p>
+<h1 id="安装-doxygen"><a href="#安装-doxygen" class="headerlink" title="安装 doxygen"></a>安装 doxygen</h1><p>这里需要注意，Doxygen版本低于 <strong>1.8.14</strong> 的话 函数调用图会出现问题，详见<br><a href="https://stackoverflow.com/questions/47778485/wrong-call-caller-graph-with-doxygen-and-graphviz-in-c" target="_blank" rel="noopener">Wrong call/caller graph with Doxygen and GraphViz in C++
+</a>。
+<strong>不能</strong>用 <code>apt-get install doxygen</code> 安装Doxygen，安装的版本是 <strong>1.8.11</strong>。  
+去官网 <a href="http://www.doxygen.nl/download.html" target="_blank" rel="noopener">http://www.doxygen.nl/download.html</a>  下载新版本 <em>1.8.15</em> 的源码包或者从 github上下载最新版本的。</p>
+<h2 id="Ubuntu-Debian"><a href="#Ubuntu-Debian" class="headerlink" title="Ubuntu/Debian"></a>Ubuntu/Debian</h2><p>先安装视图工具 <code>graphviz</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install graphviz</span><br></pre></td></tr></table></figure>
+
+<p>下载并安装最新版本的Doxygen</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/doxygen/doxygen.git</span><br><span class="line">// or 下载 doxygen-1.8.15.src.tar.gz (4.9MB)</span><br><span class="line">// 		tar -zxvf doxygen-1.8.15.src.tar.gz</span><br><span class="line">// 		cd doxygen-1.8.15</span><br><span class="line">cd doxygen</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake -G &quot;Unix Makefiles&quot; ..</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><p>先在 <a href="https://graphviz.gitlab.io/download/" target="_blank" rel="noopener">https://graphviz.gitlab.io/download/</a> 下载 Graphviz的Windows版本，并安装。<br>在 <a href="http://www.doxygen.nl/download.html" target="_blank" rel="noopener">http://www.doxygen.nl/download.html</a> 下载<code>doxygen-1.8.15-setup.exe (45.2MB)</code> ，并安装。</p>
+<p>把doxygen的安装路径写入环境变量PATH中。</p>
+<h1 id="使用-doxygen-生成文档"><a href="#使用-doxygen-生成文档" class="headerlink" title="使用 doxygen 生成文档"></a>使用 doxygen 生成文档</h1><h2 id="生成配置文件"><a href="#生成配置文件" class="headerlink" title="生成配置文件"></a>生成配置文件</h2><p>此方法适用于无图形界面操作的Ubuntu和Windows。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doxygen -g</span><br></pre></td></tr></table></figure>
+
+<p>这个命令在当前目录中生成一个可编辑的配置文件 <em>oxyfile</em> 。</p>
+<h2 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h2><p>配置文件采用 <code>&lt;TAGNAME&gt; = &lt;VALUE&gt;</code> 这样的结构，与 Make 文件格式相似。<br>下面是比较重要的标记：</p>
+<table>
+<thead>
+<tr>
+<th>Tagname</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DOXYFILE_ENCODING</td>
+<td>Doxygen文件的编码方式，默认为UTF-8，若希望支持中文，最好设置为 GB2312</td>
+</tr>
+<tr>
+<td>PROJECT_NAME</td>
+<td>Project 的名字，以一个单词为主，多个单词请使用双引号括住。</td>
+</tr>
+<tr>
+<td>OUTPUT_DIRECTORY</td>
+<td>输出路径。产生的文件会放在这个路径之下。如果没有填这个路径，将会以目前所在路径作为输出路径。</td>
+</tr>
+<tr>
+<td>OUTPUT_LANGUAGE</td>
+<td>输出语言, 默认为English 。</td>
+</tr>
+<tr>
+<td><code>EXTRACT_ALL</code></td>
+<td>默认为NO，只解释有doxygen格式注释的代码；为YES，解析所有代码，即使没有注释</td>
+</tr>
+<tr>
+<td>EXTRACT_PRIVATE</td>
+<td>是否解析类的私有成员</td>
+</tr>
+<tr>
+<td>EXTRACT_STATIC</td>
+<td>是否解析静态项</td>
+</tr>
+<tr>
+<td>EXTRACT_LOCAL_CLASSES</td>
+<td>是否解析源文件（cpp文件）中定义的类</td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>这个标记创建一个以空格分隔的所有目录的列表，这个列表包含需要生成文档的 C/C++ 源代码文件和头文件。<br> 例如，请考虑以下代码片段： <em>INPUT = /home/user1/project/kernel /home/user1/project/memory</em> ，  <br> 在这里，doxygen 会从这两个目录读取 C/C++ 源代码。 <br> 如果项目只有一个源代码根目录，其中有多个子目录，那么只需指定根目录并把 <recursive> 标记设置为 Yes。</recursive></td>
+</tr>
+<tr>
+<td>FILE_PATTERNS</td>
+<td>如果您的INPUT Tag 中指定了目录。您可以透过这个Tag来要求Doxygen在处理时，只针对特定的档案进行动作。 <br>例如：您希望对目录下的扩展名为.c, .cpp及.h的档案作处理。您可设定FILE_PATTERNS = *.c, *.cpp, *.h。</td>
+</tr>
+<tr>
+<td>RECURSIVE</td>
+<td>这是一个布尔值的Tag，只接受YES或NO。当设定为YES时，INPUT所指定目录的所有子目录都会被处理。</td>
+</tr>
+<tr>
+<td>EXCLUDE</td>
+<td>如果您有某几个特定档案或是目录，不希望经过Doxygen处理。您可在这个Tag中指定。</td>
+</tr>
+<tr>
+<td><code>EXCLUDE_PATTERNS</code></td>
+<td>类似于FILE_PATTERNS的用法，只是这个Tag是供EXCLUDE所使用。</td>
+</tr>
+<tr>
+<td>GENERATE_HTML</td>
+<td>若设定为YES ，就会产生HTML版本的说明文件。HTML文件是Doxygen预设产生的格式之一。</td>
+</tr>
+<tr>
+<td>HTML_OUTPUT</td>
+<td>HTML文件的输出目录。这是一个相对路径，所以实际的路径为 OUTPUT_DIRECTORY加上HTML_OUTPUT。这个设定预设为html。</td>
+</tr>
+<tr>
+<td>GENERATE_HTMLHELP</td>
+<td>是否生成压缩HTML格式文档（.chm）</td>
+</tr>
+<tr>
+<td>HTML_HEADER</td>
+<td>要使用在每一页HTML文件中的Header。如果没有指定，Doxygen会使用自己预设的Header。</td>
+</tr>
+<tr>
+<td>HTML_FOOTER</td>
+<td>要使用在每一页HTML文件中的Footer。如果没有指定，Doxygen会使用自己预设的Footer。</td>
+</tr>
+<tr>
+<td>GENERATE_HTMLHELP</td>
+<td>如设定为YES，Doxygen会产生一个索引文件。这个索引文件在您需要制作windows 上的HTML格式的HELP档案时会用的上。</td>
+</tr>
+<tr>
+<td>GENERATE_TREEVIEW</td>
+<td>若设定为YES，Doxygen会帮您产生一个树状结构，在画面左侧。这个树状结构是以JavaScript所写成。所以需要新版的Browser才能正确显示。</td>
+</tr>
+<tr>
+<td>GENERATE_LATEX</td>
+<td>设定为YES 时，会产生LaTeX 的文件。不过您的系统必需要有安装LaTeX 的相关工具。</td>
+</tr>
+<tr>
+<td>LATEX_OUTPUT</td>
+<td>LaTeX文件的输出目录，与HTML_OUTPUT用法相同，一样是指在OUTPUT_DIRECTORY之下的路径。预设为latex。</td>
+</tr>
+<tr>
+<td>CLASS_DIAGRAMS</td>
+<td>这个标记用来生成类继承层次结构图。要想生成更好的视图，可以从 Graphviz 下载站点 下载 dot 工具。Doxyfile 中的以下标记用来生成图表</td>
+</tr>
+<tr>
+<td><code>HAVE_DOT</code></td>
+<td>如果这个标记设置为 Yes，doxygen 就使用 dot 工具生成更强大的图形，比如帮助理解类成员及其数据结构的协作图。注意，如果这个标记设置为 Yes，<class_diagrams> 标记就无效了</class_diagrams></td>
+</tr>
+<tr>
+<td>CLASS_GRAPH</td>
+<td>如果 <have_dot> 标记和这个标记同时设置为 Yes，就使用 dot 生成继承层次结构图</have_dot></td>
+</tr>
+<tr>
+<td>GRAPHICAL_HIERARCHY</td>
+<td>设置为YES时，将会绘制一个图形表示的类图结构</td>
+</tr>
+<tr>
+<td><code>&lt;CLASS_GRAPH&gt;</code></td>
+<td>如果 <have_dot> 标记和这个标记同时设置为 Yes，就使用 dot 生成继承层次结构图，而且其外观比只使用 <class_diagrams> 时更丰富。</class_diagrams></have_dot></td>
+</tr>
+<tr>
+<td><code>&lt;COLLABORATION_GRAPH&gt;</code></td>
+<td>如果 <have_dot> 标记和这个标记同时设置为 Yes，doxygen 会生成协作图（还有继承图），显示各个类成员（即包含）及其继承层次结构。</have_dot></td>
+</tr>
+<tr>
+<td><code>&lt;CALL_GRAPH&gt;</code></td>
+<td>如果 <have_dot> 标记和这个标记同时设置为 Yes，就使用 dot 生成调用全局函数或者类函数的依赖图</have_dot></td>
+</tr>
+<tr>
+<td><code>&lt;CALLER_GRAPH&gt;</code></td>
+<td>如果 <have_dot> 标记和这个标记同时设置为 Yes，就使用 dot 生成被调用全局函数或者类函数的依赖图</have_dot></td>
+</tr>
+</tbody></table>
+<p>修改 DoxyFile 文件，主要修改以下几项：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CALL_GRAPH = YES</span><br><span class="line">CALLER_GRAPH = YES</span><br><span class="line">HAVE_DOT = YES</span><br><span class="line">RECURSIVE = YES  （递归检索文件）</span><br><span class="line">EXTRACT_ALL = YES (把源文件，注释都解析出来)</span><br><span class="line">GENERATE_LATEX = NO (不生成Latex)</span><br></pre></td></tr></table></figure>
+
+<p>过滤不必要的目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">EXCLUDE_PATTERNS = */.git/*</span><br><span class="line">EXCLUDE_PATTERNS += */docs/*</span><br><span class="line">EXCLUDE_PATTERNS += */test/*</span><br></pre></td></tr></table></figure>
+
+<h2 id="Windows-1"><a href="#Windows-1" class="headerlink" title="Windows"></a>Windows</h2><p>对于从图形界面操作，运行 <code>path_to/doxygen/bin/doxywizard.exe</code> 可执行文件。<br>逐一按照要求去完成配置，可以参考 <a href="https://blog.csdn.net/u013354805/article/details/51866991" target="_blank" rel="noopener">https://blog.csdn.net/u013354805/article/details/51866991</a> ，注意 <code>DOT_PATH</code> 填写 Graphviz的可执行文件所在文件夹路径，比如 <code>D:/Graphviz/bin</code> 。</p>
+<p>如果已经保存了配置文件Doxygen，可以从 <code>File-&gt;Open</code> 来打开。</p>
+<h2 id="运行-doxygen"><a href="#运行-doxygen" class="headerlink" title="运行 doxygen"></a>运行 doxygen</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doxygen Doxyfile</span><br></pre></td></tr></table></figure>
+
+<p>在生成文档期间，在 <code>&lt;OUTPUT_DIRECTORY&gt;</code> 标记指定的文件夹中，会创建两个子文件夹 <code>html</code> 和 <code>latex</code> ，直接打开 <em>html/index.html</em> 即可看到结果。  </p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://www.jianshu.com/p/4e4ce6d6c666" target="_blank" rel="noopener">Doxygen 的使用</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/aix/library/au-learningdoxygen/index.html" target="_blank" rel="noopener">学习用 doxygen 生成源码文档</a></li>
+<li><a href="http://www.doxygen.nl/download.html" target="_blank" rel="noopener">http://www.doxygen.nl/download.html</a></li>
+<li><a href="https://graphviz.gitlab.io/download/" target="_blank" rel="noopener">https://graphviz.gitlab.io/download/</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/tools/">tools</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/doxgen/">doxgen</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2019/01/09/doxygen源码文档生成器/" data-title="doxygen源码文档生成器 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2019/01/16/Gitlab的搭建/" title="Gitlab的搭建">
+  <strong>上一篇：</strong><br>
+  <span>
+  Gitlab的搭建</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/12/21/CUDA内存介绍/" title="CUDA内存介绍">
+ <strong>下一篇：</strong><br> 
+ <span>CUDA内存介绍
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装-doxygen"><span class="toc-number">1.</span> <span class="toc-text">安装 doxygen</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu-Debian"><span class="toc-number">1.1.</span> <span class="toc-text">Ubuntu/Debian</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows"><span class="toc-number">1.2.</span> <span class="toc-text">Windows</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用-doxygen-生成文档"><span class="toc-number">2.</span> <span class="toc-text">使用 doxygen 生成文档</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#生成配置文件"><span class="toc-number">2.1.</span> <span class="toc-text">生成配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编辑配置文件"><span class="toc-number">2.2.</span> <span class="toc-text">编辑配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-1"><span class="toc-number">2.3.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行-doxygen"><span class="toc-number">2.4.</span> <span class="toc-text">运行 doxygen</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

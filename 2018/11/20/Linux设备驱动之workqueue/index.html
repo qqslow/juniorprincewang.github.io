@@ -1,0 +1,792 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>Linux设备驱动之workqueue | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="工作队列是一种将工作推后执行的形式，交由一个内核线程去执行在进程上下文执行，其不能访问用户空间。最重要特点的就是工作队列允许重新调度甚至是睡眠。">
+<meta name="keywords" content="workqueue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux设备驱动之workqueue">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/11/20/Linux设备驱动之workqueue/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="工作队列是一种将工作推后执行的形式，交由一个内核线程去执行在进程上下文执行，其不能访问用户空间。最重要特点的就是工作队列允许重新调度甚至是睡眠。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.200Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux设备驱动之workqueue">
+<meta name="twitter:description" content="工作队列是一种将工作推后执行的形式，交由一个内核线程去执行在进程上下文执行，其不能访问用户空间。最重要特点的就是工作队列允许重新调度甚至是睡眠。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/11/20/Linux设备驱动之workqueue/" title="Linux设备驱动之workqueue" itemprop="url">Linux设备驱动之workqueue</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-11-20T09:37:48.000Z" itemprop="datePublished"> Published 2018-11-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数据结构"><span class="toc-number">1.</span> <span class="toc-text">数据结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建步骤"><span class="toc-number">2.</span> <span class="toc-text">创建步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#静态地创建work工作"><span class="toc-number">2.1.</span> <span class="toc-text">静态地创建work工作:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态地创建work工作"><span class="toc-number">2.2.</span> <span class="toc-text">动态地创建work工作:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#清除或取消工作队列中的work工作"><span class="toc-number">2.3.</span> <span class="toc-text">清除或取消工作队列中的work工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建销毁workqueue"><span class="toc-number">2.4.</span> <span class="toc-text">创建销毁workqueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用内核提供的共享列队"><span class="toc-number">2.5.</span> <span class="toc-text">使用内核提供的共享列队</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用自定义队列"><span class="toc-number">2.6.</span> <span class="toc-text">使用自定义队列</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#样例代码"><span class="toc-number">3.</span> <span class="toc-text">样例代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>工作队列是一种将工作推后执行的形式，交由一个内核线程去执行在进程上下文执行，其不能访问用户空间。最重要特点的就是工作队列允许重新调度甚至是睡眠。</p>
+<a id="more"></a>
+
+<p>在内核代码中, 经常希望延缓部分工作到将来某个时间执行, 这样做的原因很多, 比如</p>
+<ul>
+<li>在持有锁时做大量(或者说费时的)工作不合适。</li>
+<li>希望将工作聚集以获取批处理的性能。</li>
+<li>调用了一个可能导致睡眠的函数使得在此时执行新调度非常不合适。<br>…<br>内核中提供了许多机制来提供延迟执行, 使用最多则是 workqueue。</li>
+</ul>
+<p>工作队列（workqueue）是另外一种将工作推后执行的形式.工作队列可以把工作推后，交由一个内核线程去执行，也就是说，这个下半部分可以在进程上下文中执行。最重要的就是工作队列允许被重新调度甚至是睡眠。</p>
+<p>对于使用者，基本上只需要做 3 件事情，依次为：</p>
+<ul>
+<li>创建工作队列 ( 如果使用内核默认的工作队列，连这一步都可以省略掉 )</li>
+<li>创、建工作项</li>
+<li>向工作队列中提交工作项</li>
+</ul>
+<p>执行在进程上下文中，这样使得它可以睡眠，被调度及被抢占，在多核环境下的使用也非常友好。</p>
+<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><ul>
+<li><p>工作：<br>所谓work就是异步执行的函数。用数据结构 <code>struct work_struct</code> 表示。</p>
+</li>
+<li><p>工作队列： <code>struct workqueue_struct</code></p>
+</li>
+</ul>
+<p>如果是多线程，Linux根据当前系统CPU的个数创建 <code>struct cpu_workqueue_struct</code>:</p>
+<p>包含的头文件为 <code>&lt;linux/workqueue.h&gt;</code></p>
+<h1 id="创建步骤"><a href="#创建步骤" class="headerlink" title="创建步骤"></a>创建步骤</h1><h2 id="静态地创建work工作"><a href="#静态地创建work工作" class="headerlink" title="静态地创建work工作:"></a>静态地创建work工作:</h2><p> 静态地创建一个名为n，待执行函数为f，函数的参数为data的work_struct结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#define DECLARE_WORK(n, f)                    \ </span><br><span class="line">    struct work_struct n = __WORK_INITIALIZER(n, f)</span><br><span class="line"></span><br><span class="line">#define DECLARE_DELAYED_WORK(n, f)                \ </span><br><span class="line">    struct delayed_work n = __DELAYED_WORK_INITIALIZER(n, f)</span><br></pre></td></tr></table></figure>
+
+<p>一般而言，work都是推迟到worker thread被调度的时刻，但是有时候，我们希望在指定的时间过去之后再调度worker thread来处理该work，这种类型的work被称作delayed work，DECLARE_DELAYED_WORK用来初始化delayed work，它的概念和普通work类似。</p>
+<h2 id="动态地创建work工作"><a href="#动态地创建work工作" class="headerlink" title="动态地创建work工作:"></a>动态地创建work工作:</h2><p>动态创建初始化的时候需要把work的指针传递给 <code>INIT_WORK</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INIT_WORK(struct work_struct work, work_func_t func); </span><br><span class="line">PREPARE_WORK(struct work_struct work, work_func_t func); </span><br><span class="line">INIT_DELAYED_WORK(struct delayed_work work, work_func_t func); </span><br><span class="line">PREPARE_DELAYED_WORK(struct delayed_work work, work_func_t func);</span><br></pre></td></tr></table></figure>
+
+<h2 id="清除或取消工作队列中的work工作"><a href="#清除或取消工作队列中的work工作" class="headerlink" title="清除或取消工作队列中的work工作"></a>清除或取消工作队列中的work工作</h2><p>想清理特定的任务项目并阻塞任务， 直到任务完成为止， 可以调用 <code>flush_work</code> 来实现。<br>指定工作队列中的所有任务能够通过调用 <code>flush_workqueue</code> 来完成。 这两种情形下，调用者阻塞直到操作完成为止。<br>为了清理内核全局工作队列，可调用 <code>flush_scheduled_work</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int flush_work( struct work_struct *work );</span><br><span class="line">int flush_workqueue( struct workqueue_struct *wq );</span><br><span class="line">void flush_scheduled_work( void );</span><br></pre></td></tr></table></figure>
+
+<p>还没有在处理程序当中执行的任务可以被取消。 调用 <code>cancel_work_sync</code> 将会终止队列中的任务或者阻塞任务直到回调结束（如果处理程序已经在处理该任务）。 如果任务被延迟，可以调用 <code>cancel_delayed_work_sync</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int cancel_work_sync( struct work_struct *work );</span><br><span class="line">int cancel_delayed_work_sync( struct delayed_work *dwork );</span><br></pre></td></tr></table></figure>
+
+<p>最后，可以通过调用 <code>work_pending</code> 或者 <code>delayed_work_pending</code> 来确定任务项目是否在进行中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">work_pending( work );</span><br><span class="line">delayed_work_pending( work );</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建销毁workqueue"><a href="#创建销毁workqueue" class="headerlink" title="创建销毁workqueue"></a>创建销毁workqueue</h2><ul>
+<li><p>用于创建一个workqueue队列，为系统中的每个CPU都创建一个内核线程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct workqueue_struct *create_workqueue(const char *name);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用于创建workqueue，只创建一个内核线程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct workqueue_struct *create_singlethread_workqueue(const char *name);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>释放workqueue队列。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void destroy_workqueue(struct workqueue_struct *queue);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="使用内核提供的共享列队"><a href="#使用内核提供的共享列队" class="headerlink" title="使用内核提供的共享列队"></a>使用内核提供的共享列队</h2><p>系统中包括若干的workqueue，最著名的workqueue就是系统缺省的的工作队列 <code>keventd_wq</code> 了，定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static struct workqueue_struct *keventd_wq __read_mostly;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>对工作进行调度，即把给定工作的处理函数提交给缺省的工作队列和工作线程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int schedule_work(struct work_struct *work);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确保没有工作队列入口在系统中任何地方运行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void flush_scheduled_work(void);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>延时执行一个任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int schedule_delayed_work(struct delayed_struct *work, unsigned long delay);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从一个工作队列中去除入口;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int cancel_delayed_work(struct delayed_struct *work);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="使用自定义队列"><a href="#使用自定义队列" class="headerlink" title="使用自定义队列"></a>使用自定义队列</h2><ul>
+<li><p>将工作加入工作列队进行调度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int queue_work(struct workqueue_struct *wq, struct work_struct *work)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>释放创建的工作列队资源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void destroy_workqueue(struct workqueue_struct *wq)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>延时调用指定工作列队的工作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">queue_delayed_work(struct workqueue_struct *wq, struct delay_struct *work, unsigned long delay)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取消指定工作列队的延时工作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cancel_delayed_work(struct delay_struct *work)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>等待列队中的任务全部执行完毕。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void flush_workqueue(struct workqueue_struct *wq);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="样例代码"><a href="#样例代码" class="headerlink" title="样例代码"></a>样例代码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/* https://github.com/cirosantilli/linux-kernel-module-cheat#workqueues */</span><br><span class="line"></span><br><span class="line">#include &lt;linux/kernel.h&gt;</span><br><span class="line">#include &lt;linux/module.h&gt;</span><br><span class="line">#include &lt;linux/workqueue.h&gt;</span><br><span class="line"></span><br><span class="line">static struct workqueue_struct *queue;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static void work_func(struct work_struct *work)</span><br><span class="line">&#123;</span><br><span class="line">	printk(KERN_INFO &quot;worker\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DECLARE_WORK(work, work_func);</span><br><span class="line"></span><br><span class="line">static int myinit(void)</span><br><span class="line">&#123;</span><br><span class="line">	queue = create_workqueue(&quot;myworkqueue&quot;);</span><br><span class="line">	queue_work(queue, &amp;work);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static void myexit(void)</span><br><span class="line">&#123;</span><br><span class="line">	destroy_workqueue(queue);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module_init(myinit)</span><br><span class="line">module_exit(myexit)</span><br><span class="line">MODULE_LICENSE(&quot;GPL&quot;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://www.oreilly.com/library/view/understanding-the-linux/0596005652/ch04s08.html" target="_blank" rel="noopener">4.8. Work Queues Understanding the Linux Kernel, 3rd Edition by Marco Cesati, Daniel P. Bovet</a></li>
+<li><a href="http://www.wowotech.net/irq_subsystem/workqueue.html" target="_blank" rel="noopener">Concurrency Managed Workqueue之（一）：workqueue的基本概念</a></li>
+<li><a href="http://www.embeddedlinux.org.cn/emb-linux/system-development/201709/30-7472.html" target="_blank" rel="noopener">linux工作队列</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-cncrrc-mngd-wkq/index.html" target="_blank" rel="noopener">Linux 的并发可管理工作队列机制探讨</a></li>
+<li><a href="https://blog.csdn.net/angle_birds/article/details/8448070" target="_blank" rel="noopener">工作队列(workqueue) create_workqueue/schedule_work/queue_work</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/linux/l-tasklets/index.html" target="_blank" rel="noopener">内核 API，第 2 部分：可延迟函数、内核微线程以及工作队列</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/workqueue/">workqueue</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/11/20/Linux设备驱动之workqueue/" data-title="Linux设备驱动之workqueue | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/11/20/Linux内核宏offsetof与container-of/" title="Linux内核宏offsetof与container_of">
+  <strong>上一篇：</strong><br>
+  <span>
+  Linux内核宏offsetof与container_of</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/11/20/Linux-od-命令/" title="Linux od 命令">
+ <strong>下一篇：</strong><br> 
+ <span>Linux od 命令
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数据结构"><span class="toc-number">1.</span> <span class="toc-text">数据结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建步骤"><span class="toc-number">2.</span> <span class="toc-text">创建步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#静态地创建work工作"><span class="toc-number">2.1.</span> <span class="toc-text">静态地创建work工作:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态地创建work工作"><span class="toc-number">2.2.</span> <span class="toc-text">动态地创建work工作:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#清除或取消工作队列中的work工作"><span class="toc-number">2.3.</span> <span class="toc-text">清除或取消工作队列中的work工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建销毁workqueue"><span class="toc-number">2.4.</span> <span class="toc-text">创建销毁workqueue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用内核提供的共享列队"><span class="toc-number">2.5.</span> <span class="toc-text">使用内核提供的共享列队</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用自定义队列"><span class="toc-number">2.6.</span> <span class="toc-text">使用自定义队列</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#样例代码"><span class="toc-number">3.</span> <span class="toc-text">样例代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

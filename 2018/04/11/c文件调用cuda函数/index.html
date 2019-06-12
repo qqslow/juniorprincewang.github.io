@@ -1,0 +1,747 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>c文件调用cuda函数 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="经过无数次的折腾，终于成功在C文件中调用了cu文件里面定义的函数。">
+<meta name="keywords" content="CUDA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c文件调用cuda函数">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/04/11/c文件调用cuda函数/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="经过无数次的折腾，终于成功在C文件中调用了cu文件里面定义的函数。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.230Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c文件调用cuda函数">
+<meta name="twitter:description" content="经过无数次的折腾，终于成功在C文件中调用了cu文件里面定义的函数。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/11/c文件调用cuda函数/" title="c文件调用cuda函数" itemprop="url">c文件调用cuda函数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-04-11T09:30:30.000Z" itemprop="datePublished"> Published 2018-04-11</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#c文件调用-cu文件的函数"><span class="toc-number">1.</span> <span class="toc-text">.c文件调用.cu文件的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#解决办法"><span class="toc-number">1.1.</span> <span class="toc-text">解决办法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c文件调用-cu文件生成的-so库"><span class="toc-number">2.</span> <span class="toc-text">.c文件调用.cu文件生成的.so库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#可能遇到的错误"><span class="toc-number">3.</span> <span class="toc-text">可能遇到的错误</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#error-while-loading-shared-libraries-XXX-so"><span class="toc-number">3.1.</span> <span class="toc-text">error while loading shared libraries:XXX.so</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>经过无数次的折腾，终于成功在C文件中调用了cu文件里面定义的函数。</p>
+<a id="more"></a>
+
+<p><code>*.c</code> 文件可以用 <code>gcc</code> 或者 <code>g++</code> 编译， <code>*.cu</code> 文件需要用 <code>nvcc</code> 编译器编译，所以 </p>
+<h1 id="c文件调用-cu文件的函数"><a href="#c文件调用-cu文件的函数" class="headerlink" title=".c文件调用.cu文件的函数"></a>.c文件调用.cu文件的函数</h1><p>有三个文件， <code>b.h</code> 中声明了 <code>kernel_wrapper</code> 函数，在 <code>b.cu</code> 中实现， <code>a.c</code> 需要调用 <code>kernel_wrapper</code> 函数。</p>
+<p><code>b.h</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#ifndef __B_H_</span><br><span class="line">#define __B_H_</span><br><span class="line"></span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;cuda.h&gt;</span><br><span class="line">#include &lt;cuda_runtime.h&gt;</span><br><span class="line">void kernel_wrapper(int *a);</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p><code>b.cu</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;b.h&quot;</span><br><span class="line"></span><br><span class="line">__global__ void kernel(int *a)</span><br><span class="line">&#123;</span><br><span class="line">	int tx = threadIdx.x; </span><br><span class="line">	switch( tx )</span><br><span class="line">	&#123;</span><br><span class="line">		case 0:</span><br><span class="line">			a[tx] = a[tx] + 2;</span><br><span class="line">			break;</span><br><span class="line">		case 1:</span><br><span class="line">			a[tx] = a[tx] + 3;</span><br><span class="line">			break;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">void kernel_wrapper(int *a)</span><br><span class="line">&#123;</span><br><span class="line">	int *d_a;</span><br><span class="line">	dim3 threads( 2, 1 );</span><br><span class="line">	dim3 blocks( 1, 1 );</span><br><span class="line">	cudaMalloc( (void **)&amp;d_a, sizeof(int) * 2 );</span><br><span class="line">	cudaMemcpy( d_a, a, sizeof(int) * 2, cudaMemcpyHostToDevice );</span><br><span class="line">	kernel&lt;&lt;&lt; blocks, threads &gt;&gt;&gt;( d_a );</span><br><span class="line">	cudaMemcpy( a, d_a, sizeof(int) * 2, cudaMemcpyDeviceToHost );</span><br><span class="line">	printf( &quot;Finish kernel wrapper\n&quot; );</span><br><span class="line">	cudaFree(d_a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>a.c</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;b.h&quot;</span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">	int *a = (int *)malloc(sizeof(int) * 2);</span><br><span class="line">	a[0] = 2;</span><br><span class="line">	a[1] = 3;</span><br><span class="line">	printf( &quot;a[0]: %d, a[1]: %d\n&quot;, a[0], a[1] );</span><br><span class="line">	kernel_wrapper(a);</span><br><span class="line">	printf( &quot;a[0]: %d, a[1]: %d\n&quot;, a[0], a[1] );</span><br><span class="line">	free(a);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Makefile</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">run: a.o b.o</span><br><span class="line">	gcc -L /usr/local/cuda/lib64 -o run a.o b.o -lcudart -lcuda</span><br><span class="line"></span><br><span class="line">a.o: a.c b.h</span><br><span class="line">	gcc -I /usr/local/cuda/include -c -o a.o a.c</span><br><span class="line"></span><br><span class="line">b.o: b.cu b.h</span><br><span class="line">	nvcc -c -o b.o b.cu</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-I</code> 告诉编译器查找头文件的位置。</li>
+<li><code>-L</code> 告诉链接器查找需要链接库的位置。</li>
+<li><code>-l</code> 告诉链接器链接的库文件，通常的名字是不加 <code>lib</code>的，比如 <code>libcudart.so</code> 这里写 <code>cudart</code> 。</li>
+</ul>
+<p>现在进行编译，输入 <code>make</code>，得到报错信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">undefined reference to `kernel_wrapper&apos;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>正如开头所说的， <code>nvcc</code> 使用 <code>C++</code> 编译器 <code>g++</code>，而 <code>c</code> 文件要链接由 <code>g++</code> 编译的库，因此会报错。</p>
+<p>解决办法就是告诉编译器，函数以 <code>c</code> 的方式来编译封装接口，而函数中的 <code>C++</code> 语法还是用 <code>C++</code> 来编译。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// b.cu</span><br><span class="line"></span><br><span class="line">extern &quot;C&quot; &#123;</span><br><span class="line">	#include &quot;b.h&quot;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">extern &quot;C&quot; void kernel_wrapper(int *a)</span><br><span class="line">&#123;</span><br><span class="line">	int *d_a;</span><br><span class="line">	dim3 threads( 2, 1 );</span><br><span class="line">	dim3 blocks( 1, 1 );</span><br><span class="line">	cudaMalloc( (void **)&amp;d_a, sizeof(int) * 2 );</span><br><span class="line">	cudaMemcpy( d_a, a, sizeof(int) * 2, cudaMemcpyHostToDevice );</span><br><span class="line">	kernel&lt;&lt;&lt; blocks, threads &gt;&gt;&gt;( d_a );</span><br><span class="line">	cudaMemcpy( a, d_a, sizeof(int) * 2, cudaMemcpyDeviceToHost );</span><br><span class="line">	printf( &quot;Finish kernel wrapper\n&quot; );</span><br><span class="line">	cudaFree(d_a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而且需要注意的是 CUDA 共享库需要在目标文件(*.o)后使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -L /usr/local/cuda/lib64 -o run a.o b.o -lcudart -lcuda</span><br></pre></td></tr></table></figure>
+
+<p>另一方法是使用 <code>g++</code> 或者 <code>nvcc</code> 来链接，还未尝试。</p>
+<h1 id="c文件调用-cu文件生成的-so库"><a href="#c文件调用-cu文件生成的-so库" class="headerlink" title=".c文件调用.cu文件生成的.so库"></a>.c文件调用.cu文件生成的.so库</h1><p>还是上述修改过后的文件。</p>
+<p>编译 <code>b.cu</code> 文件为 <code>libcudab.so</code> 动态链接库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc --shared --compiler-options &quot;-fpic -shared&quot; b.cu -o libcudab.so -I /usr/local/cuda/include -L /usr/local/cuda/lib64 -lcudart -lcublas</span><br></pre></td></tr></table></figure>
+
+<p>再编译并链接 <code>a.c</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o main a.c -L. -lcudab -I /usr/local/cuda/include</span><br></pre></td></tr></table></figure>
+
+<h1 id="可能遇到的错误"><a href="#可能遇到的错误" class="headerlink" title="可能遇到的错误"></a>可能遇到的错误</h1><h2 id="error-while-loading-shared-libraries-XXX-so"><a href="#error-while-loading-shared-libraries-XXX-so" class="headerlink" title="error while loading shared libraries:XXX.so"></a>error while loading shared libraries:XXX.so</h2><ol>
+<li>如果共享库安装到了 <code>/lib</code> 或者 <code>/usr/lib</code> 目录下，需要执行一下 <code>ldconfig</code> 命令。</li>
+</ol>
+<p><code>ldconfig</code> 命令的用途，主要是在默认搜寻目录(<code>/lib</code> 和 <code>/usr/lib</code> )以及动态库配置文件 <code>/etc/ld.so.conf</code>内所列的目录下，搜索出可共享的动态链接库(格式如 <code>lib*.so*</code> )，进而创建出动态装入程序( <code>ld.so</code> )所需的连接和缓存文件。缓存文件默认为 <code>/etc/ld.so.cache</code> ，此文件保存已排好序的动态链接库名字列表。</p>
+<ol start="2">
+<li>如果共享库文件安装到了 <code>/usr/local/lib</code> （很多开源的共享库都会安装到该目录下）或其它 “非/lib或/usr/lib” 目录下, 那么在执行 <code>ldconfig</code> 命令前，还要把新共享库目录加入到共享库配置文件 <code>/etc/ld.so.conf</code> 中, 如下:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># cat /etc/ld.so.conf</span><br><span class="line">include /etc/ld.so.conf.d/*.conf</span><br><span class="line"># echo &quot;/usr/local/lib&quot; &gt;&gt; /etc/ld.so.conf</span><br><span class="line"># ldconfig</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>如果共享库文件安装到了其它 “非/lib或/usr/lib” 目录下，但是又不想在 <code>/etc/ld.so.conf</code> 中加路径（或者是没有权限加路径）。那可以 <code>export</code> 一个全局变量 <code>LD_LIBRARY_PATH</code> ，然后运行程序的时候就会去这个目录中找共享库.。</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1] <a href="https://stackoverflow.com/questions/13553015/cuda-c-linker-error-undefined-reference" target="_blank" rel="noopener">Cuda C - Linker error - undefined reference
+</a><br>[2] <a href="https://blog.csdn.net/wang11234514/article/details/24034969" target="_blank" rel="noopener">在.c文件中调用c++定义的函数</a><br>[3] <a href="https://blog.csdn.net/u012816621/article/details/52334622" target="_blank" rel="noopener">Linux下c和cuda混合编译，并生成动态链接库.so和使用</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/CUDA/">CUDA</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/CUDA/">CUDA</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/04/11/c文件调用cuda函数/" data-title="c文件调用cuda函数 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/04/13/kvm虚拟机磁盘扩容/" title="kvm虚拟机磁盘扩容">
+  <strong>上一篇：</strong><br>
+  <span>
+  kvm虚拟机磁盘扩容</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/04/RedTiger-s-Hackit-writeup/" title="RedTiger&#39;s Hackit writeup">
+ <strong>下一篇：</strong><br> 
+ <span>RedTiger&#39;s Hackit writeup
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#c文件调用-cu文件的函数"><span class="toc-number">1.</span> <span class="toc-text">.c文件调用.cu文件的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#解决办法"><span class="toc-number">1.1.</span> <span class="toc-text">解决办法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c文件调用-cu文件生成的-so库"><span class="toc-number">2.</span> <span class="toc-text">.c文件调用.cu文件生成的.so库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#可能遇到的错误"><span class="toc-number">3.</span> <span class="toc-text">可能遇到的错误</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#error-while-loading-shared-libraries-XXX-so"><span class="toc-number">3.1.</span> <span class="toc-text">error while loading shared libraries:XXX.so</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

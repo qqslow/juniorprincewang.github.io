@@ -1,0 +1,812 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>nouveau安装 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="本篇博客介绍了nouveau安装以及卸载nouveau遇到的Error: Module nouveau is in use 问题。">
+<meta name="keywords" content="nouveau">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nouveau安装">
+<meta property="og:url" content="http://juniorprincewang.github.io/2019/01/25/nouveau安装/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="本篇博客介绍了nouveau安装以及卸载nouveau遇到的Error: Module nouveau is in use 问题。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.251Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nouveau安装">
+<meta name="twitter:description" content="本篇博客介绍了nouveau安装以及卸载nouveau遇到的Error: Module nouveau is in use 问题。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/01/25/nouveau安装/" title="nouveau安装" itemprop="url">nouveau安装</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2019-01-25T01:58:32.000Z" itemprop="datePublished"> Published 2019-01-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装nouveau"><span class="toc-number">1.</span> <span class="toc-text">安装nouveau</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#卸载NVIDIA-CUDA-8-0"><span class="toc-number">1.1.</span> <span class="toc-text">卸载NVIDIA CUDA-8.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遇到得问题"><span class="toc-number">1.2.</span> <span class="toc-text">遇到得问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译安装nouveau"><span class="toc-number">1.3.</span> <span class="toc-text">编译安装nouveau</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rmmod-ERROR-Module-nouveau-is-in-use"><span class="toc-number">2.</span> <span class="toc-text">rmmod: ERROR: Module nouveau is in use</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#禁用nouveau"><span class="toc-number">2.1.</span> <span class="toc-text">禁用nouveau</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deactivating-KMS-and-unloading-Nouveau"><span class="toc-number">2.2.</span> <span class="toc-text">Deactivating KMS and unloading Nouveau</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>本篇博客介绍了nouveau安装以及卸载nouveau遇到的<em>Error: Module nouveau is in use</em> 问题。</p>
+<a id="more"></a>
+
+<h1 id="安装nouveau"><a href="#安装nouveau" class="headerlink" title="安装nouveau"></a>安装nouveau</h1><p><a href="https://nouveau.freedesktop.org/wiki/InstallNouveau/" target="_blank" rel="noopener">nouveau官网给出了正确的安装姿势</a>，分成两种，一种是直接安装各种Linux的操作系统，因为Kernel里面已经自带nouveau了。  而我们要做的是第二种，从源码编译Nouveau再安装。</p>
+<h2 id="卸载NVIDIA-CUDA-8-0"><a href="#卸载NVIDIA-CUDA-8-0" class="headerlink" title="卸载NVIDIA CUDA-8.0"></a>卸载NVIDIA CUDA-8.0</h2><blockquote>
+<p>Nouveau is incompatible with NVIDIA’s proprietary driver. If you want to use Nouveau, you first need to remove the proprietary driver from your system.</p>
+</blockquote>
+<p>先删除cuda-8.0驱动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line"><span class="meta">#</span><span class="bash">然后 ctrl+Alt+F1，输入账号，密码登入</span></span><br><span class="line">cd /usr/local/cuda-8.0/bin</span><br><span class="line">sudo ./uninstall_cua_8.0.pl</span><br></pre></td></tr></table></figure>
+
+<h2 id="遇到得问题"><a href="#遇到得问题" class="headerlink" title="遇到得问题"></a>遇到得问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo modprobe nvidia</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>modprobe: ERROR: ../libkmod/libkmod-module.c:832 kmod_module_insert_module() could not find module by name=’off’<br>modprobe: ERROR: could not insert ‘off’: Unknown symbol in module, or unknown parameter (see dmesg)</p>
+</blockquote>
+<p>nvidia可能将nouveau禁止启动了，将其开启。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/modprobe.d/nvidia-graphics-drivers.conf</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>blacklist nouveau<br>blacklist lbm-nouveau<br>alias nouveau off<br>alias lbm-nouveau off</p>
+</blockquote>
+<p>查看 <em>/etc/modprobe.d/blacklist.conf</em> ，看是否禁用了nouveau</p>
+<blockquote>
+<p>blacklist nouveau<br>options nouveau modeset=0</p>
+</blockquote>
+<p>删除所有 nvidia* packages</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove --purge nvidia-*</span><br></pre></td></tr></table></figure>
+
+<p>然后安装nouveau驱动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo modprobe nouveau</span><br></pre></td></tr></table></figure>
+
+<p>查看显卡驱动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lspci -s 01:00.0 -vvv</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Kernel driver in use: nvidia<br>Kernel modules: …, nouveau</p>
+</blockquote>
+<p>这里nvidia驱动已经卸载了，为何nouveau还没有生效。<br>不要慌，遇到不行的问题，重启试试！<br><strong>重启</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<p>启动后</p>
+<blockquote>
+<p>Kernel driver in use: nouveau</p>
+</blockquote>
+<h2 id="编译安装nouveau"><a href="#编译安装nouveau" class="headerlink" title="编译安装nouveau"></a>编译安装nouveau</h2><p>nouvea分成了4部分</p>
+<ul>
+<li>Nouveau DRM : The privileged part of Nouveau, running in the kernel;</li>
+<li>Libdrm : A library that wraps the DRM &amp; Nouveau IOCTLs, it simplifies memory management and command submission;</li>
+<li>xf86-video-nouveau : The device-dependent part of X (DDX) for NVIDIA cards whose role is to provide 2D acceleration (EXA) and some simple video acceleration (XV);</li>
+<li>Mesa : It provides 3D, GPGPU and video acceleration to open source drivers. For more information, please read MesaDrivers.</li>
+</ul>
+<p>我们关注的是 Nouveau DRM 和Libdrm。</p>
+<p>DRM是在 Kernel-2.6.33 引入的，但是Linus的Linux Kernel总是会比nouveau自己的git更新落后些。</p>
+<p>nouveau的 out-of-tree 版本 ，选取 <strong>linux-4.4</strong> 分支。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/skeggsb/nouveau.git</span><br><span class="line">git checkout linux-4.4</span><br></pre></td></tr></table></figure>
+
+<p>此版本主要由开发人员或测试人员使用，他们经常使用一些自定义补丁重新编译内核。<br>out-of-the-tree 构建只会重新编译nouveau驱动程序，比重新编译完整内核快几个数量级。<br>但是，它必须针对<strong>兼容的内核</strong>，因为它依赖于许多内部内核API。  </p>
+<p>编译指令为：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd nouveau/drm</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>然后 <code>insmod</code> <em>drm/nouveau/nouveau.ko</em> 或者 <code>modprobe nouveau</code> 。<br>再查看是否安装成功： <code>lsmod | grep nouveau</code></p>
+<h1 id="rmmod-ERROR-Module-nouveau-is-in-use"><a href="#rmmod-ERROR-Module-nouveau-is-in-use" class="headerlink" title="rmmod: ERROR: Module nouveau is in use"></a>rmmod: ERROR: Module nouveau is in use</h1><p><a href="https://nouveau.freedesktop.org/wiki/KernelModeSetting/" target="_blank" rel="noopener">https://nouveau.freedesktop.org/wiki/KernelModeSetting/</a> 中提到了</p>
+<blockquote>
+<p>Here is an example script to unload Nouveau KMS:<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">echo 0 &gt; /sys/class/vtconsole/vtcon1/bind</span><br><span class="line">rmmod nouveau</span><br><span class="line">/etc/init.d/consolefont restart</span><br><span class="line">rmmod ttm</span><br><span class="line">rmmod drm_kms_helper</span><br><span class="line">rmmod drm</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>上述方法不好使！<br>每次输入上述命令都会死机，之后只能 <code>Control+Alt+Delete</code> 组合键来重启。</p>
+<h2 id="禁用nouveau"><a href="#禁用nouveau" class="headerlink" title="禁用nouveau"></a>禁用nouveau</h2><p>我的办法是启动时候禁用nouveau，然后手动启动nouveau：</p>
+<p>打开 <em>/etc/modprobe.d/blacklist.conf</em> ，并添加禁用nouveau的命令行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br></pre></td></tr></table></figure>
+
+<p>如果再添加 <code>options nouveau modeset=0</code> 命令，就会禁用KMS，我这里不添加此命令，为什么呢？  </p>
+<p>KMS自动提供了 nouveaufb ，这是对虚拟console整合到DRM驱动中的framebuffer 驱动，它提供了高分辨率的文本console。</p>
+<p>当只有一个fb驱动程序时，它会自动运行。 当有多个时，默认使用第一个fb驱动程序（fb0）。 在CONFIG_VT_HW_CONSOLE_BINDING = n 的移交情况下，第一个fb驱动程序未完全卸载，nouveaufb将变为fb1。 这将导致非工作控制台显示，因为控制台绑定到fb0。</p>
+<p>启动KMS的方法： 首先 Kernel 配置 <em>CONFIG_FRAMEBUFFER_CONSOLE</em> ，会得到 fbcon.ko 模块。 而且确保此模块要早于 nouveau.ko 载入。<br>启动nouveau会默认启动 KMS，但是可以用 modeset=0 禁用它。</p>
+<p>确定KMS是否在运行， 查看 <em>/proc/fb</em> ，如果显示 <code>nouveaufb</code> 则证明KMS在运行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@MAX:/home/max# cat /proc/fb </span><br><span class="line">0 nouveaufb</span><br></pre></td></tr></table></figure>
+
+<p>如果禁用了 KMS，则显示默认的 <em>VESA VGA</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@MAX:# cat /proc/fb </span><br><span class="line">0 VESA VGA</span><br><span class="line">root@MAX:# modprobe nouveau</span><br><span class="line">root@MAX:# cat /proc/fb </span><br><span class="line">0 nouveaufb</span><br></pre></td></tr></table></figure>
+
+<h2 id="Deactivating-KMS-and-unloading-Nouveau"><a href="#Deactivating-KMS-and-unloading-Nouveau" class="headerlink" title="Deactivating KMS and unloading Nouveau"></a>Deactivating KMS and unloading Nouveau</h2><p>framebuffer console保留了 nouveaufb 因此不能直接卸载nouveau，首先要先解除nouveau绑定关系。<br>只有解除之后，较早的 fb 驱动或者 VGA console 驱动接管它。<br>内核先要配置 <em>CONFIG_VT_HW_CONSOLE_BINDING</em> 。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@MAX:# lsmod | grep nouveau</span><br><span class="line">nouveau              1503232  1</span><br><span class="line">root@MAX:# rmmod nouveau</span><br><span class="line">rmmod: ERROR: Module nouveau is in use</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">echo 0 &gt; /sys/class/vtconsole/vtcon1/bind</span><br><span class="line">rmmod nouveau</span><br><span class="line">/etc/init.d/consolefont restart</span><br><span class="line">rmmod ttm</span><br><span class="line">rmmod drm_kms_helper</span><br><span class="line">rmmod drm</span><br></pre></td></tr></table></figure>
+
+<p><code>echo 0 &gt; /sys/class/vtconsole/vtcon1/bind</code> 将 nouveaufb 从 fb console 驱动(fbcon)中解绑，通常情况下是 <code>vtcon1</code> 但也可能是其他情况 <code>vtcon*</code> ， 查看 <code>/sys/class/vtconsole/vtcon*/name</code> 哪一个是 <code>frame buffer device</code> 。  </p>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@MAX:# lsmod | grep nouveau</span><br><span class="line">nouveau              1503232  1</span><br><span class="line">root@MAX:# echo 0 &gt; /sys/class/vtconsole/vtcon1/bind </span><br><span class="line">root@MAX:# lsmod | grep nouveau</span><br><span class="line">nouveau              1503232  0</span><br></pre></td></tr></table></figure>
+
+<p>更新系统文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-initramfs -u</span><br></pre></td></tr></table></figure>
+
+<p>重启。<br>再次执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+
+<p>无结果，安装我们自己的驱动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insmod nouveau.ko</span><br></pre></td></tr></table></figure>
+
+<p>报错！</p>
+<blockquote>
+<p>insmod: ERROR: could not insert module: Unknown symbol in module </p>
+</blockquote>
+<p>据说是没有依赖项。<br>那么好了，由于内核中保留着原来的 <em>nouveau.ko</em> ，那么先执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">modprobe nouveau</span><br></pre></td></tr></table></figure>
+
+<p>查看内核模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@MAX:/home/max# lsmod | grep nouveau</span><br><span class="line">nouveau              1503232  0</span><br><span class="line">mxm_wmi                16384  1 nouveau</span><br><span class="line">ttm                    98304  1 nouveau</span><br><span class="line">drm_kms_helper        155648  1 nouveau</span><br><span class="line">drm                   364544  4 ttm,drm_kms_helper,nouveau</span><br><span class="line">i2c_algo_bit           16384  1 nouveau</span><br><span class="line">wmi                    20480  3 mxm_wmi,nouveau,asus_wmi</span><br><span class="line">video                  40960  2 nouveau,asus_wmi</span><br></pre></td></tr></table></figure>
+
+<p>nouveau 没有被其他模块占用。<br>而且nouveau 依赖的模块有多个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmmod nouveau</span><br></pre></td></tr></table></figure>
+
+<p>再次安装我们自己的nouveua</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insmod nouveau.ko</span><br></pre></td></tr></table></figure>
+
+<p>这种方法好使了。</p>
+<p>从安装到卸载 nouveau 驱动的dmesg：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;[  369.598143] My Nouveau installed!</span><br><span class="line">[  369.598214] nouveau 0000:01:00.0: NVIDIA GK110B (0f10c0a1)</span><br><span class="line">[  369.719906] nouveau 0000:01:00.0: bios: version 80.80.4e.00.01</span><br><span class="line">[  369.721507] nouveau 0000:01:00.0: fb: 6144 MiB GDDR5</span><br><span class="line">[  369.777643] [TTM] Zone  kernel: Available graphics memory: 8189062 kiB</span><br><span class="line">[  369.777645] [TTM] Zone   dma32: Available graphics memory: 2097152 kiB</span><br><span class="line">[  369.777655] [TTM] Initializing pool allocator</span><br><span class="line">[  369.777661] [TTM] Initializing DMA pool allocator</span><br><span class="line">[  369.777670] nouveau 0000:01:00.0: DRM: VRAM: 6144 MiB</span><br><span class="line">[  369.777671] nouveau 0000:01:00.0: DRM: GART: 1048576 MiB</span><br><span class="line">[  369.777675] nouveau 0000:01:00.0: DRM: TMDS table version 2.0</span><br><span class="line">[  369.777677] nouveau 0000:01:00.0: DRM: DCB version 4.0</span><br><span class="line">[  369.777679] nouveau 0000:01:00.0: DRM: DCB outp 00: 01000f02 00020030</span><br><span class="line">[  369.777681] nouveau 0000:01:00.0: DRM: DCB outp 01: 02000f00 00000000</span><br><span class="line">[  369.777683] nouveau 0000:01:00.0: DRM: DCB outp 02: 08011f82 00020030</span><br><span class="line">[  369.777685] nouveau 0000:01:00.0: DRM: DCB outp 04: 02022f62 00020010</span><br><span class="line">[  369.777687] nouveau 0000:01:00.0: DRM: DCB outp 05: 04833fb6 0f420010</span><br><span class="line">[  369.777688] nouveau 0000:01:00.0: DRM: DCB outp 06: 04033f72 00020010</span><br><span class="line">[  369.777690] nouveau 0000:01:00.0: DRM: DCB conn 00: 00001030</span><br><span class="line">[  369.777692] nouveau 0000:01:00.0: DRM: DCB conn 01: 00020131</span><br><span class="line">[  369.777694] nouveau 0000:01:00.0: DRM: DCB conn 02: 00002261</span><br><span class="line">[  369.777695] nouveau 0000:01:00.0: DRM: DCB conn 03: 00010346</span><br><span class="line">[  369.790383] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).</span><br><span class="line">[  369.790385] [drm] Driver supports precise vblank timestamp query.</span><br><span class="line">[  369.930687] nouveau 0000:01:00.0: DRM: MM: using COPY for buffer copies</span><br><span class="line">[  370.302176] nouveau 0000:01:00.0: DRM: allocated 1920x1080 fb: 0x60000, bo ffff8800b5165000</span><br><span class="line">[  370.302315] fbcon: nouveaufb (fb0) is primary device</span><br><span class="line">[  370.790138] Console: switching to colour frame buffer device 240x67</span><br><span class="line">[  370.790742] nouveau 0000:01:00.0: fb0: nouveaufb frame buffer device</span><br><span class="line">[  370.800914] [drm] Initialized nouveau 1.3.1 20120801 for 0000:01:00.0 on minor 0</span><br><span class="line">[  495.668980] Console: switching to colour dummy device 80x25</span><br><span class="line">&gt;&gt;&gt;[  512.432376] My Nouveau uninstalled!</span><br><span class="line">[  512.535441] [TTM] Finalizing pool allocator</span><br><span class="line">[  512.535448] [TTM] Finalizing DMA pool allocator</span><br><span class="line">[  512.535567] [TTM] Zone  kernel: Used memory at exit: 0 kiB</span><br><span class="line">[  512.535573] [TTM] Zone   dma32: Used memory at exit: 0 kiB</span><br><span class="line">[  512.537596] [drm] Module unloaded</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我在模块安装和卸载时打印的语句。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/nouveau/">nouveau</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/nouveau/">nouveau</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2019/01/25/nouveau安装/" data-title="nouveau安装 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2019/02/27/解决Ubuntu18-04开机启动缓慢/" title="解决Ubuntu18.04开机启动缓慢">
+  <strong>上一篇：</strong><br>
+  <span>
+  解决Ubuntu18.04开机启动缓慢</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/01/16/Gitlab的使用/" title="Gitlab的邮箱配置和使用">
+ <strong>下一篇：</strong><br> 
+ <span>Gitlab的邮箱配置和使用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#安装nouveau"><span class="toc-number">1.</span> <span class="toc-text">安装nouveau</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#卸载NVIDIA-CUDA-8-0"><span class="toc-number">1.1.</span> <span class="toc-text">卸载NVIDIA CUDA-8.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遇到得问题"><span class="toc-number">1.2.</span> <span class="toc-text">遇到得问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译安装nouveau"><span class="toc-number">1.3.</span> <span class="toc-text">编译安装nouveau</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rmmod-ERROR-Module-nouveau-is-in-use"><span class="toc-number">2.</span> <span class="toc-text">rmmod: ERROR: Module nouveau is in use</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#禁用nouveau"><span class="toc-number">2.1.</span> <span class="toc-text">禁用nouveau</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deactivating-KMS-and-unloading-Nouveau"><span class="toc-number">2.2.</span> <span class="toc-text">Deactivating KMS and unloading Nouveau</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

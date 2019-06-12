@@ -1,0 +1,877 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>QEMU设备的对象模型QOM | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="本篇博客记录在QEMU源码中添加新的设备文件，主要介绍QEMU对象模型QOM，以hw/misc/pci-testdev.c 和 hw/misc/edu.c设备为例子。">
+<meta name="keywords" content="QEMU,QOM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QEMU设备的对象模型QOM">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/23/qemu源码添加设备/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="本篇博客记录在QEMU源码中添加新的设备文件，主要介绍QEMU对象模型QOM，以hw/misc/pci-testdev.c 和 hw/misc/edu.c设备为例子。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.260Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QEMU设备的对象模型QOM">
+<meta name="twitter:description" content="本篇博客记录在QEMU源码中添加新的设备文件，主要介绍QEMU对象模型QOM，以hw/misc/pci-testdev.c 和 hw/misc/edu.c设备为例子。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/23/qemu源码添加设备/" title="QEMU设备的对象模型QOM" itemprop="url">QEMU设备的对象模型QOM</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-07-23T07:21:39.000Z" itemprop="datePublished"> Published 2018-07-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#QOM"><span class="toc-number">1.</span> <span class="toc-text">QOM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#模块注册"><span class="toc-number">1.1.</span> <span class="toc-text">模块注册</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class的初始化"><span class="toc-number">1.2.</span> <span class="toc-text">Class的初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Object的构造"><span class="toc-number">1.3.</span> <span class="toc-text">Object的构造</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#属性"><span class="toc-number">2.</span> <span class="toc-text">属性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#属性对象"><span class="toc-number">2.1.</span> <span class="toc-text">属性对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#静态属性"><span class="toc-number">2.2.</span> <span class="toc-text">静态属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化过程中添加"><span class="toc-number">2.2.1.</span> <span class="toc-text">初始化过程中添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#props"><span class="toc-number">2.2.2.</span> <span class="toc-text">props</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看"><span class="toc-number">2.2.3.</span> <span class="toc-text">查看</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态属性"><span class="toc-number">2.3.</span> <span class="toc-text">动态属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#child"><span class="toc-number">2.3.1.</span> <span class="toc-text">child</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#link"><span class="toc-number">2.3.2.</span> <span class="toc-text">link</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译"><span class="toc-number">3.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>本篇博客记录在QEMU源码中添加新的设备文件，主要介绍QEMU对象模型<code>QOM</code>，以<code>hw/misc/pci-testdev.c</code> 和 <code>hw/misc/edu.c</code>设备为例子。</p>
+<a id="more"></a>
+
+<p>qemu中需要模拟出设备与总线的关系。因为<br>在主板上，一个device会通过bus与其他的device相连接，一个device上可以通过不同的bus端口连接到其他的device，其他的device也可以进一步通过bus与其他的设备连接。<br>同时一个bus上也可以连接多个device，这种device连bus、bus连device的关系，qemu是需要模拟出来的。为了方便模拟设备的这种特性，面向对象的编程模型也是必不可少的。</p>
+<h1 id="QOM"><a href="#QOM" class="headerlink" title="QOM"></a>QOM</h1><p><code>QEMU Object Model (QOM)</code> 模型提供了注册类型的框架，这些类型包括 总线bus、接口interface、设备device等。</p>
+<p>以 <code>QEMU v2.12.0</code> 版本中的 <code>hw/misc/pci-testdev.c</code> 文件为例子，分析QOM创建新类型的过程。</p>
+<blockquote>
+<p>pci-testdev</p>
+<blockquote>
+<p>   A PCI “device” that when read and written tests PCI accesses.</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>edu</p>
+<blockquote>
+<pre><code>A PCI device that supports testing both INTx and MSI interrupts and DMA transfers.</code></pre></blockquote>
+</blockquote>
+<p><code>QOM</code> 创建新类型时需要用到的数据结构为： 类对象<code>OjectClass</code> 、 类实例对象<code>Object</code> 、 类型对象<code>TypeInfo</code> ，基本结构定义在 <code>include\qom\object.h</code> ， 文件中的注释非常详细，对数据结构的字段说明和QOM模型的用法。 <code>TypeImpl</code> 定义在 <code>qom/object.c</code> 中，没有注释。</p>
+<ul>
+<li>ObjectClass: 是所有类对象的基类，仅仅保存了一个整数 <code>type</code> 。</li>
+<li>Object: 是所有对象的 基类<code>Base Object</code> ， 第一个成员变量为指向 <code>ObjectClass</code> 的指针。</li>
+<li>TypeInfo：是用户用来定义一个 <code>Type</code> 的工具型的数据结构。</li>
+<li>TypeImpl：对数据类型的抽象数据结构，TypeInfo的属性与TypeImpl的属性对应。</li>
+</ul>
+<p>对象的初始化分为4步：</p>
+<ol>
+<li>将 TypeInfo 注册 TypeImpl</li>
+<li>实例化 Class（ObjectClass）</li>
+<li>实例化 Instance(Object)</li>
+<li>添加 Property</li>
+</ol>
+<p><code>TypeInfo</code> 结构体里面的字段：</p>
+<pre><code>/**
+ * TypeInfo:
+ * @name: The name of the type.
+ * @parent: The name of the parent type.
+ * @instance_size: The size of the object (derivative of #Object).  If
+ *   @instance_size is 0, then the size of the object will be the size of the
+ *   parent object.
+ * @instance_init: This function is called to initialize an object.  The parent
+ *   class will have already been initialized so the type is only responsible
+ *   for initializing its own members.
+ * @instance_post_init: This function is called to finish initialization of
+ *   an object, after all @instance_init functions were called.
+ * @instance_finalize: This function is called during object destruction.  This
+ *   is called before the parent @instance_finalize function has been called.
+ *   An object should only free the members that are unique to its type in this
+ *   function.
+ * @abstract: If this field is true, then the class is considered abstract and
+ *   cannot be directly instantiated.
+ * @class_size: The size of the class object (derivative of #ObjectClass)
+ *   for this object.  If @class_size is 0, then the size of the class will be
+ *   assumed to be the size of the parent class.  This allows a type to avoid
+ *   implementing an explicit class type if they are not adding additional
+ *   virtual functions.
+ * @class_init: This function is called after all parent class initialization
+ *   has occurred to allow a class to set its default virtual method pointers.
+ *   This is also the function to use to override virtual methods from a parent
+ *   class.
+ * @class_base_init: This function is called for all base classes after all
+ *   parent class initialization has occurred, but before the class itself
+ *   is initialized.  This is the function to use to undo the effects of
+ *   memcpy from the parent class to the descendants.
+ * @class_finalize: This function is called during class destruction and is
+ *   meant to release and dynamic parameters allocated by @class_init.
+ * @class_data: Data to pass to the @class_init, @class_base_init and
+ *   @class_finalize functions.  This can be useful when building dynamic
+ *   classes.
+ * @interfaces: The list of interfaces associated with this type.  This
+ *   should point to a static array that&apos;s terminated with a zero filled
+ *   element.
+ */</code></pre><p>归纳起来：<br>TypeInfo中定义了如下几类信息：</p>
+<pre><code>1. Name
+    包括自己的Name，Parent的Name。
+2. Class
+    ObjectClass的信息包括，class_size，class_data，class相关函数：class_base_init，class_init，class_finalize。
+    这些函数都是为了初始化，释放结构体ObjectClass。
+3. Instance
+    对象Object信息包括：instance_size，instance相关函数：instance_post_init，instance_init，instance_finalize。
+    这些函数都是为了初始化，释放结构体Object。
+4. 其他信息
+    abstract是否为抽象。interface数组。</code></pre><p>用户定义了一个TypeInfo，然后调用 <code>type_register(TypeInfo)</code> 或者 <code>type_register_static(TypeInfo)</code> 函数，就会生成相应的TypeImpl实例，将这个TypeInfo注册到全局的TypeImpl的hash表中。<br>TypeInfo的属性与TypeImpl的属性对应，实际上qemu就是通过用户提供的TypeInfo创建的TypeImpl的对象。</p>
+<p>TYPE_DEVICE has a pure virtual method ‘init’ which is a bit of a misnomer.  The ‘init’ method is called after construction but before the guest is started for the first time.  In QOM nomenclature, we call this realize.</p>
+<h2 id="模块注册"><a href="#模块注册" class="headerlink" title="模块注册"></a>模块注册</h2><p>向QOM模块注册自己，类似于Linux驱动的注册，通过 <code>type_init</code> 宏注册，它在 <code>include/qemu/module.h</code> 中。<br>这个宏调用发生在 <code>qemu main</code> 函数之前。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">static const TypeInfo pci_testdev_info = &#123;</span><br><span class="line">    .name          = TYPE_PCI_TEST_DEV,	/*类型的名字*/</span><br><span class="line">    .parent        = TYPE_PCI_DEVICE, /*父类的名字*/</span><br><span class="line">    .instance_size = sizeof(PCITestDevState), /*必须向系统说明对象的大小，以便系统为对象的实例分配内存*/</span><br><span class="line">    .class_init    = pci_testdev_class_init, /*在类初始化时就会调用这个函数，将虚拟函数赋值*/</span><br><span class="line">    .interfaces = (InterfaceInfo[]) &#123;</span><br><span class="line">        &#123; INTERFACE_CONVENTIONAL_PCI_DEVICE &#125;,</span><br><span class="line">        &#123; &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">static void pci_testdev_register_types(void)</span><br><span class="line">&#123;</span><br><span class="line">    type_register_static(&amp;pci_testdev_info);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type_init(pci_testdev_register_types)</span><br></pre></td></tr></table></figure>
+
+<p>这里会调用 <code>pci_testdev_register_types</code> ，这个函数以 <code>pci_testdev_info</code> 为参数调用了 <code>type_register_static</code> 类型注册函数。<br>这一过程的目的就是利用 <code>TypeInfo</code> 构造出一个 <code>TypeImpl</code> 结构，之后插入到一个hash表之中，这个hash表以 <code>ti-&gt;name</code> （TypeImpl ti），也就是 <code>info-&gt;name</code> 为key，value就是根据 <code>TypeInfo</code> 生成的 <code>TypeImpl</code> 。<br>在 <code>pci_testdev_info</code> 中得字段 <code>name</code> 定义了我们将来启动此设备时候传参 <code>-device</code> 后面跟的值。</p>
+<h2 id="Class的初始化"><a href="#Class的初始化" class="headerlink" title="Class的初始化"></a>Class的初始化</h2><p>现在已经有了一个TypeImpl的哈希表。下一步就是初始化每个type了，这一步可以看成是class的初始化，可以理解成每一个type对应了一个class，接下来会初始化class。</p>
+<p>由于在初始化每个type时候，调用到的是 <code>type_initialize</code> 函数。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static void type_initialize(TypeImpl *ti)</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>ti-&gt;class</code> 已经存在说明已经初始化了，直接返回。如果有 <code>parent</code>，会递归调用 <code>type_initialize</code>，即调用父对象的初始化函数。</p>
+<p>这里type也有一个层次关系，即QOM 对象的层次结构。在 <code>pci_testdev_info</code> 结构的定义中，我们可以看到有一个 <code>.parent</code> 域，值为 <code>TYPE_PCI_DEVICE</code> 。<br>这说明 <code>TYPE_PCI_TEST_DEV</code> 的 父类型 是 <code>TYPE_PCI_DEVICE</code> ，在 <code>hw/pci/pci.c</code> 中可以看到 <code>pci_device_type_info</code> 的父type是 <code>TYPE_DEVICE</code></p>
+<pre><code>static const TypeInfo pci_device_type_info = {
+    .name = TYPE_PCI_DEVICE,
+    .parent = TYPE_DEVICE,
+    .instance_size = sizeof(PCIDevice),
+    .abstract = true,
+    .class_size = sizeof(PCIDeviceClass),
+    .class_init = pci_device_class_init,
+    .class_base_init = pci_device_class_base_init,
+};</code></pre><p>依次往上溯我们可以得到这样一条type的链，</p>
+<blockquote>
+<p>TYPE_PCI_TEST_DEV-&gt;TYPE_PCI_DEVICE-&gt;TYPE_DEVICE-&gt;TYPE_OBJECT</p>
+</blockquote>
+<p>之后，最重要的就是调用 <code>parent-&gt;class_base_init</code> 以及 <code>ti-&gt;class_init</code> 了，这相当于C++里面的构造基类的数据。<br>在定义新类型中，实现了父类的虚拟方法，那么需要定义新的class的初始化函数，并且在TypeInfo数据结构中，给TypeInfo的 <code>class_init</code> 字段赋予该初始化函数的函数指针。<br>我们以一个 <code>class_init</code> 为例，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">static void pci_testdev_class_init(ObjectClass *klass, void *data)</span><br><span class="line">&#123;</span><br><span class="line">	//父对象必须是该对象数据结构的第一个属性，以便实现父对象向子对象的cast</span><br><span class="line">    DeviceClass *dc = DEVICE_CLASS(klass);</span><br><span class="line">    PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);</span><br><span class="line"></span><br><span class="line">    k-&gt;realize = pci_testdev_realize;</span><br><span class="line">    k-&gt;exit = pci_testdev_uninit;</span><br><span class="line">    k-&gt;vendor_id = PCI_VENDOR_ID_REDHAT;</span><br><span class="line">    k-&gt;device_id = PCI_DEVICE_ID_REDHAT_TEST;</span><br><span class="line">    k-&gt;revision = 0x00;</span><br><span class="line">    k-&gt;class_id = PCI_CLASS_OTHERS;</span><br><span class="line">    dc-&gt;desc = &quot;PCI Test Device&quot;;</span><br><span class="line">    set_bit(DEVICE_CATEGORY_MISC, dc-&gt;categories);</span><br><span class="line">    dc-&gt;reset = qdev_pci_testdev_reset;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>class_init</code> 构造函数钩子。 这个函数将负责初始化Type的 <code>ObjectClass</code> 实例。<br>这里从 <code>ObjectClass</code> 转换成了 <code>DeviceClass</code> 。为什么这么转换，还需要从 <code>Class</code> 的层次结构说起。</p>
+<p>有这么一种层次 </p>
+<blockquote>
+<p>PCIDeviceClass-&gt;DeviceClass-&gt;ObjectClass<br>可以看成C++中的继承关系，即当然基类就是 <code>ObjectClass</code> ，越往下包含的数据越具体。<br>将一个父类的指针转换为子类的指针是不安全的，为了实现这种转换，各类需要提供强制类型转换的宏<br>以下面这句为例：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PCIDeviceClass *c = PCI_DEVICE_CLASS(kclass);</span><br></pre></td></tr></table></figure>
+
+<p>宏 <code>PCI_DEVICE_CLASS</code> 定义在 <code>hw/pci/pci.h</code> 中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#define PCI_DEVICE_GET_CLASS(obj) \</span><br><span class="line">        OBJECT_GET_CLASS(PCIDeviceClass, obj, TYPE_PCI_DEVICE)</span><br><span class="line"></span><br><span class="line">#define PCI_DEVICE_CLASS(klass) \</span><br><span class="line">        OBJECT_CLASS_CHECK(PCIDeviceClass, klass, TYPE_PCI_DEVICE)</span><br><span class="line"></span><br><span class="line">#define PCI_DEVICE(obj) \</span><br><span class="line">        OBJECT_CHECK(PCIDevice, obj, TYPE_PCI_DEVICE)</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>OBJECT_CHECK</code> 、 <code>OBJECT_CLASS_CHECK</code> 、 <code>OBJECT_GET_CLASS</code> 的定义如下：</p>
+<p><code>OBJECT_CHECK</code> 用于转换<code>Object</code>，<code>OBJECT_CLASS_CHECK</code> 用于转换 <code>ObjcetClass</code> ， <code>OBJECT_GET_CLASS</code> 用于从<code>Object</code> 获取 <code>Class</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * OBJECT_CHECK:</span><br><span class="line"> * @type: The C type to use for the return value.</span><br><span class="line"> * @obj: A derivative of @type to cast.</span><br><span class="line"> * @name: The QOM typename of @type</span><br><span class="line"> *</span><br><span class="line"> * A type safe version of @object_dynamic_cast_assert.  Typically each class</span><br><span class="line"> * will define a macro based on this type to perform type safe dynamic_casts to</span><br><span class="line"> * this object type.</span><br><span class="line"> *</span><br><span class="line"> * If an invalid object is passed to this function, a run time assert will be</span><br><span class="line"> * generated.</span><br><span class="line"> */</span><br><span class="line">#define OBJECT_CHECK(type, obj, name) \</span><br><span class="line">    ((type *)object_dynamic_cast_assert(OBJECT(obj), (name), \</span><br><span class="line">                                        __FILE__, __LINE__, __func__))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * OBJECT_CLASS_CHECK:</span><br><span class="line"> * @class_type: The C type to use for the return value.</span><br><span class="line"> * @class: A derivative class of @class_type to cast.</span><br><span class="line"> * @name: the QOM typename of @class_type.</span><br><span class="line"> *</span><br><span class="line"> * A type safe version of @object_class_dynamic_cast_assert.  This macro is</span><br><span class="line"> * typically wrapped by each type to perform type safe casts of a class to a</span><br><span class="line"> * specific class type.</span><br><span class="line"> */</span><br><span class="line">#define OBJECT_CLASS_CHECK(class_type, class, name) \</span><br><span class="line">    ((class_type *)object_class_dynamic_cast_assert(OBJECT_CLASS(class), (name), \</span><br><span class="line">                                               __FILE__, __LINE__, __func__))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * OBJECT_GET_CLASS:</span><br><span class="line"> * @class: The C type to use for the return value.</span><br><span class="line"> * @obj: The object to obtain the class for.</span><br><span class="line"> * @name: The QOM typename of @obj.</span><br><span class="line"> *</span><br><span class="line"> * This function will return a specific class for a given object.  Its generally</span><br><span class="line"> * used by each type to provide a type safe macro to get a specific class type</span><br><span class="line"> * from an object.</span><br><span class="line"> */</span><br><span class="line">#define OBJECT_GET_CLASS(class, obj, name) \</span><br><span class="line">    OBJECT_CLASS_CHECK(class, object_get_class(OBJECT(obj)), name)</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>PCI_DEVICE_CLASS</code> 这个宏定义中，最终会进入 <code>object_class_dynamic_cast</code> 函数，在该函数中，根据class对应的type以及typename对应的type，判断是否能够转换，判断的主要依据就是type_is_ancestor， 这个判断target_type是否是type的一个祖先，如果是当然可以进行转换，否则就不行。</p>
+<p>总之，就是从最开始的 <code>TypeImpl</code> 初始化了每一个type对应的 <code>ObjectClass *class</code> ，并且构建好了各个Class的继承关系。</p>
+<h2 id="Object的构造"><a href="#Object的构造" class="headerlink" title="Object的构造"></a>Object的构造</h2><p>我们上面已经看到了type哈希表的构造以及 <code>Class</code> 的初始化，接下来讨论具体设备的创建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">typedef struct PCITestDevState &#123;</span><br><span class="line">    /*&lt; private &gt;*/</span><br><span class="line">    PCIDevice parent_obj;</span><br><span class="line">    /*&lt; public &gt;*/</span><br><span class="line"></span><br><span class="line">    MemoryRegion mmio;</span><br><span class="line">    MemoryRegion portio;</span><br><span class="line">    IOTest *tests;</span><br><span class="line">    int current;</span><br><span class="line">&#125; PCITestDevState;</span><br><span class="line"></span><br><span class="line">// hw/pci/pci.h</span><br><span class="line">struct PCIDevice &#123;</span><br><span class="line">    DeviceState qdev;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// hw/qdev-core.h</span><br><span class="line">struct DeviceState &#123;</span><br><span class="line">    /*&lt; private &gt;*/</span><br><span class="line">    Object parent_obj;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Object 的继承</p>
+<blockquote>
+<p>PCITestDevState-&gt;PCIDevice-&gt;DeviceState-&gt;Object</p>
+</blockquote>
+<p>Object的创建由 <code>k-&gt;realize = pci_testdev_realize;</code> 函数实现，不同于type和class的构造，<code>Object</code> 当然是根据需要创建的，只有在命令行指定了设备或者是热插一个设备之后才会有 <code>Object</code> 的创建。 <code>Class</code> 和 <code>Object</code> 之间是通过 <code>Object</code> 的 <code>class域</code> 联系在一起的。</p>
+<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>属性分为类对象(ObjectClass)属性和类实例对象(Object)属性，存储于 properties 成员中。properties 是一个 GHashTable ，存储了 属性名 到 ObjectProperty 的映射。</p>
+<h2 id="属性对象"><a href="#属性对象" class="headerlink" title="属性对象"></a>属性对象</h2><p>属性对象包含属性名称、类型、描述，类型对应的属性结构，以及相应访问函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">typedef struct ObjectProperty</span><br><span class="line">&#123;</span><br><span class="line">    gchar *name;</span><br><span class="line">    gchar *type;</span><br><span class="line">    gchar *description;</span><br><span class="line">    ObjectPropertyAccessor *get;</span><br><span class="line">    ObjectPropertyAccessor *set;</span><br><span class="line">    ObjectPropertyResolve *resolve;</span><br><span class="line">    ObjectPropertyRelease *release;</span><br><span class="line">    void *opaque;</span><br><span class="line">&#125; ObjectProperty;</span><br></pre></td></tr></table></figure>
+
+<h2 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h2><p>凡是在代码中就已经定义好名称和类型的属性，都是静态属性。包括在初始化过程中添加 和 props 。</p>
+<h3 id="初始化过程中添加"><a href="#初始化过程中添加" class="headerlink" title="初始化过程中添加"></a>初始化过程中添加</h3><p>类实例  初始化函数<code>instance_init</code>中调用的 <code>object_property_add</code> 函数。 该属性会直接加到类实例对象的properties中。</p>
+<h3 id="props"><a href="#props" class="headerlink" title="props"></a>props</h3><p>一些类对象会在 <code>class_init</code> 中设置 <code>ObjectClass</code> 对象的 <code>props</code> 成员。 例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static Property test_properties[] = &#123;</span><br><span class="line">    DEFINE_PROP_STRING(&quot;test_string&quot;, struct_type, , struct_type_property),</span><br><span class="line">    DEFINE_PROP_END_OF_LIST()</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h3><p>可通过命令查看设备的静态属性，参数为设备 <code>TypeInfo</code> 的 <code>name</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x86_64-softmmu/qemu-system-x86_64 -device pci-testdev,?</span><br></pre></td></tr></table></figure>
+
+<h2 id="动态属性"><a href="#动态属性" class="headerlink" title="动态属性"></a>动态属性</h2><p>指在运行时动态进行添加的属性。比如用户通过参数传入了一个设备，需要作为属性和其它设备关联起来。</p>
+<p>典型的动态属性就是 <code>child&lt;&gt;</code> 和 <code>link&lt;&gt;</code> (因为其类型就是这样构造的，后文简称child和link) 。</p>
+<h3 id="child"><a href="#child" class="headerlink" title="child"></a>child</h3><p><code>child</code> 实现了 组成composition关系，表示一个设备(parent)创建了另外一个设备(child)，parent掌控child的生命周期，负责向其发送事件。一个device只能有一个parent，但能有多个child。这样就构成一棵组合树。</p>
+<p>通过 <code>object_property_add_child</code> 添加 child：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">=&gt; object_property_add           </span><br><span class="line">	将 child 作为 obj 的属性，属性名name，类型为 &quot;child&lt;child的类名&gt;&quot;，同时getter为object_get_child_property，没有setter</span><br><span class="line">=&gt; child-&gt;parent = obj</span><br></pre></td></tr></table></figure>
+
+<h3 id="link"><a href="#link" class="headerlink" title="link"></a>link</h3><p>link实现了backlink关系，表示一个设备引用了另外一个设备，是一种松散的联系。两个设备之间能有多个link关系，可以进行修改。它完善了组合树，使其构成构成了一幅有向图。</p>
+<p>通过 <code>object_property_add_link</code> 添加link：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">=&gt; 创建 LinkProperty ，填充目标(child)的信息</span><br><span class="line">=&gt; object_property_add            将 LinkProperty 作为 obj 的属性，属性名name，类型为 &quot;link&lt;child的类名&gt;&quot;，同时getter为 object_get_link_property 。如果传入了check函数，则需要回调，设置setter为 object_set_link_property</span><br></pre></td></tr></table></figure>
+
+<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><p>在完成了此文件后，需要添加到 <code>Makefile.objs</code> 中，QEMU好知道编译并将其连接到二进制文件中。格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">common-obj-$(CONFIG_PCI_TESTDEV) += pci-testdev.o</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj-$(CONFIG_PCI) += pci-testdev.o</span><br></pre></td></tr></table></figure>
+
+<p>其中，配置选项 <code>CONFIG_PCI_TESTDEV</code> 启用后，<code>pci-testdev.c</code> 才会被编译并链接到qemu模拟器中。 <code>CONFIG_PCI_TESTDEV</code> 在文件 <code>config-all-devices.mak</code> 中配置。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>QOM的对象构造分成三部分，第一部分是type的构造，这是通过TypeInfo构造一个TypeImpl的哈希表，这是在main之前完成的。<br>第二部分是class的构造，这是在main中进行的，这两部分都是全局的，也就是只要编译进去了的QOM对象都会调用。<br>第三部分是object的构造，这是构造具体的对象实例，在命令行指定了对应的设备时，才会创建object。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://stackoverflow.com/questions/28315265/how-to-add-a-new-device-in-qemu-source-code" target="_blank" rel="noopener">How to add a new device in QEMU source code?</a></li>
+<li><a href="https://blog.csdn.net/u011364612/article/details/53485856" target="_blank" rel="noopener">QEMU中的对象模型——QOM（介绍篇）</a></li>
+<li><a href="https://terenceli.github.io/%E6%8A%80%E6%9C%AF/2017/01/08/qom-introduction" target="_blank" rel="noopener">QOM介绍</a></li>
+<li><a href="http://tic-le-polard.blogspot.com/2015/01/emulate-pci-device-with-qemu.html" target="_blank" rel="noopener">[System] Emulate a PCI device with Qemu</a></li>
+<li><a href="http://gougougebj.lofter.com/post/1d1f2c54_a59500e" target="_blank" rel="noopener">How to create a custom PCI device in QEMU</a></li>
+<li><a href="https://github.com/Gyumeijie/qemu-object-model" target="_blank" rel="noopener">qemu-object-model</a></li>
+<li><a href="https://wiki.qemu.org/Features/QOM" target="_blank" rel="noopener">Features/QOM</a></li>
+<li><a href="https://www.jianshu.com/p/20d4820f34de" target="_blank" rel="noopener">Qemu之QOM（Qemu Object Module）</a></li>
+<li><a href="https://www.binss.me/blog/qemu-note-of-qemu-object-model/" target="_blank" rel="noopener">QEMU学习笔记——QOM(Qemu Object Model)</a></li>
+<li><a href="https://stfpeak.github.io/2017/07/15/how-to-debug-qemu-devices/" target="_blank" rel="noopener">How to debug qemu devices</a></li>
+<li><a href="https://www.tuicool.com/articles/MzqYbia" target="_blank" rel="noopener">QEMU漏洞挖掘</a></li>
+<li><a href="https://wiki.qemu.org/Documentation/QOMConventions" target="_blank" rel="noopener">Documentation/QOMConventions QOM编程规范</a></li>
+<li><a href="http://people.redhat.com/~thuth/blog/qemu/2018/09/10/instance-init-realize.html" target="_blank" rel="noopener">QEMU’s instance_init() vs. realize()</a></li>
+<li><a href="https://dev.goodwu.net/post/2018-03-25-qemu-kvm-exec-basics/" target="_blank" rel="noopener">QEMU/KVM VM Execution Basics</a></li>
+<li><a href="https://lists.gnu.org/archive/html/qemu-devel/2012-08/msg02271.html" target="_blank" rel="noopener">QOM说明文档</a></li>
+<li><a href="https://www.binss.me/blog/qemu-note-of-qemu-object-model/" target="_blank" rel="noopener"><br>QEMU学习笔记——QOM(Qemu Object Model)</a></li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/QOM/">QOM</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/07/23/qemu源码添加设备/" data-title="QEMU设备的对象模型QOM | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/07/29/编译安装报错-virtual-memory-exhausted-Cannot-allocate-memory/" title="编译安装报错 &quot;virtual memory exhausted Cannot allocate memory&quot;">
+  <strong>上一篇：</strong><br>
+  <span>
+  编译安装报错 &quot;virtual memory exhausted Cannot allocate memory&quot;</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/20/qemu内存虚拟化/" title="QEMU-KVM内存虚拟化">
+ <strong>下一篇：</strong><br> 
+ <span>QEMU-KVM内存虚拟化
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#QOM"><span class="toc-number">1.</span> <span class="toc-text">QOM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#模块注册"><span class="toc-number">1.1.</span> <span class="toc-text">模块注册</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class的初始化"><span class="toc-number">1.2.</span> <span class="toc-text">Class的初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Object的构造"><span class="toc-number">1.3.</span> <span class="toc-text">Object的构造</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#属性"><span class="toc-number">2.</span> <span class="toc-text">属性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#属性对象"><span class="toc-number">2.1.</span> <span class="toc-text">属性对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#静态属性"><span class="toc-number">2.2.</span> <span class="toc-text">静态属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化过程中添加"><span class="toc-number">2.2.1.</span> <span class="toc-text">初始化过程中添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#props"><span class="toc-number">2.2.2.</span> <span class="toc-text">props</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看"><span class="toc-number">2.2.3.</span> <span class="toc-text">查看</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态属性"><span class="toc-number">2.3.</span> <span class="toc-text">动态属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#child"><span class="toc-number">2.3.1.</span> <span class="toc-text">child</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#link"><span class="toc-number">2.3.2.</span> <span class="toc-text">link</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译"><span class="toc-number">3.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

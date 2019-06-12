@@ -1,0 +1,758 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>QEMU 学习 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="本篇博客记录了在学习使用QEMU时的资料。包括 QEMU 的整体架构和命令行。">
+<meta name="keywords" content="QEMU,emulate,virtio,KVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QEMU 学习">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/11/15/QEMU学习/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="本篇博客记录了在学习使用QEMU时的资料。包括 QEMU 的整体架构和命令行。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/11/15/QEMU%E5%AD%A6%E4%B9%A0/QEMU-KVM.webp">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.220Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QEMU 学习">
+<meta name="twitter:description" content="本篇博客记录了在学习使用QEMU时的资料。包括 QEMU 的整体架构和命令行。">
+<meta name="twitter:image" content="http://juniorprincewang.github.io/2018/11/15/QEMU%E5%AD%A6%E4%B9%A0/QEMU-KVM.webp">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/11/15/QEMU学习/" title="QEMU 学习" itemprop="url">QEMU 学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-11-15T12:22:10.000Z" itemprop="datePublished"> Published 2018-11-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载指定版本"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发知识"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内部架构"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest/host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>本篇博客记录了在学习使用<code>QEMU</code>时的资料。包括 <code>QEMU</code> 的整体架构和命令行。</p>
+<a id="more"></a>
+
+
+<p><code>QEMU</code>是一个主机上的VMM（virtual machine monitor），通过动态二进制转换来模拟CPU，并提供一系列的硬件模型。<br><code>KVM</code>（Kernel-Based Virtual Machine）是基于内核的虚拟机，实现对CPU和内存的虚拟化。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。同时它是Linux内核的一个可加载模块，KVM从Linux 2.6.20以后已被作为内核组件。<br>从存在形式来看，它包括两个内核模块：kvm.ko用于实现核心虚拟化功能  和  kvm_intel.ko（或 kvm_amd.ko）处理器强相关的模块。 本质上，KVM是管理虚拟硬件设备的驱动，该驱动使用字符设备 <code>/dev/kvm</code>（由KVM本身创建）作为管理接口，主要负责 <code>vCPU</code> 的创建，虚拟内存的分配，<code>vCPU</code>寄存器的读写以及 <code>vCPU</code>的运行。</p>
+<p>有了KVM以后，guest os的CPU指令不用再经过QEMU来转译便可直接运行，大大提高了运行速度。但KVM的kvm.ko本身只提供了CPU和内存的虚拟化，所以它必须结合QEMU才能构成一个完整的虚拟化技术。</p>
+<p><code>QEMU-KVM</code> ： KVM运行在内核空间，QEMU运行在用户空间，实际模拟创建、管理各种虚拟硬件，QEMU将KVM整合了进来，通过 <code>ioctl</code> 调用 <code>/dev/kvm</code> ，从而将CPU指令的部分交给内核模块来做，KVM实现了CPU和内存的虚拟化，但KVM不能虚拟其他硬件设备，因此QEMU还有模拟IO设备（磁盘，网卡，显卡等）的作用，KVM加上QEMU后就是完整意义上的服务器虚拟化。 由于QEMU纯模拟IO设备的效率不高，一般采用半虚拟化的<code>VIRTIO</code>来虚拟IO设备。<br>kvm加速的伪代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">open(&quot;/dev/kvm&quot;)</span><br><span class="line">ioctl(KVM_CREATE_VM)</span><br><span class="line">ioctl(KVM_CREATE_VCPU)</span><br><span class="line">for (;;) &#123;</span><br><span class="line">	ioctl(KVM_RUN)</span><br><span class="line">	switch (exit_reason) &#123;</span><br><span class="line">		case KVM_EXIT_IO: /* ... */</span><br><span class="line">		case KVM_EXIT_HLT: /* ... */</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了使用KVM执行虚拟机代码，QEMU进程打开/dev/kvm并发出KVM_RUN ioctl。 KVM内核模块使用现代Intel和AMD CPU上的硬件虚拟化扩展来直接执行虚拟机代码。 当guest虚拟机访问硬件设备寄存器，或是暂停虚拟机CPU或是执行其他特殊操作时，KVM将退出并将控制权转给QEMU。 此时，QEMU可以模拟操作的预期输出，或者只是客户CPU在暂停的情况下等待下一个客户机中断。</p>
+<p>具体分工为：KVM负责对CPU和内存模拟，QEMU负责对IO设备模拟并对各种虚拟设备的创建和调度进行管理。</p>
+<p><img src="../QEMU%E5%AD%A6%E4%B9%A0/QEMU-KVM.webp" alt="QEMU-KVM图"></p>
+<h1 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h1><h2 id="下载指定版本"><a href="#下载指定版本" class="headerlink" title="下载指定版本"></a>下载指定版本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git://git.qemu.org/qemu.git</span><br></pre></td></tr></table></figure>
+
+<p>切换到指定的版本QEMU-2.12</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b stable-2.12</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>configure脚本检测所有依赖的库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br></pre></td></tr></table></figure>
+
+<p>查看能够启用的特征选项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --help</span><br></pre></td></tr></table></figure>
+
+<p>如果只编译支持x86_64客户机，那么仅需要给<code>configure</code>附带参数 <code>--targetlist=x86_64-softmmu</code> 。</p>
+<h2 id="开发知识"><a href="#开发知识" class="headerlink" title="开发知识"></a>开发知识</h2><p>在目录 <code>./docs</code> 中保存了 规格和文档说明。<br>文档 <code>./CODING_STYLE</code> 和 <code>./HACKING</code> 分别介绍了QEMU编程遵行的代码风格和详细的编程指导。<br>通过脚本 <code>./scripts/checkpatch.pl</code> 检查补丁文件。</p>
+<h1 id="QEMU内部架构"><a href="#QEMU内部架构" class="headerlink" title="QEMU内部架构"></a>QEMU内部架构</h1><h2 id="QEMU-process-model"><a href="#QEMU-process-model" class="headerlink" title="QEMU process model"></a>QEMU process model</h2><h2 id="Main-loop"><a href="#Main-loop" class="headerlink" title="Main loop"></a>Main loop</h2><h2 id="Device-emulation"><a href="#Device-emulation" class="headerlink" title="Device emulation"></a>Device emulation</h2><h3 id="Hardware-emulation-model"><a href="#Hardware-emulation-model" class="headerlink" title="Hardware emulation model"></a>Hardware emulation model</h3><h3 id="Guest-host-device-split"><a href="#Guest-host-device-split" class="headerlink" title="Guest/host device split"></a>Guest/host device split</h3><h3 id="Guest-device-emulation"><a href="#Guest-device-emulation" class="headerlink" title="Guest device emulation"></a>Guest device emulation</h3><ul>
+<li>Devices memory or I/O regions</li>
+</ul>
+<p>需要实现设备的读/写处理函数。</p>
+<ul>
+<li>中断响应</li>
+<li>通过 <code>info qtree</code> 来探视设备</li>
+<li>通过 <code>info mtree</code> 来探视设备内存 </li>
+</ul>
+<h1 id="QEMU-monitor"><a href="#QEMU-monitor" class="headerlink" title="QEMU monitor"></a>QEMU monitor</h1><p>进入QEMU命令行控制界面，可以通过在QEMU 启动的时候指定 <code>-monitor</code> 参数；也可以在 QEMU 窗口激活的时候按住 <code>Ctrl+Alt+2</code> 进入，切换回工作界面需要按 <code>Ctrl+Alt+1</code> 。</p>
+<p>QEMU monitor的用途：</p>
+<ul>
+<li>删除或插入可移除的媒体镜像（如CD-ROM或软盘）。</li>
+<li>冻结/解冻虚拟机（VM）并从磁盘文件保存或恢复其状态。</li>
+<li>在没有外部调试器的情况下检查VM状态。</li>
+</ul>
+<h1 id="info"><a href="#info" class="headerlink" title="info"></a>info</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">info mem  // 展示虚拟内存映射</span><br><span class="line">info mtree [-f] [-d] // 展示内存树 </span><br><span class="line">info qom-tree [path]  // 展示 QOM组成树</span><br><span class="line">info qtree // 以树形的结构展示设备</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><p><a href="https://stackoverflow.com/questions/155109/whats-a-good-source-to-learn-about-qemu" target="_blank" rel="noopener">What’s a good source to learn about QEMU? </a></p>
+</li>
+<li><p><a href="https://wiki.qemu.org/Manual" target="_blank" rel="noopener">官方的手册</a></p>
+</li>
+<li><p><a href="https://vmsplice.net/~stefan/qemu-code-overview.pdf" target="_blank" rel="noopener">QEMU源码架构和说明</a></p>
+</li>
+<li><p><a href="http://manpages.ubuntu.com/manpages/trusty/en/man1/qemu.1.html" target="_blank" rel="noopener">QEMU Emulator User Documentation用户手册及命令行参数</a></p>
+</li>
+<li><p><a href="http://blog.vmsplice.net/2011/03/qemu-internals-big-picture-overview.html" target="_blank" rel="noopener">QEMU Internals: Big picture overview</a></p>
+</li>
+<li><p><a href="http://blog.vmsplice.net/2011/03/qemu-internals-overall-architecture-and.html" target="_blank" rel="noopener">QEMU Internals: Overall architecture and threading model</a> </p>
+</li>
+<li><p><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-qemu-monitor/index.html" target="_blank" rel="noopener">使用 monitor command 监控 QEMU 运行状态</a></p>
+</li>
+<li><p><a href="https://wiki.illumos.org/display/illumos/qemu+monitor+mode+-+DRAFT" target="_blank" rel="noopener">qemu monitor mode - DRAFT</a></p>
+</li>
+<li><p><a href="http://people.redhat.com/pbonzini/qemu-test-doc/_build/topics/pcsys_005fmonitor.html" target="_blank" rel="noopener">QEMU Monitor</a></p>
+</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/emulate/">emulate</a><a href="/tags/virtio/">virtio</a><a href="/tags/KVM/">KVM</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/11/15/QEMU学习/" data-title="QEMU 学习 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/11/16/编写Linux内核模块/" title="编写Linux内核模块">
+  <strong>上一篇：</strong><br>
+  <span>
+  编写Linux内核模块</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/10/22/alf-nu-ReturnTrue-总结/" title="alf.nu/ReturnTrue 总结">
+ <strong>下一篇：</strong><br> 
+ <span>alf.nu/ReturnTrue 总结
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载指定版本"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发知识"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内部架构"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest/host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

