@@ -26,8 +26,8 @@
     <link rel="icon" href="/img/favicon.ico">
     
     
-    <link rel="apple-touch-icon" href="/img/jacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon" href="/img/batman.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
     <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
@@ -641,24 +641,12 @@
 </header>
     <div class="article-content">
         
-        <h1 id="片上内存"><a href="#片上内存" class="headerlink" title="片上内存"></a>片上内存</h1><p><img src="../CUDA%E5%86%85%E5%AD%98%E4%BB%8B%E7%BB%8D/hardware-model.png" alt="硬件模型"></p>
-<p><a href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#on-chip-shared-memory" target="_blank" rel="noopener">3.3. On-chip Shared Memory</a> 介绍SMX片上共享内存包括：  </p>
-<ul>
-<li>每个SP上有一组32位的寄存器</li>
-<li>SPs共享的数据缓存<code>shared memory</code></li>
-<li>SPs共享的只读内存<code>constant cache</code></li>
-<li>SPs共享的只读内存<code>texture cache</code></li>
-</ul>
-<h1 id="device-声明的变量无法从host上成功访问"><a href="#device-声明的变量无法从host上成功访问" class="headerlink" title="__device__ 声明的变量无法从host上成功访问"></a><code>__device__</code> 声明的变量无法从host上成功访问</h1><p><a href="https://stackoverflow.com/questions/34041372/access-cuda-global-device-variable-from-host#" target="_blank" rel="noopener">Access CUDA global device variable from host</a></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="https://blog.csdn.net/langb2014/article/details/51348616" target="_blank" rel="noopener">CUDA学习笔记九</a></li>
-<li><a href="https://jhui.github.io/2017/03/06/CUDA/" target="_blank" rel="noopener">CUDA Tutorial</a></li>
-<li><a href="https://stackoverflow.com/questions/34041372/access-cuda-global-device-variable-from-host#" target="_blank" rel="noopener">Access CUDA global device variable from host</a></li>
-</ol>
-
+        <p>CUDA内存使用总结。  </p>
         
         
         <p class="article-more-link">
+          
+            <a href="/2018/12/21/CUDA内存介绍/#more">Read More</a>
           
        </p>
     </div>
@@ -701,7 +689,9 @@
   </nav>
 
 </div>
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
@@ -921,20 +911,21 @@
     </ul>
 </div>
 
-  
-
-
   <div class="rsspart">
 	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
-  <div class="weiboshow">
-  <p class="asidetitle">Weibo</p>
-    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
-</div>
-
-
 </aside>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_uv"> 
+		  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+		</span>
+	</div>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_pv">
+		    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+		</span>
+	</div>
 </div>
     </div>
     <footer><div id="footer">
@@ -950,6 +941,7 @@
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
+
 	<div class="social-font">
 		
 		

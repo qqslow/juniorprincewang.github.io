@@ -11,19 +11,19 @@
     
 
     
-    <meta name="description" content="片上内存 3.3. On-chip Shared Memory 介绍SMX片上共享内存包括：    每个SP上有一组32位的寄存器 SPs共享的数据缓存shared memory SPs共享的只读内存constant cache SPs共享的只读内存texture cache  __device__ 声明的变量无法从host上成功访问Access CUDA global device variab">
+    <meta name="description" content="CUDA内存使用总结。">
 <meta name="keywords" content="CUDA,Memory">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CUDA内存介绍">
 <meta property="og:url" content="http://juniorprincewang.github.io/2018/12/21/CUDA内存介绍/index.html">
 <meta property="og:site_name" content="TO DO">
-<meta property="og:description" content="片上内存 3.3. On-chip Shared Memory 介绍SMX片上共享内存包括：    每个SP上有一组32位的寄存器 SPs共享的数据缓存shared memory SPs共享的只读内存constant cache SPs共享的只读内存texture cache  __device__ 声明的变量无法从host上成功访问Access CUDA global device variab">
+<meta property="og:description" content="CUDA内存使用总结。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://juniorprincewang.github.io/2018/12/21/CUDA%E5%86%85%E5%AD%98%E4%BB%8B%E7%BB%8D/hardware-model.png">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.177Z">
+<meta property="og:updated_time" content="2019-06-12T09:00:58.661Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CUDA内存介绍">
-<meta name="twitter:description" content="片上内存 3.3. On-chip Shared Memory 介绍SMX片上共享内存包括：    每个SP上有一组32位的寄存器 SPs共享的数据缓存shared memory SPs共享的只读内存constant cache SPs共享的只读内存texture cache  __device__ 声明的变量无法从host上成功访问Access CUDA global device variab">
+<meta name="twitter:description" content="CUDA内存使用总结。">
 <meta name="twitter:image" content="http://juniorprincewang.github.io/2018/12/21/CUDA%E5%86%85%E5%AD%98%E4%BB%8B%E7%BB%8D/hardware-model.png">
 
     
@@ -33,8 +33,8 @@
     <link rel="icon" href="/img/favicon.ico">
     
     
-    <link rel="apple-touch-icon" href="/img/jacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon" href="/img/batman.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
     <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
@@ -104,7 +104,11 @@
 		
 		</div>
 		
-		<h1 id="片上内存"><a href="#片上内存" class="headerlink" title="片上内存"></a>片上内存</h1><p><img src="../CUDA%E5%86%85%E5%AD%98%E4%BB%8B%E7%BB%8D/hardware-model.png" alt="硬件模型"></p>
+		<p>CUDA内存使用总结。  </p>
+<a id="more"></a>
+
+
+<h1 id="片上内存"><a href="#片上内存" class="headerlink" title="片上内存"></a>片上内存</h1><p><img src="../CUDA%E5%86%85%E5%AD%98%E4%BB%8B%E7%BB%8D/hardware-model.png" alt="硬件模型"></p>
 <p><a href="https://docs.nvidia.com/cuda/parallel-thread-execution/index.html#on-chip-shared-memory" target="_blank" rel="noopener">3.3. On-chip Shared Memory</a> 介绍SMX片上共享内存包括：  </p>
 <ul>
 <li>每个SP上有一组32位的寄存器</li>
@@ -177,7 +181,9 @@
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
@@ -404,20 +410,21 @@
     </ul>
 </div>
 
-  
-
-
   <div class="rsspart">
 	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
-  <div class="weiboshow">
-  <p class="asidetitle">Weibo</p>
-    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
-</div>
-
-
 </aside>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_uv"> 
+		  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+		</span>
+	</div>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_pv">
+		    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+		</span>
+	</div>
 </div>
     </div>
     <footer><div id="footer">
@@ -433,6 +440,7 @@
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
+
 	<div class="social-font">
 		
 		

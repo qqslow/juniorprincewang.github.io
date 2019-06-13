@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客记录了如何简单搭建Hexo，并对搭建好的Hexo主题博客进行设置，包括主题，布局，风格等等。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-12T06:50:59.852Z">
+<meta property="og:updated_time" content="2019-06-13T06:33:36.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo的搭建">
 <meta name="twitter:description" content="本篇博客记录了如何简单搭建Hexo，并对搭建好的Hexo主题博客进行设置，包括主题，布局，风格等等。">
@@ -31,8 +31,8 @@
     <link rel="icon" href="/img/favicon.ico">
     
     
-    <link rel="apple-touch-icon" href="/img/jacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon" href="/img/batman.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
     <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
@@ -148,6 +148,7 @@ fatal: Could not read from remote repository.</code></pre><p>这是由于.ssh文
 添加本站访问人数和访问人次总数。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;linkslist&quot;&gt;</span><br><span class="line">&lt;span id=&quot;busuanzi_container_site_uv&quot;&gt; </span><br><span class="line">  本站访客数&lt;span id=&quot;busuanzi_value_site_uv&quot;&gt;&lt;/span&gt;人次</span><br><span class="line">&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;linkslist&quot;&gt;</span><br><span class="line">&lt;span id=&quot;busuanzi_container_site_pv&quot;&gt;</span><br><span class="line">    本站总访问量&lt;span id=&quot;busuanzi_value_site_pv&quot;&gt;&lt;/span&gt;次</span><br><span class="line">&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
 
+<p><a href="http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html" target="_blank" rel="noopener">更多炫酷的主题个性化</a>  </p>
 <h2 id="hexo-s命令失效"><a href="#hexo-s命令失效" class="headerlink" title="hexo s命令失效"></a><code>hexo s</code>命令失效</h2><p>我将hexo整个文件夹上传到github服务器，在另一台电脑下载下来，运行<code>hexo s</code>失效，从显示结果来看，不存在此命令。<br>这是由于Hexo3将<code>hexo-server</code>独立出来了，如果需要本地调试，需要先安装server。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-server --save</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
 
@@ -213,7 +214,9 @@ fatal: Could not read from remote repository.</code></pre><p>这是由于.ssh文
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
@@ -440,20 +443,21 @@ fatal: Could not read from remote repository.</code></pre><p>这是由于.ssh文
     </ul>
 </div>
 
-  
-
-
   <div class="rsspart">
 	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
-  <div class="weiboshow">
-  <p class="asidetitle">Weibo</p>
-    <iframe width="100%" height="119" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
-</div>
-
-
 </aside>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_uv"> 
+		  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+		</span>
+	</div>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_pv">
+		    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+		</span>
+	</div>
 </div>
     </div>
     <footer><div id="footer">
@@ -469,6 +473,7 @@ fatal: Could not read from remote repository.</code></pre><p>这是由于.ssh文
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
+
 	<div class="social-font">
 		
 		
