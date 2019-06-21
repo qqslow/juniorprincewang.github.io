@@ -20,7 +20,7 @@
 <meta property="og:description" content="对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://juniorprincewang.github.io/2017/08/13/linux%E6%93%8D%E4%BD%9C/bash%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%91%BD%E4%BB%A4.jpg">
-<meta property="og:updated_time" content="2019-06-13T02:24:53.164Z">
+<meta property="og:updated_time" content="2019-06-20T10:45:11.694Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux操作">
 <meta name="twitter:description" content="对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。">
@@ -142,18 +142,24 @@ writev (2)           - read or write data into multiple buffers
 <p><code>man write</code>是<code>write</code>命令手册，我们可以定位到<code>write (2)</code>是我们想要的库函数。可以在命令行输入<code>2</code>来查阅第二个<code>write</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">man 2 write</span><br></pre></td></tr></table></figure>
 
-<h1 id="查找软件源"><a href="#查找软件源" class="headerlink" title="查找软件源"></a>查找软件源</h1><h2 id="更新软件源"><a href="#更新软件源" class="headerlink" title="更新软件源"></a>更新软件源</h2><p><code>ubuntu 14.04</code> 的软件源配置文件是 <code>/etc/apt/sources.list</code> 。将系统自带的该文件做个备份，将该文件替换为下面内容。</p>
+<h1 id="查找软件源"><a href="#查找软件源" class="headerlink" title="查找软件源"></a>查找软件源</h1><h2 id="更新软件源"><a href="#更新软件源" class="headerlink" title="更新软件源"></a>更新软件源</h2><p><code>ubuntu 16.04TLS</code> 的软件源配置文件是 <code>/etc/apt/sources.list</code> 。将系统自带的该文件做个备份，将该文件替换为下面内容。</p>
 <ul>
 <li>更新为清华源</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-updates main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-backports main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-security main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line"># 预发布软件源，不建议启用</span><br><span class="line"># deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-proposed main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ trusty-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line"># 预发布软件源，不建议启用</span><br><span class="line"># deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>更新软件包</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+<p>很长时间！  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt-get autoremove</span><br><span class="line">sudo apt upgrade</span><br><span class="line">sudo apt-get dist-upgrade</span><br></pre></td></tr></table></figure>
 
-<p><code>ubuntu</code> 其他系列如 <code>ubuntu16.04</code> 需要的软件源参考<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a>。</p>
+<p><code>ubuntu</code> 其他系列如 <code>ubuntu18.04</code> 需要的软件源参考<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a>。</p>
+<p>如遇到   </p>
+<blockquote>
+<p>E:Error, pkgProblemResolver::Resolve generated breaks, this may be caused by held packages  </p>
+</blockquote>
+<p>参考 <a href="https://askubuntu.com/a/875527" target="_blank" rel="noopener">https://askubuntu.com/a/875527</a>  </p>
 <h2 id="查找不确定的软件包"><a href="#查找不确定的软件包" class="headerlink" title="查找不确定的软件包"></a>查找不确定的软件包</h2><p>比如查找 支持 <code>gd</code> 的 <code>php</code> 软件包。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-cache search gd | grep php</span><br></pre></td></tr></table></figure>
 
@@ -173,6 +179,9 @@ writev (2)           - read or write data into multiple buffers
 <li>将<code>eth0</code>的IP分配方式修改为静态分配(static)后，为其制定IP、网关、子网掩码、DNS等信息。</li>
 </ol>
 <p><strong>注意</strong>：<em>dns-nameservers</em> 设置不起作用，我设置了两个dns，不知道为啥。</p>
+<p>重启网络方式：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ip addr flush eth0</span><br><span class="line">sudo systemctl restart networking.service</span><br></pre></td></tr></table></figure>
+
 <p>设置DNS。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/resolv.conf</span><br><span class="line">#添加以下记录</span><br><span class="line">nameserver dns的ip地址,如8.8.8.8</span><br><span class="line">#重启服务</span><br><span class="line">sudo /etc/init.d/networking restart</span><br></pre></td></tr></table></figure>
 

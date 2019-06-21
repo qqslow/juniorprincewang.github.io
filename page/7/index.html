@@ -11,13 +11,16 @@
     
 
     
-    <meta property="og:type" content="website">
+    <meta name="description" content="文章本天成，妙手偶得之。">
+<meta property="og:type" content="website">
 <meta property="og:title" content="TO DO">
 <meta property="og:url" content="http://juniorprincewang.github.io/page/7/index.html">
 <meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="文章本天成，妙手偶得之。">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TO DO">
+<meta name="twitter:description" content="文章本天成，妙手偶得之。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -79,35 +82,40 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/10/03/2015-0ctf-freenote-writeup/" title="2015 0ctf freenote writeup" itemprop="url">2015 0ctf freenote writeup</a>
+      <a href="/2018/04/04/RedTiger-s-Hackit-writeup/" title="RedTiger&#39;s Hackit writeup" itemprop="url">RedTiger&#39;s Hackit writeup</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-10-03T08:26:40.000Z" itemprop="datePublished"> Published 2017-10-03</time>
+    <time datetime="2018-04-04T00:52:34.000Z" itemprop="datePublished"> Published 2018-04-04</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>这道题的堆指针没有清空，导致释放堆内存后仍然指针任然指向堆，由于释放指针没有有效性检查，经过再次申请重新利用释放掉的内存，可以再将原来释放的堆指针再次释放。</p>
+        <p>网上很多关于RedTiger的writeup已失效，所以重新整理下，算是小白入门。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/10/03/2015-0ctf-freenote-writeup/#more">Read More</a>
+            <a href="/2018/04/04/RedTiger-s-Hackit-writeup/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/sql注入/">sql注入</a>
+</div>
+
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/double-free/">double free</a><a href="/tags/pwn/">pwn</a>
+  <span></span> <a href="/tags/sql注入/">sql注入</a>
   </div>
 
 </div>
@@ -135,35 +143,162 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/10/01/pwnable-tw之calc/" title="pwnable.tw之calc" itemprop="url">pwnable.tw之calc</a>
+      <a href="/2018/12/05/QEMU源码字符设备/" title="QEMU源码字符设备" itemprop="url">QEMU源码字符设备</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-10-01T10:19:50.000Z" itemprop="datePublished"> Published 2017-10-01</time>
+    <time datetime="2018-12-05T07:59:03.000Z" itemprop="datePublished"> Published 2018-12-05</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本题考查的是对程序逻辑的理解，达到任意地址读写的目的，并最终利用ROP技术执行<code>execve(&#39;/bin/sh&#39;)</code>。</p>
+        <p>分析QEMU源码中的 <code>virtconsole</code> 字符设备文件，选择 <code>QEMU v2.12.0</code> 版本。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/10/01/pwnable-tw之calc/#more">Read More</a>
+            <a href="/2018/12/05/QEMU源码字符设备/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+</div>
+
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/pwn/">pwn</a><a href="/tags/pwnable-tw/">pwnable.tw</a><a href="/tags/rop/">rop</a>
+  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/virtio/">virtio</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/11/15/QEMU学习/" title="QEMU 学习" itemprop="url">QEMU 学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-11-15T12:22:10.000Z" itemprop="datePublished"> Published 2018-11-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>本篇博客记录了在学习使用<code>QEMU</code>时的资料。包括 <code>QEMU</code> 的整体架构和命令行。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/11/15/QEMU学习/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/emulate/">emulate</a><a href="/tags/virtio/">virtio</a><a href="/tags/KVM/">KVM</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/12/04/QEMU-Object-Model-Style-Guide/" title="QEMU Object Model Style Guide" itemprop="url">QEMU Object Model Style Guide</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-12-04T01:11:33.000Z" itemprop="datePublished"> Published 2018-12-04</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>本篇博客主要讲述了QOM编程的教程，翻译了<a href="https://lists.gnu.org/archive/html/qemu-devel/2012-08/msg02271.html" target="_blank" rel="noopener">QEMU Object Model Style Guide</a> 。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/12/04/QEMU-Object-Model-Style-Guide/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/QOM/">QOM</a>
   </div>
 
 </div>
@@ -247,137 +382,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/09/16/hitcon-ctf-2014-stkof-writeup/" title="hitcon-ctf-2014/stkof writeup" itemprop="url">hitcon-ctf-2014/stkof writeup</a>
+      <a href="/2018/07/09/PCI-driver-model/" title="PCI driver model" itemprop="url">PCI driver model</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-09-16T04:03:19.000Z" itemprop="datePublished"> Published 2017-09-16</time>
+    <time datetime="2018-07-09T12:12:10.000Z" itemprop="datePublished"> Published 2018-07-09</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>how2heap之unsafe unlink的应用实战，加深对其理解。</p>
+        <p>由于要研究NVIDIA GPU的工作原理，需要对PCIe的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和访问。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/09/16/hitcon-ctf-2014-stkof-writeup/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/09/11/how2heap之unsafe-unlink/" title="how2heap之unsafe unlink" itemprop="url">how2heap之unsafe unlink</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2017-09-11T11:56:32.000Z" itemprop="datePublished"> Published 2017-09-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我学习<a href="https://github.com/shellphish/how2heap" target="_blank" rel="noopener">https://github.com/shellphish/how2heap</a>的时候，遇到unsafe_unlink.c卡住了，琢磨了好久才弄通一些，整理下思路。<br>unsafe unlink是利用<code>unlink</code>将已经构造好的chunk块释放掉达到任意地址写的目的。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/09/11/how2heap之unsafe-unlink/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/09/01/堆溢出之Werewolf/" title="堆溢出之Werewolf" itemprop="url">堆溢出之Werewolf</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2017-09-01T07:11:42.000Z" itemprop="datePublished"> Published 2017-09-01</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>堆溢出small bin的unlink利用</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/09/01/堆溢出之Werewolf/#more">Read More</a>
+            <a href="/2018/07/09/PCI-driver-model/#more">Read More</a>
           
        </p>
     </div>
@@ -386,13 +409,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/堆溢出/">堆溢出</a>
+  <span></span> <a href="/tags/pci/">pci</a>
   </div>
 
 </div>
@@ -420,25 +443,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/23/堆溢出之fastbin/" title="堆溢出之fastbin" itemprop="url">堆溢出之fastbin</a>
+      <a href="/2018/01/13/NVidia产品和微架构/" title="NVidia产品和微架构" itemprop="url">NVidia产品和微架构</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-08-23T05:59:56.000Z" itemprop="datePublished"> Published 2017-08-23</time>
+    <time datetime="2018-01-13T07:32:42.000Z" itemprop="datePublished"> Published 2018-01-13</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>简单的fastbin堆溢出漏洞利用。</p>
+        <p>本篇博客介绍NVidia显卡的产品类型和微架构。尤其NVidia的Tesla系列产品和Tesla微架构区分清楚。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/23/堆溢出之fastbin/#more">Read More</a>
+            <a href="/2018/01/13/NVidia产品和微架构/#more">Read More</a>
           
        </p>
     </div>
@@ -447,13 +470,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a><a href="/tags/堆溢出/">堆溢出</a>
+  <span></span> <a href="/tags/GPU/">GPU</a><a href="/tags/GK110/">GK110</a>
   </div>
 
 </div>
@@ -481,32 +504,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/22/fsb/" title="fsb" itemprop="url">fsb</a>
+      <a href="/2018/07/09/NVIDIA-GPU虚拟内存/" title="NVIDIA GPU虚拟内存" itemprop="url">NVIDIA GPU虚拟内存</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-08-22T01:55:21.000Z" itemprop="datePublished"> Published 2017-08-22</time>
+    <time datetime="2018-07-09T01:14:15.000Z" itemprop="datePublished"> Published 2018-07-09</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>pwnable.kr fsb，本题目重点在栈上被调函数的ebp指向了调用函数的ebp。<br>%n的含义是%n符号前的输出的字符数量，<em>引用</em>传值，也就是参数是指针，而不是值。我们利用的代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf(&quot;aaaa%2$n&quot;);</span><br></pre></td></tr></table></figure>
-
-<p>这里将4写入了相对栈顶的第二个偏移量参数作地址的位置，而不是写在第二个参数位置。<br>我简单做了个小实验，输入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aaaa%18$n</span><br></pre></td></tr></table></figure>
-
-<p>得到的结果为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/x $esp+18*4</span><br><span class="line">0xffb5d5d8:	0xffb5f768</span><br><span class="line">(gdb) x/x 0xffb5f768</span><br><span class="line">0xffb5f768:	0x00000004</span><br></pre></td></tr></table></figure>
+        <p>本文分析 <code>NVIDIA GPU</code> 的虚拟内存（virtual memory），由 <code>envytools</code> 工具和文档提供。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/22/fsb/#more">Read More</a>
+            <a href="/2018/07/09/NVIDIA-GPU虚拟内存/#more">Read More</a>
           
        </p>
     </div>
@@ -515,13 +531,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a><a href="/tags/pwnable-kr/">pwnable.kr</a>
+  <span></span> <a href="/tags/GPU/">GPU</a><a href="/tags/virtual-memory/">virtual memory</a>
   </div>
 
 </div>
@@ -549,25 +565,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/20/passcode/" title="passcode" itemprop="url">passcode</a>
+      <a href="/2018/07/14/NVIDIA-GPU-硬件介绍/" title="NVIDIA GPU 硬件介绍" itemprop="url">NVIDIA GPU 硬件介绍</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-08-20T15:55:21.000Z" itemprop="datePublished"> Published 2017-08-20</time>
+    <time datetime="2018-07-14T08:52:26.000Z" itemprop="datePublished"> Published 2018-07-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>多种想法，运来GOT表这么覆盖！</p>
+        <p>本文介绍NVIDIA GPU的硬件组成，为全面了解GPU的架构和逆向GPU结构，全虚拟化GPU提供硬件背景知识。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/20/passcode/#more">Read More</a>
+            <a href="/2018/07/14/NVIDIA-GPU-硬件介绍/#more">Read More</a>
           
        </p>
     </div>
@@ -576,13 +592,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/pwn/">pwn</a><a href="/tags/pwnable-kr/">pwnable.kr</a><a href="/tags/got/">got</a>
+  <span></span> <a href="/tags/GPU/">GPU</a><a href="/tags/hardware/">hardware</a>
   </div>
 
 </div>
@@ -610,25 +626,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/14/unlink/" title="unlink" itemprop="url">unlink</a>
+      <a href="/2018/04/24/Makefile语法/" title="make 命令" itemprop="url">make 命令</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-08-14T13:17:15.000Z" itemprop="datePublished"> Published 2017-08-14</time>
+    <time datetime="2018-04-24T09:29:39.000Z" itemprop="datePublished"> Published 2018-04-24</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>pwnable.kr 中简单的堆溢出利用。<br>堆溢出的原理：用精心构造的数据去溢出下一个堆块的块首，改写堆块的前向指针和后向指针，然后再分配、释放、合并等操作发生时伺机获取一次向内存任意地址写入任意数据的机会。</p>
+        <p>Makefile 文件由 make 命令构建，make 只是一个根据指定的 Shell 命令进行构建的工具。本篇讲解 make 的命令。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/14/unlink/#more">Read More</a>
+            <a href="/2018/04/24/Makefile语法/#more">Read More</a>
           
        </p>
     </div>
@@ -637,13 +653,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/pwnable-kr/">pwnable.kr</a>►<a class="article-category-link" href="/categories/security/">security</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a>
+  <span></span> <a href="/tags/Makefile/">Makefile</a>
   </div>
 
 </div>

@@ -11,13 +11,16 @@
     
 
     
-    <meta property="og:type" content="website">
+    <meta name="description" content="文章本天成，妙手偶得之。">
+<meta property="og:type" content="website">
 <meta property="og:title" content="TO DO">
 <meta property="og:url" content="http://juniorprincewang.github.io/page/9/index.html">
 <meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="文章本天成，妙手偶得之。">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TO DO">
+<meta name="twitter:description" content="文章本天成，妙手偶得之。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -79,25 +82,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/01/pwn入门/" title="安全入门" itemprop="url">安全入门</a>
+      <a href="/2018/05/14/CUDA-API-Remoting技术/" title="CUDA API Remoting技术" itemprop="url">CUDA API Remoting技术</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-08-01T14:13:00.000Z" itemprop="datePublished"> Published 2017-08-01</time>
+    <time datetime="2018-05-14T08:28:02.000Z" itemprop="datePublished"> Published 2018-05-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>这里有关于pwn、web、逆向的资料整理。</p>
+        <p>CUDA的虚拟化有一项技术为 <code>API Remoting</code>， 通俗点就是将编程API重定向，或者说远程过程调用。这是在接口层面上实现虚拟化, 采用对调用接口二次封<br>装的方法。 API 重定向虽然能够达到接近原生硬件的性能, 但是需要修改客户虚拟机中程序库。本文探究CUDA runtime API的重定向细节。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/01/pwn入门/#more">Read More</a>
+            <a href="/2018/05/14/CUDA-API-Remoting技术/#more">Read More</a>
           
        </p>
     </div>
@@ -106,13 +109,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/CUDA/">CUDA</a>►<a class="article-category-link" href="/categories/GPU/GPU虚拟化/">GPU虚拟化</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/pwn/">pwn</a>
+  <span></span> <a href="/tags/CUDA/">CUDA</a><a href="/tags/GPU/">GPU</a>
   </div>
 
 </div>
@@ -140,43 +143,36 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/07/01/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2017/10/03/2015-0ctf-freenote-writeup/" title="2015 0ctf freenote writeup" itemprop="url">2015 0ctf freenote writeup</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2017-07-01T12:44:39.000Z" itemprop="datePublished"> Published 2017-07-01</time>
+    <time datetime="2017-10-03T08:26:40.000Z" itemprop="datePublished"> Published 2017-10-03</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<p>The <a href="http://wuchong.me/jacman/how-to-use-jacman/" target="_blank" rel="noopener">Jacman Theme</a> is here</p>
-
+        <p>这道题的堆指针没有清空，导致释放堆内存后仍然指针任然指向堆，由于释放指针没有有效性检查，经过再次申请重新利用释放掉的内存，可以再将原来释放的堆指针再次释放。</p>
         
         
         <p class="article-more-link">
+          
+            <a href="/2017/10/03/2015-0ctf-freenote-writeup/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/double-free/">double free</a><a href="/tags/pwn/">pwn</a>
+  </div>
 
 </div>
 

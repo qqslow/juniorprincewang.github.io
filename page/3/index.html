@@ -11,13 +11,16 @@
     
 
     
-    <meta property="og:type" content="website">
+    <meta name="description" content="文章本天成，妙手偶得之。">
+<meta property="og:type" content="website">
 <meta property="og:title" content="TO DO">
 <meta property="og:url" content="http://juniorprincewang.github.io/page/3/index.html">
 <meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="文章本天成，妙手偶得之。">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TO DO">
+<meta name="twitter:description" content="文章本天成，妙手偶得之。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -79,25 +82,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/11/16/编写Linux内核模块/" title="编写Linux内核模块" itemprop="url">编写Linux内核模块</a>
+      <a href="/2018/06/18/硬件支持的GPU虚拟化技术/" title="硬件支持的GPU虚拟化技术" itemprop="url">硬件支持的GPU虚拟化技术</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2018-11-16T11:37:38.000Z" itemprop="datePublished"> Published 2018-11-16</time>
+    <time datetime="2018-06-18T08:55:38.000Z" itemprop="datePublished"> Published 2018-06-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>Linux 内核模块是设备和用户应用程序之间的桥梁，可以通过标准系统调用，为应用程序屏蔽设备细节。本篇文章就记录下写内核模块需要注意的点。</p>
+        <p>本文介绍的内容包括Intel、NVIDIA、AMD提供的对GPU的硬件支持，也包括对EPT等概念的理解。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/11/16/编写Linux内核模块/#more">Read More</a>
+            <a href="/2018/06/18/硬件支持的GPU虚拟化技术/#more">Read More</a>
           
        </p>
     </div>
@@ -106,13 +109,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/kernel/">kernel</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/GPU虚拟化/">GPU虚拟化</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/kernel/">kernel</a>
+  <span></span> <a href="/tags/CUDA/">CUDA</a>
   </div>
 
 </div>
@@ -140,25 +143,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/11/15/QEMU学习/" title="QEMU 学习" itemprop="url">QEMU 学习</a>
+      <a href="/2017/08/07/格式化字符串漏洞/" title="格式化字符串漏洞" itemprop="url">格式化字符串漏洞</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2018-11-15T12:22:10.000Z" itemprop="datePublished"> Published 2018-11-15</time>
+    <time datetime="2017-08-07T12:38:44.000Z" itemprop="datePublished"> Published 2017-08-07</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本篇博客记录了在学习使用<code>QEMU</code>时的资料。包括 <code>QEMU</code> 的整体架构和命令行。</p>
+        <p>格式化漏洞的原理<br>printf函数在处理参数的时候，每遇到一个%开头的标记，就会根据这个%开头的字符所规定的规则执行，即使没有传入参数，也会认定栈上相应的位置为参数。<br>每一个格式化字符串的 % 之后可以跟一个十进制的常数再跟一个 $ 符号, 表示格式化指定位置的参数</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/11/15/QEMU学习/#more">Read More</a>
+            <a href="/2017/08/07/格式化字符串漏洞/#more">Read More</a>
           
        </p>
     </div>
@@ -167,13 +170,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/emulate/">emulate</a><a href="/tags/virtio/">virtio</a><a href="/tags/KVM/">KVM</a>
+  <span></span> <a href="/tags/pwn/">pwn</a><a href="/tags/格式化字符串/">格式化字符串</a>
   </div>
 
 </div>
@@ -201,25 +204,27 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/10/22/alf-nu-ReturnTrue-总结/" title="alf.nu/ReturnTrue 总结" itemprop="url">alf.nu/ReturnTrue 总结</a>
+      <a href="/2017/08/04/搭建vps/" title="搭建vps" itemprop="url">搭建vps</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2018-10-22T01:02:11.000Z" itemprop="datePublished"> Published 2018-10-22</time>
+    <time datetime="2017-08-04T08:47:02.000Z" itemprop="datePublished"> Published 2017-08-04</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><code>alf.nu/ReturnTrue</code> 答题的总结。</p>
+        <p>本篇讲述了自己动手翻墙访问谷歌的过程。</p>
+<p>利用服务商Vultr的海外专用虚拟网络主机(VPS)搭建Shadowsocks的服务，利用VPN技术实现访问代理。</p>
+<p>增加了利用IPv6访问谷歌学术的方法。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/10/22/alf-nu-ReturnTrue-总结/#more">Read More</a>
+            <a href="/2017/08/04/搭建vps/#more">Read More</a>
           
        </p>
     </div>
@@ -228,196 +233,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/web安全/">web安全</a>
+  <a class="article-category-link" href="/categories/vps/">vps</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/xss/">xss</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/10/19/CUDA-kernel之多进程访问研究/" title="CUDA kernel之多进程访问研究" itemprop="url">CUDA kernel之多进程访问研究</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2018-10-19T06:40:13.000Z" itemprop="datePublished"> Published 2018-10-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>探究多进程或者多线程并发执行多个CUDA Kernel。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/10/19/CUDA-kernel之多进程访问研究/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/CUDA/">CUDA</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/CUDA/">CUDA</a><a href="/tags/GPU/">GPU</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/10/14/alf-nu-alert1总结/" title="alf.nu/alert1总结" itemprop="url">alf.nu/alert1总结</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2018-10-14T04:39:04.000Z" itemprop="datePublished"> Published 2018-10-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在做 alf.nu/alert1 时候的一些总结，主要是xss这种低安全级别的注意事项。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/10/14/alf-nu-alert1总结/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/web安全/">web安全</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/xss/">xss</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/08/21/解决ubuntu升级失败无法登录系统/" title="解决ubuntu升级失败无法登录系统" itemprop="url">解决ubuntu升级失败无法登录系统</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2018-08-21T09:10:34.000Z" itemprop="datePublished"> Published 2018-08-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>本篇博客解决 <code>ubuntu</code> 系统升级中断后无法正常登录的问题。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/08/21/解决ubuntu升级失败无法登录系统/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/solutions/">solutions</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/ubuntu/">ubuntu</a>
+  <span></span> <a href="/tags/vps/">vps</a>
   </div>
 
 </div>
@@ -501,25 +323,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/29/编译安装报错-virtual-memory-exhausted-Cannot-allocate-memory/" title="编译安装报错 &quot;virtual memory exhausted Cannot allocate memory&quot;" itemprop="url">编译安装报错 &quot;virtual memory exhausted Cannot allocate memory&quot;</a>
+      <a href="/2018/04/18/实验吧-web-writeup/" title="实验吧 web writeup" itemprop="url">实验吧 web writeup</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2018-07-29T08:55:23.000Z" itemprop="datePublished"> Published 2018-07-29</time>
+    <time datetime="2018-04-18T11:03:31.000Z" itemprop="datePublished"> Published 2018-04-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在1GB内存的阿里云主机中，编译cmake时候报错，<code>virtual memory exhausted: Cannot allocate memory</code> 。 </p>
+        <p>本篇博客连续更新实验吧的web篇解题思路。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/07/29/编译安装报错-virtual-memory-exhausted-Cannot-allocate-memory/#more">Read More</a>
+            <a href="/2018/04/18/实验吧-web-writeup/#more">Read More</a>
           
        </p>
     </div>
@@ -528,13 +350,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/solutions/">solutions</a>
+  <a class="article-category-link" href="/categories/sql注入/">sql注入</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/virtual-memory/">virtual memory</a>
+  <span></span> <a href="/tags/sql/">sql</a>
   </div>
 
 </div>
@@ -562,25 +384,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/23/qemu源码添加设备/" title="QEMU设备的对象模型QOM" itemprop="url">QEMU设备的对象模型QOM</a>
+      <a href="/2017/08/06/密码学EXM/" title="密码学EXM?" itemprop="url">密码学EXM?</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2018-07-23T07:21:39.000Z" itemprop="datePublished"> Published 2018-07-23</time>
+    <time datetime="2017-08-06T02:41:42.000Z" itemprop="datePublished"> Published 2017-08-06</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本篇博客记录在QEMU源码中添加新的设备文件，主要介绍QEMU对象模型<code>QOM</code>，以<code>hw/misc/pci-testdev.c</code> 和 <code>hw/misc/edu.c</code>设备为例子。</p>
+        <p>搞安全怎么能离开密码学。武功再高，也怕菜刀。<br>骐骥一跃，不能十步。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/07/23/qemu源码添加设备/#more">Read More</a>
+            <a href="/2017/08/06/密码学EXM/#more">Read More</a>
           
        </p>
     </div>
@@ -589,13 +411,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/crypto/">crypto</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/QOM/">QOM</a>
+  <span></span> <a href="/tags/cryptography/">cryptography</a><a href="/tags/国产密码/">国产密码</a><a href="/tags/ECDSA/">ECDSA</a><a href="/tags/SM/">SM</a><a href="/tags/RSA/">RSA</a><a href="/tags/AES/">AES</a>
   </div>
 
 </div>
@@ -623,25 +445,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/20/qemu内存虚拟化/" title="QEMU-KVM内存虚拟化" itemprop="url">QEMU-KVM内存虚拟化</a>
+      <a href="/2017/08/23/堆溢出之fastbin/" title="堆溢出之fastbin" itemprop="url">堆溢出之fastbin</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   </p><p class="article-time">
-    <time datetime="2018-07-20T08:59:26.000Z" itemprop="datePublished"> Published 2018-07-20</time>
+    <time datetime="2017-08-23T05:59:56.000Z" itemprop="datePublished"> Published 2017-08-23</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 <code>GPA</code> 转换成 <code>HVA</code> 。</p>
+        <p>简单的fastbin堆溢出漏洞利用。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/07/20/qemu内存虚拟化/#more">Read More</a>
+            <a href="/2017/08/23/堆溢出之fastbin/#more">Read More</a>
           
        </p>
     </div>
@@ -650,13 +472,196 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/vm/">vm</a>
+  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a><a href="/tags/堆溢出/">堆溢出</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/09/01/堆溢出之Werewolf/" title="堆溢出之Werewolf" itemprop="url">堆溢出之Werewolf</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2017-09-01T07:11:42.000Z" itemprop="datePublished"> Published 2017-09-01</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>堆溢出small bin的unlink利用</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/09/01/堆溢出之Werewolf/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/堆溢出/">堆溢出</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/22/可加载内核模块编程1/" title="可加载内核模块编程" itemprop="url">可加载内核模块编程</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-03-22T11:30:24.000Z" itemprop="datePublished"> Published 2018-03-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>由于自己要动手修改virtio源码，需要重新编写位于客户机前端virtio驱动，因此需要了解可加载内核模块（loadable kernel module, LKM）。在网上和书里面找了些资料，总结一下。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/03/22/可加载内核模块编程1/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/kernel/">kernel</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/kernel/">kernel</a><a href="/tags/LKM/">LKM</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/10/04/vim操作/" title="vim操作" itemprop="url">vim操作</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2017-10-04T04:27:42.000Z" itemprop="datePublished"> Published 2017-10-04</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>平时操作vim有些命令经常查，索性都记录在这篇博客里。包括搜索替换，行操作。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/10/04/vim操作/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/vim/">vim</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/vim/">vim</a><a href="/tags/linux/">linux</a>
   </div>
 
 </div>
