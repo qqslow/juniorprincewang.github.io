@@ -1,0 +1,826 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>latex语法学习 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="整理经常使用到的latex语法和WinEdt 10工具。">
+<meta name="keywords" content="latex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="latex语法学习">
+<meta property="og:url" content="http://juniorprincewang.github.io/2019/08/15/latex语法学习/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="整理经常使用到的latex语法和WinEdt 10工具。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-16T01:06:33.600Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="latex语法学习">
+<meta name="twitter:description" content="整理经常使用到的latex语法和WinEdt 10工具。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/batman.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/08/15/latex语法学习/" title="latex语法学习" itemprop="url">latex语法学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2019-08-15T07:48:04.000Z" itemprop="datePublished"> Published 2019-08-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#latex语法"><span class="toc-number">1.</span> <span class="toc-text">latex语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#hello-latex"><span class="toc-number">1.1.</span> <span class="toc-text">hello latex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文档类型"><span class="toc-number">1.2.</span> <span class="toc-text">文档类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加包"><span class="toc-number">1.3.</span> <span class="toc-text">添加包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加标题、作者、日期等信息"><span class="toc-number">1.4.</span> <span class="toc-text">添加标题、作者、日期等信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加注释"><span class="toc-number">1.5.</span> <span class="toc-text">添加注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加章节"><span class="toc-number">1.6.</span> <span class="toc-text">添加章节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstracts"><span class="toc-number">1.7.</span> <span class="toc-text">Abstracts</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#段落"><span class="toc-number">1.8.</span> <span class="toc-text">段落</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#换行"><span class="toc-number">1.8.1.</span> <span class="toc-text">换行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paragraph-Alignment-Text-Justification"><span class="toc-number">1.8.2.</span> <span class="toc-text">Paragraph Alignment(Text Justification)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paragraph-Indentation"><span class="toc-number">1.8.3.</span> <span class="toc-text">Paragraph Indentation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#粗体、斜体、下划线"><span class="toc-number">1.9.</span> <span class="toc-text">粗体、斜体、下划线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加图片"><span class="toc-number">1.10.</span> <span class="toc-text">添加图片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标题、标签和引用"><span class="toc-number">1.10.1.</span> <span class="toc-text">标题、标签和引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加表格"><span class="toc-number">1.11.</span> <span class="toc-text">添加表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加列表"><span class="toc-number">1.12.</span> <span class="toc-text">添加列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无序列表"><span class="toc-number">1.12.1.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序列表"><span class="toc-number">1.12.2.</span> <span class="toc-text">有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加引用"><span class="toc-number">1.13.</span> <span class="toc-text">添加引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-bibliography-file"><span class="toc-number">1.13.1.</span> <span class="toc-text">The bibliography file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cite-a-website"><span class="toc-number">1.13.2.</span> <span class="toc-text">cite a website</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#quotes-in-bibliographic-field"><span class="toc-number">1.13.3.</span> <span class="toc-text">quotes in bibliographic field</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#include-sections-of-files"><span class="toc-number">1.14.</span> <span class="toc-text">include sections of files</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WinEdt-10的安装"><span class="toc-number">2.</span> <span class="toc-text">WinEdt 10的安装</span></a></li></ol>
+		
+		</div>
+		
+		<p>整理经常使用到的latex语法和WinEdt 10工具。</p>
+<a id="more"></a>
+
+<p>写论文用到的在线Latex编辑和生成网站是 <a href="https://www.overleaf.com" target="_blank" rel="noopener">overleaf</a>。  
+但是有时由于网络不稳定，会遇到掉线的情况。这时候选用的本地Latex编辑和生成软件是WinEdt。 </p>
+<h1 id="latex语法"><a href="#latex语法" class="headerlink" title="latex语法"></a>latex语法</h1><p>网上的latex语法教程简直数不胜数，我选择了Overleaf官网给出的教程<a href="https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes" target="_blank" rel="noopener">https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes</a>。  </p>
+<p>latex的文档后缀名为 <em>.tex</em>。  </p>
+<h2 id="hello-latex"><a href="#hello-latex" class="headerlink" title="hello latex"></a>hello latex</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">\documentclass&#123;article&#125;</span><br><span class="line"> </span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">Hello Latex.</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>\begin{document}</code> 之前的部分为 <em>preamble</em> ，这里的语句可以定义文档的类型，语言，包（package）等等。<br><code>\begin{document}</code> 和 <code>\end{document}</code> 之间的部分为 <em>body</em>。</p>
+<h2 id="文档类型"><a href="#文档类型" class="headerlink" title="文档类型"></a>文档类型</h2><p><code>\documentclass{}</code>  规定文档的类型，可以选择文章article，也可以选择其它类型，如book、letter等等<br>在写论文时，一般会有模板，这里套上相关的文档类型即可。  </p>
+<p><code>\documentclass[12pt, a4paper]{article}</code> 设置纸张大小为 A4。 如果不设置字体大小，默认的字体大小为 10pt。  </p>
+<p>对于页大小和页边距的设置可参见：<a href="https://www.overleaf.com/learn/latex/Page_size_and_margins" target="_blank" rel="noopener">Page size and margins</a>。  </p>
+<h2 id="添加包"><a href="#添加包" class="headerlink" title="添加包"></a>添加包</h2><p><code>\usepackage{}</code> ，比如添加图片的包： <code>\usepackage{graphicx}</code> 。  </p>
+<h2 id="添加标题、作者、日期等信息"><a href="#添加标题、作者、日期等信息" class="headerlink" title="添加标题、作者、日期等信息"></a>添加标题、作者、日期等信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">\title&#123;First document&#125;</span><br><span class="line">\author&#123;Hubert Farnsworth \thanks&#123;funded by the Overleaf team&#125;&#125;</span><br><span class="line">\date&#123;February 2017&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;document&#125; </span><br><span class="line">\maketitle </span><br><span class="line"></span><br><span class="line">Hello world! </span><br><span class="line"></span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>： 需要在<em>body</em> 中使用命令 <code>\maketitle</code>将这些信息按照预定的格式打印出来。  </p>
+<h2 id="添加注释"><a href="#添加注释" class="headerlink" title="添加注释"></a>添加注释</h2><p><code>%</code> 为注释符。如果文章内容中需要使用%的话，需要在%前面加上反斜杠\。</p>
+<h2 id="添加章节"><a href="#添加章节" class="headerlink" title="添加章节"></a>添加章节</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-1  \part&#123;part&#125;</span><br><span class="line">0   \chapter&#123;chapter&#125;</span><br><span class="line">1   \section&#123;section&#125;</span><br><span class="line">2   \subsection&#123;subsection&#125;</span><br><span class="line">3   \subsubsection&#123;subsubsection&#125;</span><br><span class="line">4   \paragraph&#123;paragraph&#125;</span><br><span class="line">5   \subparagraph&#123;subparagraph&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>\section{}</code>的花括号内的内容是标题，标题序号默认自动排序。如果不想要标题序号，使用 <code>\section*{}</code>。</li>
+<li><code>\part</code> 和 <code>\chapter</code> 用于 <em>report</em> 和 <em>book</em> 类型。</li>
+</ul>
+<p>更多章节内容，参见 <a href="https://www.overleaf.com/learn/latex/Sections_and_chapters" target="_blank" rel="noopener">Sections and chapters</a>。  </p>
+<h2 id="Abstracts"><a href="#Abstracts" class="headerlink" title="Abstracts"></a>Abstracts</h2><p>论文中，摘要（<em>Abstract</em>）是正文最开始的一段，它高度概括了本文的主旨。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;document&#125;</span><br><span class="line"> </span><br><span class="line">\begin&#123;abstract&#125;</span><br><span class="line">This is a simple paragraph at the beginning of the </span><br><span class="line">document. A brief introduction about the main subject.</span><br><span class="line">\end&#123;abstract&#125;</span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="段落"><a href="#段落" class="headerlink" title="段落"></a>段落</h2><h3 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h3><ul>
+<li>如果要另起一段，需要摁 “Enter” 键两次。即两段之间有一空白行。  </li>
+<li><code>\\</code> 放在行位换行。  </li>
+<li><code>\par</code> 放在段尾，起到了换行的作用。  </li>
+</ul>
+<h3 id="Paragraph-Alignment-Text-Justification"><a href="#Paragraph-Alignment-Text-Justification" class="headerlink" title="Paragraph Alignment(Text Justification)"></a>Paragraph Alignment(Text Justification)</h3><p>默认两端对齐，如果要调整，可以换成 <em>center</em>, <em>flushleft</em> 和 <em>flushright</em> 。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;flushleft&#125;</span><br><span class="line">paragraph</span><br><span class="line">\end&#123;flushleft&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Paragraph-Indentation"><a href="#Paragraph-Indentation" class="headerlink" title="Paragraph Indentation"></a>Paragraph Indentation</h3><p>section默认首段不缩进，紧接着的下一段缩进可由 <code>\parindent</code> 控制。但是缩进的长度是由 class 决定得，这可通过命令 <code>\setlength</code> 更改。<br><code>\noindent</code>放置于段首，段落无缩进。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">\setlength&#123;\parindent&#125;&#123;10ex&#125;</span><br><span class="line">This is the text in first paragraph. This is the text in first </span><br><span class="line">paragraph. This is the text in first paragraph. \par</span><br><span class="line">\noindent %The next paragraph is not indented</span><br><span class="line">This is the text in second paragraph. This is the text in second </span><br><span class="line">paragraph. This is the text in second paragraph.</span><br></pre></td></tr></table></figure>
+
+<h2 id="粗体、斜体、下划线"><a href="#粗体、斜体、下划线" class="headerlink" title="粗体、斜体、下划线"></a>粗体、斜体、下划线</h2><ul>
+<li><code>\textbf{...}</code>  设置粗体（Bold）</li>
+<li><code>\textit{...}</code>  设置斜体（Italics）</li>
+<li><code>\underline{...}</code> 设置下划线（underline）  </li>
+<li><code>\emph{...}</code> 命令很有用：在正常文本中被强调的部分呈 <em>斜体</em>，但是在斜体文本中，呈正常体。  </li>
+</ul>
+<p>更多字体的设置可以参见 <a href="https://www.overleaf.com/learn/latex/Font_sizes,_families,_and_styles" target="_blank" rel="noopener">Font sizes, families, and styles</a>。  </p>
+<ul>
+<li>Font sizes： <code>\large</code> 等</li>
+<li>Font styles ： <code>\textbf</code> 等</li>
+<li>font families： <code>\textrm</code> 等  </li>
+</ul>
+<h2 id="添加图片"><a href="#添加图片" class="headerlink" title="添加图片"></a>添加图片</h2><p>latex本身不管理图片，需要引入包 <em>graphicx</em>，此包包含两个命令 <code>\includegraphics{...}</code> 和 <code>\graphicspath{...}</code> 。  </p>
+<ul>
+<li><code>\graphicspath{ {images/} }</code> 表示图片存放路径在当前路径的 <em>images</em>文件夹下。  </li>
+<li><code>\includegraphics{universe}</code> 表示在文档中引入名称为 <em>universe</em> 的图片， <em>universe</em> 没有带文件扩展名，文件名不包括空格和点。  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">\usepackage&#123;graphicx&#125;</span><br><span class="line">\graphicspath&#123; &#123;images/&#125; &#125;</span><br><span class="line">\begin&#123;document&#125;</span><br><span class="line">\includegraphics&#123;universe&#125; </span><br><span class="line">\end&#123;document&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="标题、标签和引用"><a href="#标题、标签和引用" class="headerlink" title="标题、标签和引用"></a>标题、标签和引用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;figure&#125;[h]</span><br><span class="line">    \centering</span><br><span class="line">    \includegraphics[width=0.25\textwidth]&#123;mesh&#125;</span><br><span class="line">    \caption&#123;a nice plot&#125;</span><br><span class="line">    \label&#123;fig:mesh1&#125;</span><br><span class="line">\end&#123;figure&#125;  </span><br><span class="line">As you can see in the figure \ref&#123;fig:mesh1&#125;, the </span><br><span class="line">function grows near 0. Also, in the page \pageref&#123;fig:mesh1&#125; </span><br><span class="line">is the same example.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>\caption{a nice plot}</code> 标题，可以放在图片上方或下方。</li>
+<li><code>\label{fig:mesh1}</code> 方便引用。 </li>
+<li><code>\ref{fig:mesh1}</code> 通过 <code>\ref{fig:mesh1}</code> 引用。</li>
+</ul>
+<h2 id="添加表格"><a href="#添加表格" class="headerlink" title="添加表格"></a>添加表格</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Table \ref&#123;table:data&#125; is an example of referenced \LaTeX&#123;&#125; elements.</span><br><span class="line"> </span><br><span class="line">\begin&#123;table&#125;[h!]</span><br><span class="line">\centering</span><br><span class="line">\begin&#123;tabular&#125;&#123;||c c c c||&#125; </span><br><span class="line"> \hline</span><br><span class="line"> Col1 &amp; Col2 &amp; Col2 &amp; Col3 \\ [0.5ex] </span><br><span class="line"> \hline\hline</span><br><span class="line"> 1 &amp; 6 &amp; 87837 &amp; 787 \\ </span><br><span class="line"> 2 &amp; 7 &amp; 78 &amp; 5415 \\</span><br><span class="line"> 3 &amp; 545 &amp; 778 &amp; 7507 \\</span><br><span class="line"> 4 &amp; 545 &amp; 18744 &amp; 7560 \\</span><br><span class="line"> 5 &amp; 88 &amp; 788 &amp; 6344 \\ [1ex] </span><br><span class="line"> \hline</span><br><span class="line">\end&#123;tabular&#125;</span><br><span class="line">\caption&#123;Table to test captions and labels&#125;</span><br><span class="line">\label&#123;table:data&#125;</span><br><span class="line">\end&#123;table&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>tabular</code> 是latex创建表格的tag。</li>
+<li><code>{c c c c}</code> 表示有4列。 </li>
+<li><code>\begin{center}</code> 表示表格内容居中对齐，还可以选择 <code>l</code> 和 <code>r</code> 。</li>
+<li><code>&amp;</code> 符号用于分隔表格的条目。  </li>
+<li><code>\\</code> 用于表格的换行。  </li>
+<li><code>{ |c|c|c| }</code> 中的 <code>|</code> 用于插入一条垂直线。  </li>
+<li><code>\hline</code> 用于插入一条水平线。</li>
+</ul>
+<p>表格的 <em>标题、标签和引用</em> 和 图片的基本一致。  </p>
+<h2 id="添加列表"><a href="#添加列表" class="headerlink" title="添加列表"></a>添加列表</h2><h3 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;itemize&#125;</span><br><span class="line">  \item The individual entries are indicated with a black dot, a so-called bullet.</span><br><span class="line">  \item The text in the entries may be of any length.</span><br><span class="line">\end&#123;itemize&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">\begin&#123;enumerate&#125;</span><br><span class="line">  \item This is the first entry in our list</span><br><span class="line">  \item The list numbers increase with each entry we add</span><br><span class="line">\end&#123;enumerate&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加引用"><a href="#添加引用" class="headerlink" title="添加引用"></a>添加引用</h2><p>主要参见 <a href="https://www.overleaf.com/learn/latex/Bibliography_management_in_LaTeX" target="_blank" rel="noopener">Bibliography management in LaTeX</a>。  </p>
+<h3 id="The-bibliography-file"><a href="#The-bibliography-file" class="headerlink" title="The bibliography file"></a>The bibliography file</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">@article&#123;einstein,</span><br><span class="line">    author = &quot;Albert Einstein&quot;,</span><br><span class="line">    title = &quot;&#123;Zur Elektrodynamik bewegter K&#123;\&quot;o&#125;rper&#125;. (&#123;German&#125;)</span><br><span class="line">    [&#123;On&#125; the electrodynamics of moving bodies]&quot;,</span><br><span class="line">    journal = &quot;Annalen der Physik&quot;,</span><br><span class="line">    volume = &quot;322&quot;,</span><br><span class="line">    number = &quot;10&quot;,</span><br><span class="line">    pages = &quot;891--921&quot;,</span><br><span class="line">    year = &quot;1905&quot;,</span><br><span class="line">    DOI = &quot;http://dx.doi.org/10.1002/andp.19053221004&quot;,</span><br><span class="line">    keywords = &quot;physics&quot;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">@book&#123;dirac,</span><br><span class="line">    title = &#123;The Principles of Quantum Mechanics&#125;,</span><br><span class="line">    author = &#123;Paul Adrien Maurice Dirac&#125;,</span><br><span class="line">    isbn = &#123;9780198520115&#125;,</span><br><span class="line">    series = &#123;International series of monographs on physics&#125;,</span><br><span class="line">    year = &#123;1981&#125;,</span><br><span class="line">    publisher = &#123;Clarendon Press&#125;,</span><br><span class="line">    keywords = &#123;physics&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">@online&#123;knuthwebsite,</span><br><span class="line">    author = &quot;Donald Knuth&quot;,</span><br><span class="line">    title = &quot;Knuth: Computers and Typesetting&quot;,</span><br><span class="line">    url  = &quot;http://www-cs-faculty.stanford.edu/~uno/abcde.html&quot;,</span><br><span class="line">    addendum = &quot;(accessed: 01.09.2016)&quot;,</span><br><span class="line">    keywords = &quot;latex,knuth&quot;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">@inbook&#123;knuth-fa,</span><br><span class="line">    author = &quot;Donald E. Knuth&quot;,</span><br><span class="line">    title = &quot;Fundamental Algorithms&quot;,</span><br><span class="line">    publisher = &quot;Addison-Wesley&quot;,</span><br><span class="line">    year = &quot;1973&quot;,</span><br><span class="line">    chapter = &quot;1.2&quot;,</span><br><span class="line">    keywords  = &quot;knuth,programming&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>引用 <code>\cite{einstein}</code> , <code>\cite{knuth-fa}</code> 等。</p>
+<h3 id="cite-a-website"><a href="#cite-a-website" class="headerlink" title="cite a website"></a>cite a website</h3><p>尝试了 <code>misc</code> 和 <code>online</code> 两个标签，都不能将url显示出来。<br>问题出在没有添加相关的包啊。<br><strong>And remember to load a package such as hyperref or url.</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@misc&#123;WinNT,</span><br><span class="line">  title = &#123;&#123;MS Windows NT&#125; Kernel Description&#125;,</span><br><span class="line">  howpublished = &#123;\url&#123;http://web.archive.org/web/20080207010024/&#125;&#125;,</span><br><span class="line">  note = &#123;Accessed: 2010-09-30&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://tex.stackexchange.com/a/3608" target="_blank" rel="noopener">How can I use BibTeX to cite a web page?</a></li>
+<li><a href="https://coderwall.com/p/wntyia/how-to-cite-a-website-in-latex" target="_blank" rel="noopener">How to cite a website in LaTeX</a>  </li>
+</ul>
+<h3 id="quotes-in-bibliographic-field"><a href="#quotes-in-bibliographic-field" class="headerlink" title="quotes in bibliographic field"></a>quotes in bibliographic field</h3><blockquote>
+<p>use {} as delimiters for all fields in .bib files<br>title = {“This is inside quote” and outside quote content}</p>
+</blockquote>
+<p>都使用 <code>{}</code> 当作分隔符即可。  </p>
+<ul>
+<li><a href="https://tex.stackexchange.com/q/65331" target="_blank" rel="noopener">Handling quotes inside quotes in a bibliographic field</a></li>
+</ul>
+<h2 id="include-sections-of-files"><a href="#include-sections-of-files" class="headerlink" title="include sections of files"></a>include sections of files</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\input&#123;sections/introduction.tex&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://tex.stackexchange.com/a/31907" target="_blank" rel="noopener">‘\include’ sections of files?</a></li>
+</ul>
+<h1 id="WinEdt-10的安装"><a href="#WinEdt-10的安装" class="headerlink" title="WinEdt 10的安装"></a>WinEdt 10的安装</h1><ol>
+<li>在winedt官网下载winedt 10.2：<a href="http://www.winedt.com/download.html" target="_blank" rel="noopener">http://www.winedt.com/download.html</a></li>
+</ol>
+<p><a href="https://www.52pojie.cn/thread-595351-1-1.html" target="_blank" rel="noopener">吾爱破解</a> 中给出了WinEdt 10.2的破解方法：</p>
+<pre><code>注册码：
+Cracker TeCHiScy
+1130140925535334280 </code></pre><ol start="2">
+<li>在MikTex官网下载MikTex2.9： <a href="https://miktex.org/download" target="_blank" rel="noopener">https://miktex.org/download</a>  </li>
+</ol>
+<p>并将路径<em>path…\MiKTeX 2.9\miktex\bin\x64</em> 添加到环境变量path中。  </p>
+<ol start="3">
+<li><p>在WinEdt菜单栏 <em>Options-&gt;Execution Mode-&gt;TeX System</em> 中更改 <em>TeX root</em> 的路径到MikTeX 2.9的安装目录。  </p>
+</li>
+<li><p>使用 <code>pdflatex</code> 编译文件，使用 <code>bibtex</code> 编译参考文献。  </p>
+</li>
+</ol>
+<p>为避免出现 <em>LaTex Warning: citation undefined</em>错误, 要如下操作：<br>使用 pdflatex 编译<br>之后使用 bibtex 编译<br>之后在使用 pdflatex 编译两次  </p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/latex/">latex</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/latex/">latex</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2019/08/15/latex语法学习/" data-title="latex语法学习 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2019/08/15/SSL-TLS/" title="SSL/TLS">
+  <strong>上一篇：</strong><br>
+  <span>
+  SSL/TLS</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/07/31/cuda-wiki/" title="cuda wiki">
+ <strong>下一篇：</strong><br> 
+ <span>cuda wiki
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#latex语法"><span class="toc-number">1.</span> <span class="toc-text">latex语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#hello-latex"><span class="toc-number">1.1.</span> <span class="toc-text">hello latex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文档类型"><span class="toc-number">1.2.</span> <span class="toc-text">文档类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加包"><span class="toc-number">1.3.</span> <span class="toc-text">添加包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加标题、作者、日期等信息"><span class="toc-number">1.4.</span> <span class="toc-text">添加标题、作者、日期等信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加注释"><span class="toc-number">1.5.</span> <span class="toc-text">添加注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加章节"><span class="toc-number">1.6.</span> <span class="toc-text">添加章节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstracts"><span class="toc-number">1.7.</span> <span class="toc-text">Abstracts</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#段落"><span class="toc-number">1.8.</span> <span class="toc-text">段落</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#换行"><span class="toc-number">1.8.1.</span> <span class="toc-text">换行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paragraph-Alignment-Text-Justification"><span class="toc-number">1.8.2.</span> <span class="toc-text">Paragraph Alignment(Text Justification)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paragraph-Indentation"><span class="toc-number">1.8.3.</span> <span class="toc-text">Paragraph Indentation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#粗体、斜体、下划线"><span class="toc-number">1.9.</span> <span class="toc-text">粗体、斜体、下划线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加图片"><span class="toc-number">1.10.</span> <span class="toc-text">添加图片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标题、标签和引用"><span class="toc-number">1.10.1.</span> <span class="toc-text">标题、标签和引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加表格"><span class="toc-number">1.11.</span> <span class="toc-text">添加表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加列表"><span class="toc-number">1.12.</span> <span class="toc-text">添加列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无序列表"><span class="toc-number">1.12.1.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序列表"><span class="toc-number">1.12.2.</span> <span class="toc-text">有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加引用"><span class="toc-number">1.13.</span> <span class="toc-text">添加引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-bibliography-file"><span class="toc-number">1.13.1.</span> <span class="toc-text">The bibliography file</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cite-a-website"><span class="toc-number">1.13.2.</span> <span class="toc-text">cite a website</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#quotes-in-bibliographic-field"><span class="toc-number">1.13.3.</span> <span class="toc-text">quotes in bibliographic field</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#include-sections-of-files"><span class="toc-number">1.14.</span> <span class="toc-text">include sections of files</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WinEdt-10的安装"><span class="toc-number">2.</span> <span class="toc-text">WinEdt 10的安装</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/latex/" title="latex">latex<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_uv"> 
+		  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+		</span>
+	</div>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_pv">
+		    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+		</span>
+	</div>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

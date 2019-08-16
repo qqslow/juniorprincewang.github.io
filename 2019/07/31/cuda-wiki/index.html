@@ -1,0 +1,793 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>cuda wiki | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="本片博客收录了cuda学习过程中的遇到的知识点总结。">
+<meta name="keywords" content="CUDA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cuda wiki">
+<meta property="og:url" content="http://juniorprincewang.github.io/2019/07/31/cuda-wiki/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="本片博客收录了cuda学习过程中的遇到的知识点总结。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-16T01:13:17.040Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cuda wiki">
+<meta name="twitter:description" content="本片博客收录了cuda学习过程中的遇到的知识点总结。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/batman.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/07/31/cuda-wiki/" title="cuda wiki" itemprop="url">cuda wiki</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2019-07-31T11:16:45.000Z" itemprop="datePublished"> Published 2019-07-31</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Reading-List"><span class="toc-number">1.</span> <span class="toc-text">CUDA Reading List</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Programming"><span class="toc-number">2.</span> <span class="toc-text">CUDA Programming</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#modular-arithmetic"><span class="toc-number">2.1.</span> <span class="toc-text">modular arithmetic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA-structure"><span class="toc-number">2.2.</span> <span class="toc-text">CUDA structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#warp"><span class="toc-number">2.3.</span> <span class="toc-text">warp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MPS"><span class="toc-number">2.4.</span> <span class="toc-text">MPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS介绍"><span class="toc-number">2.4.1.</span> <span class="toc-text">MPS介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS使用"><span class="toc-number">2.4.2.</span> <span class="toc-text">MPS使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPC"><span class="toc-number">2.5.</span> <span class="toc-text">IPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pthreadMigration"><span class="toc-number">2.6.</span> <span class="toc-text">pthreadMigration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#get-SM-ID-in-cuda-thread"><span class="toc-number">2.7.</span> <span class="toc-text">get SM-ID in cuda thread</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PTX"><span class="toc-number">3.</span> <span class="toc-text">PTX</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Snippets"><span class="toc-number">4.</span> <span class="toc-text">CUDA Snippets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#review"><span class="toc-number">5.</span> <span class="toc-text">review</span></a></li></ol>
+		
+		</div>
+		
+		<p>本片博客收录了cuda学习过程中的遇到的知识点总结。  </p>
+<a id="more"></a>  
+
+<p>主要参考 <a href="https://github.com/yszheda/wiki/wiki/CUDA" target="_blank" rel="noopener">https://github.com/yszheda/wiki/wiki/CUDA</a> 的形式，以链接的形式记录，如果有需要便去链接的网页搜索。  </p>
+<h1 id="CUDA-Reading-List"><a href="#CUDA-Reading-List" class="headerlink" title="CUDA Reading List"></a>CUDA Reading List</h1><p>跟着 <a href="https://github.com/yszheda/wiki/wiki/CUDA-Reading-List" target="_blank" rel="noopener">https://github.com/yszheda/wiki/wiki/CUDA-Reading-List</a> 学就完了。  </p>
+<ul>
+<li><a href="http://docs.nvidia.com/cuda/cuda-c-best-practices-guide" target="_blank" rel="noopener">http://docs.nvidia.com/cuda/cuda-c-best-practices-guide</a></li>
+</ul>
+<h1 id="CUDA-Programming"><a href="#CUDA-Programming" class="headerlink" title="CUDA Programming"></a>CUDA Programming</h1><h2 id="modular-arithmetic"><a href="#modular-arithmetic" class="headerlink" title="modular arithmetic"></a>modular arithmetic</h2><p>formule like <em>(a</em>b - c<em>d) mod m or (a</em>b + c) mod m *.<br>use double-precision arithmetic to avoid expensive div and mod operations.  </p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/12252826/modular-arithmetic-on-the-gpu" target="_blank" rel="noopener">modular arithmetic on the gpu</a>  </li>
+<li><a href="https://www.beechwood.eu/using-the-modulo-operator-in-cuda-65536/" target="_blank" rel="noopener">Using the modulo (%) operator in CUDA 65536</a>  </li>
+</ul>
+<h2 id="CUDA-structure"><a href="#CUDA-structure" class="headerlink" title="CUDA structure"></a>CUDA structure</h2><ul>
+<li><a href="https://stackoverflow.com/a/18141906" target="_blank" rel="noopener">Why does CUDA CUdeviceptr use unsigned int instead of void?</a>  <blockquote>
+<p>CUdeviceptr is a handle to an allocation in device memory and not an address in device memory.  </p>
+</blockquote>
+</li>
+</ul>
+<h2 id="warp"><a href="#warp" class="headerlink" title="warp"></a>warp</h2><ul>
+<li><a href="https://stackoverflow.com/questions/10460742/how-do-cuda-blocks-warps-threads-map-onto-cuda-cores" target="_blank" rel="noopener">How do CUDA blocks/warps/threads map onto CUDA cores?</a>  </li>
+<li></li>
+</ul>
+<h2 id="MPS"><a href="#MPS" class="headerlink" title="MPS"></a>MPS</h2><h3 id="MPS介绍"><a href="#MPS介绍" class="headerlink" title="MPS介绍"></a>MPS介绍</h3><p>volta及以后的架构对MPS做了基于硬件加速的实现，并对进程做了地址空间隔离，这样进一步减少kernellaunch带来的延迟。Volta下的MPS服务最多可以允许同时48个Client（客户端）。  </p>
+<ul>
+<li><a href="https://cloud.tencent.com/developer/article/1081424" target="_blank" rel="noopener">Multi-Process Scheduling翻译文</a>  </li>
+</ul>
+<h3 id="MPS使用"><a href="#MPS使用" class="headerlink" title="MPS使用"></a>MPS使用</h3><ul>
+<li><a href="https://stackoverflow.com/a/34711344" target="_blank" rel="noopener">How do I use Nvidia Multi-process Service (MPS) to run multiple non-MPI CUDA applications?</a>  </li>
+</ul>
+<p>start the MPS server:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># the following must be performed with root privilege</span><br><span class="line">export CUDA_VISIBLE_DEVICES=&quot;0&quot;</span><br><span class="line">nvidia-smi -i 2 -c EXCLUSIVE_PROCESS</span><br><span class="line">nvidia-cuda-mps-control -d</span><br></pre></td></tr></table></figure>
+
+<p>stop the MPS server:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">echo quit | nvidia-cuda-mps-control</span><br><span class="line">nvidia-smi -i 2 -c DEFAULT</span><br></pre></td></tr></table></figure>
+
+<h2 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h2><ul>
+<li><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#interprocess-communication" target="_blank" rel="noopener">cuda-c-programming-guide-Interprocess Communication</a></li>
+<li><a href="https://stackoverflow.com/questions/22950047/cuda-initialization-error-after-fork" target="_blank" rel="noopener">CUDA initialization error after fork</a>  </li>
+<li></li>
+</ul>
+<h2 id="pthreadMigration"><a href="#pthreadMigration" class="headerlink" title="pthreadMigration"></a>pthreadMigration</h2><p>pthread只能绑定一个context，而一个设备，多个pthread内创建的context是一致的。<br>pthread不能被MPS加速。  </p>
+<blockquote>
+<p>Simple sample demonstrating multi-GPU/multithread functionality using<br>the CUDA Context Management API.  This API allows the a CUDA context to be<br>associated with a CPU process.  CUDA Contexts have a one-to-one orrespondence<br>with host threads.  A host thread may have only one device context current<br>at a time.</p>
+</blockquote>
+<p>代码见<a href="https://github.com/huoyao/cudasdk/blob/master/6_Advanced/threadMigration/threadMigration.cpp" target="_blank" rel="noopener">threadMigration.cpp</a>。  </p>
+<h2 id="get-SM-ID-in-cuda-thread"><a href="#get-SM-ID-in-cuda-thread" class="headerlink" title="get SM-ID in cuda thread"></a>get SM-ID in cuda thread</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">static __device__ __inline__ uint32_t __mysmid()</span><br><span class="line">&#123;</span><br><span class="line">    uint32_t smid;</span><br><span class="line">    asm volatile(&quot;mov.u32 %0, %%smid;&quot; : &quot;=r&quot;(smid));</span><br><span class="line">    return smid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>%smid and %warpid are defined as volatile values</p>
+</blockquote>
+<ul>
+<li><a href="https://stackoverflow.com/questions/28881491/how-can-i-find-out-which-thread-is-getting-executed-on-which-core-of-the-gpu" target="_blank" rel="noopener">How can I find out which thread is getting executed on which core of the GPU?</a></li>
+<li><a href="https://devtalk.nvidia.com/default/topic/481465/cuda-programming-and-performance/any-way-to-know-on-which-sm-a-thread-is-running-/2" target="_blank" rel="noopener">which SM a thread is running?</a></li>
+<li><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#sm-id-and-warp-id" target="_blank" rel="noopener">sm-id and warp-id</a></li>
+</ul>
+<h1 id="PTX"><a href="#PTX" class="headerlink" title="PTX"></a>PTX</h1><ul>
+<li><a href="https://docs.nvidia.com/cuda/inline-ptx-assembly/index.html#abstract" target="_blank" rel="noopener">The reference guide for inlining PTX </a>  </li>
+<li></li>
+</ul>
+<h1 id="CUDA-Snippets"><a href="#CUDA-Snippets" class="headerlink" title="CUDA Snippets"></a>CUDA Snippets</h1><ul>
+<li><a href="https://github.com/yszheda/wiki/wiki/CUDA-Code-Snippets" target="_blank" rel="noopener">CUDA Code Snippets</a></li>
+<li><a href="https://github.com/huoyao/cudasdk" target="_blank" rel="noopener">CUDA Samples</a></li>
+</ul>
+<h1 id="review"><a href="#review" class="headerlink" title="review"></a>review</h1><ul>
+<li><p><a href="https://stackoverflow.com/questions/1958320/interview-questions-on-cuda-programming" target="_blank" rel="noopener">Interview questions on CUDA Programming?</a>  </p>
+<ul>
+<li>How many different kind of memories are in a GPU ?</li>
+<li>What means coalesced / uncoalesced?</li>
+<li>Can you implement a matrix transpose kernel?</li>
+<li>What is a warp ?</li>
+<li>How many warps can run simultaneously inside a multiprocessor?</li>
+<li>What is the difference between a block and a thread ?</li>
+<li>Can thread communicate between them? and blocks ?</li>
+<li>Can you describe how works a cache?</li>
+<li>What is the difference between shared memory and registers?</li>
+<li>Which algorithms perform better on the gpu? data bound or cpu bound?</li>
+<li>Which steps will you perform to port of an application to cuda ?</li>
+<li>What is a barrier ?</li>
+<li>What is a Stream ?</li>
+<li>Can you describe what means occupancy of a kernel?</li>
+<li>What means structure of array vs array of structures?</li>
+</ul>
+</li>
+<li><p><a href="https://www.geeksforgeeks.org/nvidia-interview-set-1/" target="_blank" rel="noopener">Nvidia Interview | Set 1</a>  </p>
+</li>
+<li></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/CUDA/">CUDA</a>►<a class="article-category-link" href="/categories/wiki/">wiki</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/CUDA/">CUDA</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2019/07/31/cuda-wiki/" data-title="cuda wiki | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev">
+ <a href="/2019/08/15/latex语法学习/" title="latex语法学习">
+  <strong>上一篇：</strong><br>
+  <span>
+  latex语法学习</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/05/20/kernel源码中编译nouveau-module/" title="kernel源码中编译nouveau module">
+ <strong>下一篇：</strong><br> 
+ <span>kernel源码中编译nouveau module
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Reading-List"><span class="toc-number">1.</span> <span class="toc-text">CUDA Reading List</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Programming"><span class="toc-number">2.</span> <span class="toc-text">CUDA Programming</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#modular-arithmetic"><span class="toc-number">2.1.</span> <span class="toc-text">modular arithmetic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA-structure"><span class="toc-number">2.2.</span> <span class="toc-text">CUDA structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#warp"><span class="toc-number">2.3.</span> <span class="toc-text">warp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MPS"><span class="toc-number">2.4.</span> <span class="toc-text">MPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS介绍"><span class="toc-number">2.4.1.</span> <span class="toc-text">MPS介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS使用"><span class="toc-number">2.4.2.</span> <span class="toc-text">MPS使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPC"><span class="toc-number">2.5.</span> <span class="toc-text">IPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pthreadMigration"><span class="toc-number">2.6.</span> <span class="toc-text">pthreadMigration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#get-SM-ID-in-cuda-thread"><span class="toc-number">2.7.</span> <span class="toc-text">get SM-ID in cuda thread</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PTX"><span class="toc-number">3.</span> <span class="toc-text">PTX</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Snippets"><span class="toc-number">4.</span> <span class="toc-text">CUDA Snippets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#review"><span class="toc-number">5.</span> <span class="toc-text">review</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/latex/" title="latex">latex<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_uv"> 
+		  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+		</span>
+	</div>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_pv">
+		    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+		</span>
+	</div>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>
