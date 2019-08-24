@@ -82,6 +82,257 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/08/22/fsb/" title="fsb" itemprop="url">fsb</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2017-08-22T01:55:21.000Z" itemprop="datePublished"> Published 2017-08-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>pwnable.kr fsb，本题目重点在栈上被调函数的ebp指向了调用函数的ebp。<br>%n的含义是%n符号前的输出的字符数量，<em>引用</em>传值，也就是参数是指针，而不是值。我们利用的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf(&quot;aaaa%2$n&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>这里将4写入了相对栈顶的第二个偏移量参数作地址的位置，而不是写在第二个参数位置。<br>我简单做了个小实验，输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aaaa%18$n</span><br></pre></td></tr></table></figure>
+
+<p>得到的结果为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/x $esp+18*4</span><br><span class="line">0xffb5d5d8:	0xffb5f768</span><br><span class="line">(gdb) x/x 0xffb5f768</span><br><span class="line">0xffb5f768:	0x00000004</span><br></pre></td></tr></table></figure>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/08/22/fsb/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a><a href="/tags/pwnable-kr/">pwnable.kr</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/18/expect实现shell得自动化交互/" title="expect实现shell得自动化交互" itemprop="url">expect实现shell得自动化交互</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2019-05-18T05:09:09.000Z" itemprop="datePublished"> Published 2019-05-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>expect命令可以帮助shell自动化交互，省去了手动输入选项得烦恼。本篇博客讲解了expect得shell脚本编写。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2019/05/18/expect实现shell得自动化交互/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/shell/">shell</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/expect/">expect</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/01/09/doxygen源码文档生成器/" title="doxygen源码文档生成器" itemprop="url">doxygen源码文档生成器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2019-01-09T11:02:25.000Z" itemprop="datePublished"> Published 2019-01-09</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>苦于看内核驱动源码的烦恼，Doxygen工具很好的解决了此问题。  Doxygen可以很好的构建出类层次结构和全局变量，不同的用户定义类型，以及函数调用图分析等等。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2019/01/09/doxygen源码文档生成器/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/tools/">tools</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/doxgen/">doxgen</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/11/c文件调用cuda函数/" title="c文件调用cuda函数" itemprop="url">c文件调用cuda函数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2018-04-11T09:30:30.000Z" itemprop="datePublished"> Published 2018-04-11</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>经过无数次的折腾，终于成功在C文件中调用了cu文件里面定义的函数。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/11/c文件调用cuda函数/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/CUDA/">CUDA</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/CUDA/">CUDA</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2018/04/03/centos启动加载驱动/" title="centos启动加载驱动" itemprop="url">centos启动加载驱动</a>
   </h1>
   <p class="article-author">By
@@ -442,245 +693,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/12/04/QEMU-Object-Model-Style-Guide/" title="QEMU Object Model Style Guide" itemprop="url">QEMU Object Model Style Guide</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2018-12-04T01:11:33.000Z" itemprop="datePublished"> Published 2018-12-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>本篇博客主要讲述了QOM编程的教程，翻译了<a href="https://lists.gnu.org/archive/html/qemu-devel/2012-08/msg02271.html" target="_blank" rel="noopener">QEMU Object Model Style Guide</a> 。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/12/04/QEMU-Object-Model-Style-Guide/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/QOM/">QOM</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/09/22/Plaid-CTF-2015-PlaidDB-writeup/" title="Plaid CTF 2015- PlaidDB writeup" itemprop="url">Plaid CTF 2015- PlaidDB writeup</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2017-09-22T14:54:29.000Z" itemprop="datePublished"> Published 2017-09-22</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>how2heap之poison_null_byte的应用实战，加深对其理解。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/09/22/Plaid-CTF-2015-PlaidDB-writeup/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/07/09/PCI-driver-model/" title="PCI driver model" itemprop="url">PCI driver model</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2018-07-09T12:12:10.000Z" itemprop="datePublished"> Published 2018-07-09</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>由于要研究NVIDIA GPU的工作原理，需要对PCIe的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和访问。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/07/09/PCI-driver-model/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/GPU/">GPU</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/pci/">pci</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/13/NVidia产品和微架构/" title="NVidia产品和微架构" itemprop="url">NVidia产品和微架构</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2018-01-13T07:32:42.000Z" itemprop="datePublished"> Published 2018-01-13</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>本篇博客介绍NVidia显卡的产品类型和微架构。尤其NVidia的Tesla系列产品和Tesla微架构区分清楚。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/13/NVidia产品和微架构/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/GPU/">GPU</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/GPU/">GPU</a><a href="/tags/GK110/">GK110</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/6/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/">Next<span></span></a>
@@ -726,11 +738,15 @@
 		  
 		
 		  
+			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>2</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
 		  
 		
 		  
@@ -774,7 +790,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>10</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
 		  
 		
 		  
@@ -871,11 +887,11 @@
 			
 		
 			
-				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
 			
 		
 			
@@ -899,11 +915,11 @@
 			
 		
 			
-				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
 			
 		
 		</ul>

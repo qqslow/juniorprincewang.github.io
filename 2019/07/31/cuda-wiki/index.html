@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本片博客收录了cuda学习过程中的遇到的知识点总结。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-16T01:13:17.040Z">
+<meta property="og:updated_time" content="2019-08-16T06:25:31.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cuda wiki">
 <meta name="twitter:description" content="本片博客收录了cuda学习过程中的遇到的知识点总结。">
@@ -98,7 +98,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Reading-List"><span class="toc-number">1.</span> <span class="toc-text">CUDA Reading List</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Programming"><span class="toc-number">2.</span> <span class="toc-text">CUDA Programming</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#modular-arithmetic"><span class="toc-number">2.1.</span> <span class="toc-text">modular arithmetic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA-structure"><span class="toc-number">2.2.</span> <span class="toc-text">CUDA structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#warp"><span class="toc-number">2.3.</span> <span class="toc-text">warp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MPS"><span class="toc-number">2.4.</span> <span class="toc-text">MPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS介绍"><span class="toc-number">2.4.1.</span> <span class="toc-text">MPS介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS使用"><span class="toc-number">2.4.2.</span> <span class="toc-text">MPS使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPC"><span class="toc-number">2.5.</span> <span class="toc-text">IPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pthreadMigration"><span class="toc-number">2.6.</span> <span class="toc-text">pthreadMigration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#get-SM-ID-in-cuda-thread"><span class="toc-number">2.7.</span> <span class="toc-text">get SM-ID in cuda thread</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PTX"><span class="toc-number">3.</span> <span class="toc-text">PTX</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Snippets"><span class="toc-number">4.</span> <span class="toc-text">CUDA Snippets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#review"><span class="toc-number">5.</span> <span class="toc-text">review</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Reading-List"><span class="toc-number">1.</span> <span class="toc-text">CUDA Reading List</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Programming"><span class="toc-number">2.</span> <span class="toc-text">CUDA Programming</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#modular-arithmetic"><span class="toc-number">2.1.</span> <span class="toc-text">modular arithmetic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA-structure"><span class="toc-number">2.2.</span> <span class="toc-text">CUDA structure</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile"><span class="toc-number">2.2.1.</span> <span class="toc-text">volatile</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#warp"><span class="toc-number">2.3.</span> <span class="toc-text">warp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MPS"><span class="toc-number">2.4.</span> <span class="toc-text">MPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS介绍"><span class="toc-number">2.4.1.</span> <span class="toc-text">MPS介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS使用"><span class="toc-number">2.4.2.</span> <span class="toc-text">MPS使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPC"><span class="toc-number">2.5.</span> <span class="toc-text">IPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pthreadMigration"><span class="toc-number">2.6.</span> <span class="toc-text">pthreadMigration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#get-SM-ID-in-cuda-thread"><span class="toc-number">2.7.</span> <span class="toc-text">get SM-ID in cuda thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dynamic-Parallelism"><span class="toc-number">2.8.</span> <span class="toc-text">Dynamic Parallelism</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PTX"><span class="toc-number">3.</span> <span class="toc-text">PTX</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Snippets"><span class="toc-number">4.</span> <span class="toc-text">CUDA Snippets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#review"><span class="toc-number">5.</span> <span class="toc-text">review</span></a></li></ol>
 		
 		</div>
 		
@@ -115,11 +115,23 @@
 <li><a href="https://stackoverflow.com/questions/12252826/modular-arithmetic-on-the-gpu" target="_blank" rel="noopener">modular arithmetic on the gpu</a>  </li>
 <li><a href="https://www.beechwood.eu/using-the-modulo-operator-in-cuda-65536/" target="_blank" rel="noopener">Using the modulo (%) operator in CUDA 65536</a>  </li>
 </ul>
+<p>这里总结了单双精度浮点数的区别：</p>
+<ul>
+<li><a href="https://stackoverflow.com/a/801146" target="_blank" rel="noopener">What’s the difference between a single precision and double precision floating point operation?</a>  </li>
+<li></li>
+</ul>
 <h2 id="CUDA-structure"><a href="#CUDA-structure" class="headerlink" title="CUDA structure"></a>CUDA structure</h2><ul>
+<li><a href="http://www.cudahandbook.com/2013/08/why-does-cuda-cudeviceptr-use-unsigned-int-instead-of-void/" target="_blank" rel="noopener">Why does CUDA CUdeviceptr use unsigned int instead of void?</a>  </li>
 <li><a href="https://stackoverflow.com/a/18141906" target="_blank" rel="noopener">Why does CUDA CUdeviceptr use unsigned int instead of void?</a>  <blockquote>
 <p>CUdeviceptr is a handle to an allocation in device memory and not an address in device memory.  </p>
 </blockquote>
 </li>
+</ul>
+<h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><p>编译器会自动优化对global和shared memory的读写，比如将global内存变量缓存到register或者 L1 Cache。<br>volatile关键字阻止编译器优化，编译器会认为被volatile声明过的变量可能随时会被其他线程访问或修改。  </p>
+<ul>
+<li><a href="https://stackoverflow.com/a/15331158" target="_blank" rel="noopener">When to use volatile with shared CUDA Memory</a></li>
+<li><a href="https://baiweiblog.wordpress.com/2017/12/06/cuda-reduce-unroll-the-last-warp%E7%9A%84%E4%B8%80%E4%B8%AA%E6%98%93%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/" target="_blank" rel="noopener">一个volatile引发的CUDA程序的血案</a></li>
+<li><a href="http://www.cudahandbook.com/2017/05/warp-synchrony-and-the-first-law-of-cuda-development/" target="_blank" rel="noopener">Warp Synchrony and The First Law of CUDA Development</a></li>
 </ul>
 <h2 id="warp"><a href="#warp" class="headerlink" title="warp"></a>warp</h2><ul>
 <li><a href="https://stackoverflow.com/questions/10460742/how-do-cuda-blocks-warps-threads-map-onto-cuda-cores" target="_blank" rel="noopener">How do CUDA blocks/warps/threads map onto CUDA cores?</a>  </li>
@@ -157,6 +169,12 @@
 <li><a href="https://stackoverflow.com/questions/28881491/how-can-i-find-out-which-thread-is-getting-executed-on-which-core-of-the-gpu" target="_blank" rel="noopener">How can I find out which thread is getting executed on which core of the GPU?</a></li>
 <li><a href="https://devtalk.nvidia.com/default/topic/481465/cuda-programming-and-performance/any-way-to-know-on-which-sm-a-thread-is-running-/2" target="_blank" rel="noopener">which SM a thread is running?</a></li>
 <li><a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#sm-id-and-warp-id" target="_blank" rel="noopener">sm-id and warp-id</a></li>
+</ul>
+<h2 id="Dynamic-Parallelism"><a href="#Dynamic-Parallelism" class="headerlink" title="Dynamic Parallelism"></a>Dynamic Parallelism</h2><p>dynamic kernel creation</p>
+<ul>
+<li><a href="https://docs.nvidia.com/cuda/pdf/CUDA_C_Programming_Guide.pdf" target="_blank" rel="noopener">find CUDA DYNAMIC PARALLELISM in CUDA C Programming Guide</a></li>
+<li><a href="https://www.cnblogs.com/1024incn/p/4557156.html" target="_blank" rel="noopener">https://www.cnblogs.com/1024incn/p/4557156.html</a></li>
+<li><a href="https://stackoverflow.com/questions/45201062/cuda-dynamic-parallelism-bad-performance" target="_blank" rel="noopener">CUDA Dynamic Parallelism, bad performance</a></li>
 </ul>
 <h1 id="PTX"><a href="#PTX" class="headerlink" title="PTX"></a>PTX</h1><ul>
 <li><a href="https://docs.nvidia.com/cuda/inline-ptx-assembly/index.html#abstract" target="_blank" rel="noopener">The reference guide for inlining PTX </a>  </li>
@@ -256,7 +274,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Reading-List"><span class="toc-number">1.</span> <span class="toc-text">CUDA Reading List</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Programming"><span class="toc-number">2.</span> <span class="toc-text">CUDA Programming</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#modular-arithmetic"><span class="toc-number">2.1.</span> <span class="toc-text">modular arithmetic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA-structure"><span class="toc-number">2.2.</span> <span class="toc-text">CUDA structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#warp"><span class="toc-number">2.3.</span> <span class="toc-text">warp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MPS"><span class="toc-number">2.4.</span> <span class="toc-text">MPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS介绍"><span class="toc-number">2.4.1.</span> <span class="toc-text">MPS介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS使用"><span class="toc-number">2.4.2.</span> <span class="toc-text">MPS使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPC"><span class="toc-number">2.5.</span> <span class="toc-text">IPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pthreadMigration"><span class="toc-number">2.6.</span> <span class="toc-text">pthreadMigration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#get-SM-ID-in-cuda-thread"><span class="toc-number">2.7.</span> <span class="toc-text">get SM-ID in cuda thread</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PTX"><span class="toc-number">3.</span> <span class="toc-text">PTX</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Snippets"><span class="toc-number">4.</span> <span class="toc-text">CUDA Snippets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#review"><span class="toc-number">5.</span> <span class="toc-text">review</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Reading-List"><span class="toc-number">1.</span> <span class="toc-text">CUDA Reading List</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Programming"><span class="toc-number">2.</span> <span class="toc-text">CUDA Programming</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#modular-arithmetic"><span class="toc-number">2.1.</span> <span class="toc-text">modular arithmetic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA-structure"><span class="toc-number">2.2.</span> <span class="toc-text">CUDA structure</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile"><span class="toc-number">2.2.1.</span> <span class="toc-text">volatile</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#warp"><span class="toc-number">2.3.</span> <span class="toc-text">warp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MPS"><span class="toc-number">2.4.</span> <span class="toc-text">MPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS介绍"><span class="toc-number">2.4.1.</span> <span class="toc-text">MPS介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPS使用"><span class="toc-number">2.4.2.</span> <span class="toc-text">MPS使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPC"><span class="toc-number">2.5.</span> <span class="toc-text">IPC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pthreadMigration"><span class="toc-number">2.6.</span> <span class="toc-text">pthreadMigration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#get-SM-ID-in-cuda-thread"><span class="toc-number">2.7.</span> <span class="toc-text">get SM-ID in cuda thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dynamic-Parallelism"><span class="toc-number">2.8.</span> <span class="toc-text">Dynamic Parallelism</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PTX"><span class="toc-number">3.</span> <span class="toc-text">PTX</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA-Snippets"><span class="toc-number">4.</span> <span class="toc-text">CUDA Snippets</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#review"><span class="toc-number">5.</span> <span class="toc-text">review</span></a></li></ol>
  
   </div>
 
@@ -295,11 +313,15 @@
 		  
 		
 		  
+			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>2</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
 		  
 		
 		  
@@ -343,7 +365,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>10</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
 		  
 		
 		  
@@ -440,11 +462,11 @@
 			
 		
 			
-				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
 			
 		
 			
@@ -468,11 +490,11 @@
 			
 		
 			
-				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
 			
 		
 		</ul>

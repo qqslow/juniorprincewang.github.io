@@ -1,0 +1,739 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  
+    <title>C程序和代码执行时间 | TO DO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Max">
+    
+
+    
+    <meta name="description" content="记录执行c代码和c程序的时间，benchmark执行时间。">
+<meta name="keywords" content="time,c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C程序和代码执行时间">
+<meta property="og:url" content="http://juniorprincewang.github.io/2019/08/24/C程序和代码执行时间/index.html">
+<meta property="og:site_name" content="TO DO">
+<meta property="og:description" content="记录执行c代码和c程序的时间，benchmark执行时间。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-24T10:31:00.939Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C程序和代码执行时间">
+<meta name="twitter:description" content="记录执行c代码和c程序的时间，benchmark执行时间。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/batman.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
+    
+    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+</html>
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="TO DO">TO DO</a></h1>
+				<h2 class="blog-motto">吾尝终日而思矣，不如须臾之所学也。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</ul></nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/08/24/C程序和代码执行时间/" title="C程序和代码执行时间" itemprop="url">C程序和代码执行时间</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  </p><p class="article-time">
+    <time datetime="2019-08-24T09:26:42.000Z" itemprop="datePublished"> Published 2019-08-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#time"><span class="toc-number">1.</span> <span class="toc-text">time</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#hyperfine"><span class="toc-number">2.</span> <span class="toc-text">hyperfine</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SHELL"><span class="toc-number">3.</span> <span class="toc-text">SHELL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#code-snippet"><span class="toc-number">4.</span> <span class="toc-text">code snippet</span></a></li></ol>
+		
+		</div>
+		
+		<p>记录执行c代码和c程序的时间，benchmark执行时间。</p>
+<a id="more"></a>
+<h1 id="time"><a href="#time" class="headerlink" title="time"></a>time</h1><p>命令行命令： <code>time</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time yourscript.sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://unix.stackexchange.com/questions/52313/how-to-get-execution-time-of-a-script-effectively" target="_blank" rel="noopener">How to get execution time of a script effectively?</a></li>
+</ul>
+<h1 id="hyperfine"><a href="#hyperfine" class="headerlink" title="hyperfine"></a>hyperfine</h1><ul>
+<li><a href="https://github.com/sharkdp/hyperfine" target="_blank" rel="noopener">A command-line benchmarking tool</a></li>
+</ul>
+<p>安装：</p>
+<p>有各种平台的安装，这里在Ubuntu上的安装：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/sharkdp/hyperfine/releases/download/v1.6.0/hyperfine_1.6.0_amd64.deb</span><br><span class="line">sudo dpkg -i hyperfine_1.6.0_amd64.deb</span><br></pre></td></tr></table></figure>
+
+<p>命令执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hyperfine &apos;sleep 0.3&apos;</span><br></pre></td></tr></table></figure>
+
+<p>这里默认执行benchmark10次，可以通过 <em>-m/–min-runs</em> 选项。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hyperfine --min-runs 5 &apos;sleep 0.2&apos; &apos;sleep 3.2&apos;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果可以看到平均的执行时间。  </p>
+<h1 id="SHELL"><a href="#SHELL" class="headerlink" title="SHELL"></a>SHELL</h1><ul>
+<li><a href="https://stackoverflow.com/questions/54920113/calculate-average-execution-time-of-a-program-using-bash" target="_blank" rel="noopener">Calculate average execution time of a program using Bash</a></li>
+</ul>
+<p>code snippet如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">avg_time() &#123;</span><br><span class="line">    #</span><br><span class="line">    # usage: avg_time n command ...</span><br><span class="line">    #</span><br><span class="line">    n=$1; shift</span><br><span class="line">    (($# &gt; 0)) || return                   # bail if no command given</span><br><span class="line">    for ((i = 0; i &lt; n; i++)); do</span><br><span class="line">        &#123; time -p &quot;$@&quot; &amp;&gt;/dev/null; &#125; 2&gt;&amp;1 # ignore the output of the command</span><br><span class="line">                                           # but collect time&apos;s output in stdout</span><br><span class="line">    done | awk &apos;</span><br><span class="line">        /real/ &#123; real = real + $2; nr++ &#125;</span><br><span class="line">        /user/ &#123; user = user + $2; nu++ &#125;</span><br><span class="line">        /sys/  &#123; sys  = sys  + $2; ns++&#125;</span><br><span class="line">        END    &#123;</span><br><span class="line">                 if (nr&gt;0) printf(&quot;real %f\n&quot;, real/nr);</span><br><span class="line">                 if (nu&gt;0) printf(&quot;user %f\n&quot;, user/nu);</span><br><span class="line">                 if (ns&gt;0) printf(&quot;sys %f\n&quot;,  sys/ns)</span><br><span class="line">               &#125;&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">avg_time 5 sleep 1</span><br></pre></td></tr></table></figure>
+
+<p>运行此demo得到的结果如下：</p>
+<pre><code>real 1.000000
+user 0.000000
+sys 0.000000</code></pre><h1 id="code-snippet"><a href="#code-snippet" class="headerlink" title="code snippet"></a>code snippet</h1><ul>
+<li><a href="https://stackoverflow.com/questions/5248915/execution-time-of-c-program" target="_blank" rel="noopener">Execution time of C program</a></li>
+</ul>
+<p>执行代码的秒数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;time.h&gt;</span><br><span class="line"></span><br><span class="line">clock_t begin = clock();</span><br><span class="line"></span><br><span class="line">/* here, do your time-consuming job */</span><br><span class="line"></span><br><span class="line">clock_t end = clock();</span><br><span class="line">double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;</span><br></pre></td></tr></table></figure>
+
+<p>执行代码的毫秒数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys/time.h&gt;</span><br><span class="line"></span><br><span class="line">struct timeval  tv1, tv2;</span><br><span class="line">gettimeofday(&amp;tv1, NULL);</span><br><span class="line">/* stuff to do! */</span><br><span class="line">gettimeofday(&amp;tv2, NULL);</span><br><span class="line"></span><br><span class="line">printf (&quot;Total time = %f seconds\n&quot;,</span><br><span class="line">         (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 +</span><br><span class="line">         (double) (tv2.tv_sec - tv1.tv_sec));</span><br></pre></td></tr></table></figure>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/c/">c</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/time/">time</a><a href="/tags/c/">c</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://juniorprincewang.github.io/2019/08/24/C程序和代码执行时间/" data-title="C程序和代码执行时间 | TO DO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/08/22/浮点数拾遗/" title="浮点数拾遗">
+ <strong>下一篇：</strong><br> 
+ <span>浮点数拾遗
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#time"><span class="toc-number">1.</span> <span class="toc-text">time</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#hyperfine"><span class="toc-number">2.</span> <span class="toc-text">hyperfine</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SHELL"><span class="toc-number">3.</span> <span class="toc-text">SHELL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#code-snippet"><span class="toc-number">4.</span> <span class="toc-text">code snippet</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/GPU/CUDA/" title="CUDA">CUDA<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/git/" title="git">git<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/kernel/" title="kernel">kernel<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/latex/" title="latex">latex<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/GPU/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/pwn/" title="pwn">pwn<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/shell/" title="shell">shell<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/solutions/" title="solutions">solutions<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sql注入/" title="sql注入">sql注入<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/tools/" title="tools">tools<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/linux/vim/" title="vim">vim<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/web安全/" title="web安全">web安全<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/pwn/" title="pwn">pwn<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/heap/" title="heap">heap<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/QEMU/" title="QEMU">QEMU<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nouveau/" title="nouveau">nouveau<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kernel/" title="kernel">kernel<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pwnable-kr/" title="pwnable.kr">pwnable.kr<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hexo/" title="hexo">hexo<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xss/" title="xss">xss<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/堆溢出/" title="堆溢出">堆溢出<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_uv"> 
+		  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+		</span>
+	</div>
+	<div class="linkslist">
+		<span id="busuanzi_container_site_pv">
+		    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+		</span>
+	</div>
+</div>
+    </div>
+    <footer><div id="footer">
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br>
+			上网不涉密，涉密不上网。</p>
+	</section>
+	 
+
+	<div class="social-font">
+		
+		
+		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:little0prince@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Max">Max</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>
