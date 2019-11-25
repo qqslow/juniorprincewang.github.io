@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="平时操作vim有些命令经常查，索性都记录在这篇博客里。包括搜索替换，行操作。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.280Z">
+<meta property="og:updated_time" content="2019-08-28T12:57:49.537Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vim操作">
 <meta name="twitter:description" content="平时操作vim有些命令经常查，索性都记录在这篇博客里。包括搜索替换，行操作。">
@@ -405,7 +405,11 @@
 <p>即可显示文件编码格式。<br>在Vim中直接进行转换文件编码,比如将一个文件转换成utf-8格式。 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set fileencoding=utf-8</span><br></pre></td></tr></table></figure>
 
-<h1 id="查看文件格式"><a href="#查看文件格式" class="headerlink" title="查看文件格式"></a>查看文件格式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set fileformat?</span><br></pre></td></tr></table></figure>
+<h1 id="查看文件格式"><a href="#查看文件格式" class="headerlink" title="查看文件格式"></a>查看文件格式</h1><blockquote>
+<p>/bin/sh^M: bad interpreter: No such file or directory</p>
+</blockquote>
+<p>这是不同系统编码格式引起的：在windows系统中编辑的.sh文件可能有不可见字符，所以在Linux系统下执行会报以上异常信息。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set fileformat?</span><br></pre></td></tr></table></figure>
 
 <p>设置文件格式为 unix  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set fileformat=unix</span><br></pre></td></tr></table></figure>
@@ -528,11 +532,11 @@
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
 		  
 		
 		  
@@ -677,11 +681,11 @@
 			
 		
 			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			

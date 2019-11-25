@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="总结经常使用到的git命令。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-21T00:31:07.163Z">
+<meta property="og:updated_time" content="2019-10-17T12:22:31.477Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git命令">
 <meta name="twitter:description" content="总结经常使用到的git命令。">
@@ -98,7 +98,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#init-repository"><span class="toc-number">1.</span> <span class="toc-text">init repository</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-number">2.</span> <span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#branch"><span class="toc-number">3.</span> <span class="toc-text">branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tag"><span class="toc-number">4.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-all-changes"><span class="toc-number">5.</span> <span class="toc-text">undo all changes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github操作"><span class="toc-number">6.</span> <span class="toc-text">github操作</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#init-repository"><span class="toc-number">1.</span> <span class="toc-text">init repository</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-number">2.</span> <span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#branch"><span class="toc-number">3.</span> <span class="toc-text">branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tag"><span class="toc-number">4.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#版本管理"><span class="toc-number">5.</span> <span class="toc-text">版本管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#git-reset"><span class="toc-number">5.1.</span> <span class="toc-text">git reset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Revert"><span class="toc-number">5.2.</span> <span class="toc-text">Revert</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-all-changes"><span class="toc-number">6.</span> <span class="toc-text">undo all changes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ignoring-changes-to-a-single-already-versioned-file"><span class="toc-number">6.1.</span> <span class="toc-text">ignoring changes to a single already versioned file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository"><span class="toc-number">6.2.</span> <span class="toc-text">completely ignore a specific single file preventing it from being created at repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-without-binary-files"><span class="toc-number">6.3.</span> <span class="toc-text">gitignore without binary files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-does-not-work"><span class="toc-number">6.4.</span> <span class="toc-text">gitignore does not work</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github操作"><span class="toc-number">7.</span> <span class="toc-text">github操作</span></a></li></ol>
 		
 		</div>
 		
@@ -128,6 +128,11 @@
 <p>比如，下条只取最近一次commit的history。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone --depth 1 git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li><a href="https://stackoverflow.com/a/31666461" target="_blank" rel="noopener">Download a specific tag with Git</a><br>下载指定分支或者tag：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone -b &apos;v2.0&apos; --single-branch --depth 1 https://github.com/git/git.git</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 <h1 id="branch"><a href="#branch" class="headerlink" title="branch"></a>branch</h1><ul>
 <li>list branches</li>
 </ul>
@@ -177,6 +182,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout tags/&lt;tag_name&gt;</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://stackoverflow.com/a/792027" target="_blank" rel="noopener">Download a specific tag with Git</a></p>
+<h1 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h1><ul>
+<li><a href="https://github.com/geeeeeeeeek/git-recipes/wiki/5.2-%E4%BB%A3%E7%A0%81%E5%9B%9E%E6%BB%9A%EF%BC%9AReset%E3%80%81Checkout%E3%80%81Revert-%E7%9A%84%E9%80%89%E6%8B%A9" target="_blank" rel="noopener">5.2 代码回滚：Reset、Checkout、Revert 的选择</a>  </li>
+</ul>
+<h2 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h2><p>版本回滚，向前回滚两个版本，可以用 <em>HEAD~2</em>，也可以使用7位commit id号。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD~2</span><br><span class="line">git reset 1234567</span><br></pre></td></tr></table></figure>
+
+<p>末端的两个提交现在变成了悬挂提交。也就是说，下次 Git 执行垃圾回收的时候，这两个提交会被删除。<br>当需要跳转回时，查看消失的两个commit可以使用<code>git reflog</code>命令。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure>
+
+<h2 id="Revert"><a href="#Revert" class="headerlink" title="Revert"></a>Revert</h2><p>顾名思义，版本还原，即撤销一个提交的同时会创建一个新的提交。<br>还原倒数第二个commit。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert HEAD~2</span><br></pre></td></tr></table></figure>
+
+<p><code>revert</code> 和 <code>reset</code> 区别是<code>revert</code>会改变提交历史，而<code>reset</code>不会。  </p>
 <h1 id="undo-all-changes"><a href="#undo-all-changes" class="headerlink" title="undo all changes"></a>undo all changes</h1><ul>
 <li>unstage all files you might have staged with <code>git add</code>   </li>
 </ul>
@@ -197,6 +215,26 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clean -fdx</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://stackoverflow.com/a/14075772" target="_blank" rel="noopener">git undo all uncommitted or unsaved changes</a></p>
+<h2 id="ignoring-changes-to-a-single-already-versioned-file"><a href="#ignoring-changes-to-a-single-already-versioned-file" class="headerlink" title="ignoring changes to a single already versioned file"></a>ignoring changes to a single already versioned file</h2><p>本次提交时忽略某一文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add -u</span><br><span class="line">git reset -- main/dontcheckmein.txt</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://stackoverflow.com/a/4475506" target="_blank" rel="noopener">Add all files to a commit except a single file</a></p>
+<h2 id="completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository"><a href="#completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository" class="headerlink" title="completely ignore a specific single file preventing it from being created at repository"></a>completely ignore a specific single file preventing it from being created at repository</h2><p>完全忽略某一文件：<br>在仓库根目录创建 <em>.gitignore</em> 文件，并将要忽略的文件相对路径写入。</p>
+<h2 id="gitignore-without-binary-files"><a href="#gitignore-without-binary-files" class="headerlink" title="gitignore without binary files"></a>gitignore without binary files</h2><ul>
+<li><a href="https://stackoverflow.com/a/7834886" target="_blank" rel="noopener">ignore binary file in git</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -executable -type f &gt;&gt;.gitignore</span><br></pre></td></tr></table></figure>
+
+<h2 id="gitignore-does-not-work"><a href="#gitignore-does-not-work" class="headerlink" title="gitignore does not work"></a>gitignore does not work</h2><ul>
+<li><a href="https://stackoverflow.com/a/3833675" target="_blank" rel="noopener">Why doesn’t Git ignore my specified file?</a>  </li>
+<li><a href="https://stackoverflow.com/a/25436481" target="_blank" rel="noopener">Gitignore not working</a>  </li>
+</ul>
+<p><em>.gitignore</em> 忽略的是没有加入到仓库中的文件，如果已经添加到仓库，需要先删除。<br>这条命令会将文件从仓库中删除，但不会物理删除。然后提交更改即可。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached files</span><br></pre></td></tr></table></figure>
+
+<p>或者简单粗暴全部删除再提交。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rm -rf --cached .</span><br><span class="line">git add .</span><br></pre></td></tr></table></figure>
+
 <h1 id="github操作"><a href="#github操作" class="headerlink" title="github操作"></a>github操作</h1><p>为了方便管理repository，免去每次push时候输入账户名和密码，接下来我们需要生成SSH公私钥对，并将公钥上传到 project-&gt;Settings-&gt;Deploy keys-&gt;Add deploy key。<br>首先<a href="https://help.github.com/en/articles/checking-for-existing-ssh-keys" target="_blank" rel="noopener">检查是否已经存在 SSH key</a> 。  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -al ~/.ssh</span><br></pre></td></tr></table></figure>
 
@@ -290,7 +328,7 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#init-repository"><span class="toc-number">1.</span> <span class="toc-text">init repository</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-number">2.</span> <span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#branch"><span class="toc-number">3.</span> <span class="toc-text">branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tag"><span class="toc-number">4.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-all-changes"><span class="toc-number">5.</span> <span class="toc-text">undo all changes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github操作"><span class="toc-number">6.</span> <span class="toc-text">github操作</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#init-repository"><span class="toc-number">1.</span> <span class="toc-text">init repository</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-number">2.</span> <span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#branch"><span class="toc-number">3.</span> <span class="toc-text">branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tag"><span class="toc-number">4.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#版本管理"><span class="toc-number">5.</span> <span class="toc-text">版本管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#git-reset"><span class="toc-number">5.1.</span> <span class="toc-text">git reset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Revert"><span class="toc-number">5.2.</span> <span class="toc-text">Revert</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-all-changes"><span class="toc-number">6.</span> <span class="toc-text">undo all changes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ignoring-changes-to-a-single-already-versioned-file"><span class="toc-number">6.1.</span> <span class="toc-text">ignoring changes to a single already versioned file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository"><span class="toc-number">6.2.</span> <span class="toc-text">completely ignore a specific single file preventing it from being created at repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-without-binary-files"><span class="toc-number">6.3.</span> <span class="toc-text">gitignore without binary files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-does-not-work"><span class="toc-number">6.4.</span> <span class="toc-text">gitignore does not work</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github操作"><span class="toc-number">7.</span> <span class="toc-text">github操作</span></a></li></ol>
  
   </div>
 
@@ -329,11 +367,11 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
 		  
 		
 		  
@@ -478,11 +516,11 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 			
 		
 			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
