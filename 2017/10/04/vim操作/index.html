@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>vim操作 | TO DO</title>
@@ -12,17 +12,17 @@
 
     
     <meta name="description" content="平时操作vim有些命令经常查，索性都记录在这篇博客里。包括搜索替换，行操作。">
-<meta name="keywords" content="vim,linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vim操作">
-<meta property="og:url" content="http://juniorprincewang.github.io/2017/10/04/vim操作/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2017/10/04/vim%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="平时操作vim有些命令经常查，索性都记录在这篇博客里。包括搜索替换，行操作。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-28T12:57:49.537Z">
+<meta property="article:published_time" content="2017-10-04T04:27:42.000Z">
+<meta property="article:modified_time" content="2020-07-13T14:29:16.355Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="vim">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vim操作">
-<meta name="twitter:description" content="平时操作vim有些命令经常查，索性都记录在这篇博客里。包括搜索替换，行操作。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -34,16 +34,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -66,13 +70,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -88,7 +92,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2017-10-04T04:27:42.000Z" itemprop="datePublished"> Published 2017-10-04</time>
     
   </p>
@@ -398,7 +402,7 @@
 
 <h1 id="管道操作"><a href="#管道操作" class="headerlink" title="管道操作"></a>管道操作</h1><p><code>%!Shell</code>命令。</p>
 <p><code>%!</code> 符号可以将 <code>VIM</code> 当前缓冲区中的内容输出到管道中，并启动后面的 <code>Shell</code> 命令</p>
-<p>比如，<code>%!xxd</code>，将文本转换成二进制形式。</p>
+<p>比如，<code>%!xxd</code>，将文本转换成二进制形式，以十六进制hex格式展示。</p>
 <h1 id="ctrl-s"><a href="#ctrl-s" class="headerlink" title="ctrl + s"></a><code>ctrl + s</code></h1><p>使用vim时，如果你不小心按了 <code>ctrl + s</code>后，发现不能输入任何东西了，像死掉了一般。<br>其实vim并没有死掉，这时vim只是停止向终端输出而已，要想退出这种状态，只需按 <code>ctrl + q</code> 即可恢复正常。  </p>
 <h1 id="查看文件编码"><a href="#查看文件编码" class="headerlink" title="查看文件编码"></a>查看文件编码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set fileencoding</span><br></pre></td></tr></table></figure>
 
@@ -426,7 +430,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:source path/to/project.vim  &apos;载入会话文件</span><br><span class="line">:rviminfo project.viminfo            &apos;读入viminfo文件</span><br></pre></td></tr></table></figure>
 
 <p>更详细的要参考<a href="https://blog.easwy.com/archives/advanced-vim-skills-session-file-and-viminfo/" target="_blank" rel="noopener">vi/vim使用进阶: 使用会话和viminfo</a>。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1] <a href="http://pizn.github.io/2012/03/03/vim-commonly-used-command.html" target="_blank" rel="noopener">Vim 常用命令总结</a><br>[2] <a href="http://brieflyx.me/2015/linux-tools/vim-advanced-1/" target="_blank" rel="noopener">VIM进阶笔记(1) —— 查找与替换</a><br>[3] <a href="https://xwsoul.com/posts/472" target="_blank" rel="noopener">vim 技巧 – 查找的时候忽略大小写</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1] <a href="http://pizn.github.io/2012/03/03/vim-commonly-used-command.html" target="_blank" rel="noopener">Vim 常用命令总结</a><br>[2] <a href="http://brieflyx.me/2015/linux-tools/vim-advanced-1/" target="_blank" rel="noopener">VIM进阶笔记(1) —— 查找与替换</a><br>[3] <a href="https://xwsoul.com/posts/472" target="_blank" rel="noopener">vim 技巧 – 查找的时候忽略大小写</a><br>[4] <a href="https://www.linux.com/training-tutorials/vim-101-beginners-guide-vim/" target="_blank" rel="noopener">Training and Tutorials Vim 101: A Beginner’s Guide to Vim</a>  </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -440,7 +444,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/vim/">vim</a><a href="/tags/linux/">linux</a>
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/vim/">vim</a>
   </div>
 
 </div>
@@ -449,7 +453,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2017/10/04/vim操作/" data-title="vim操作 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2017/10/04/vim%E6%93%8D%E4%BD%9C/" data-title="vim操作 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -462,9 +466,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2017/11/01/rCUDA/" title="rCUDA">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   rCUDA</span>
 </a>
@@ -472,8 +476,8 @@
 
 
 <div class="next">
-<a href="/2017/10/03/2015-0ctf-freenote-writeup/" title="2015 0ctf freenote writeup">
- <strong>下一篇：</strong><br> 
+<a href="/2017/10/03/2015-0ctf-freenote-writeup/"  title="2015 0ctf freenote writeup">
+ <strong>下一篇：</strong><br/> 
  <span>2015 0ctf freenote writeup
 </span>
 </a>
@@ -505,7 +509,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -520,7 +524,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -528,15 +532,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -545,6 +553,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -564,7 +576,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -608,11 +620,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -621,10 +633,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -645,11 +653,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -661,11 +669,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -682,10 +690,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -709,11 +713,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -744,7 +752,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -753,12 +761,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -778,7 +786,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -968,7 +976,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

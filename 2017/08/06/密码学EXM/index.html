@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>密码学EXM? | TO DO</title>
@@ -12,19 +12,23 @@
 
     
     <meta name="description" content="搞安全怎么能离开密码学。武功再高，也怕菜刀。骐骥一跃，不能十步。">
-<meta name="keywords" content="cryptography,国产密码,ECDSA,SM,RSA,AES">
 <meta property="og:type" content="article">
 <meta property="og:title" content="密码学EXM?">
-<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/06/密码学EXM/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/06/%E5%AF%86%E7%A0%81%E5%AD%A6EXM/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="搞安全怎么能离开密码学。武功再高，也怕菜刀。骐骥一跃，不能十步。">
-<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://juniorprincewang.github.io/2017/08/06/%E5%AF%86%E7%A0%81%E5%AD%A6EXM/exm.jpg">
 <meta property="og:image" content="http://juniorprincewang.github.io/2017/08/06/%E5%AF%86%E7%A0%81%E5%AD%A6EXM/Diffie-Hellman-Schl%C3%BCsselaustausch.svg">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.353Z">
+<meta property="article:published_time" content="2017-08-06T02:41:42.000Z">
+<meta property="article:modified_time" content="2020-03-07T12:55:45.882Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="cryptography">
+<meta property="article:tag" content="国产密码">
+<meta property="article:tag" content="ECDSA">
+<meta property="article:tag" content="SM">
+<meta property="article:tag" content="RSA">
+<meta property="article:tag" content="AES">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="密码学EXM?">
-<meta name="twitter:description" content="搞安全怎么能离开密码学。武功再高，也怕菜刀。骐骥一跃，不能十步。">
 <meta name="twitter:image" content="http://juniorprincewang.github.io/2017/08/06/%E5%AF%86%E7%A0%81%E5%AD%A6EXM/exm.jpg">
 
     
@@ -37,16 +41,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -69,13 +77,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -91,7 +99,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2017-08-06T02:41:42.000Z" itemprop="datePublished"> Published 2017-08-06</time>
     
   </p>
@@ -101,7 +109,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#base64-32-16编码"><span class="toc-number">1.</span> <span class="toc-text">base64/32/16编码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stream-cipher"><span class="toc-number">2.</span> <span class="toc-text">stream cipher</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RC4-arch4"><span class="toc-number">2.1.</span> <span class="toc-text">RC4 (arch4)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Salsa20"><span class="toc-number">2.2.</span> <span class="toc-text">Salsa20</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ChaCha"><span class="toc-number">2.3.</span> <span class="toc-text">ChaCha</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#KDF"><span class="toc-number">3.</span> <span class="toc-text">KDF</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#填充模式"><span class="toc-number">4.</span> <span class="toc-text">填充模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#分组密码工作模式-mode-of-operation"><span class="toc-number">4.1.</span> <span class="toc-text">分组密码工作模式 mode of operation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#电子密码本（Electronic-codebook，ECB）"><span class="toc-number">4.1.1.</span> <span class="toc-text">电子密码本（Electronic codebook，ECB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密码块链接（CBC，Cipher-block-chaining）"><span class="toc-number">4.1.2.</span> <span class="toc-text">密码块链接（CBC，Cipher-block chaining）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#计数器模式（CTR，Counter-Mode）"><span class="toc-number">4.1.3.</span> <span class="toc-text">计数器模式（CTR，Counter Mode）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#填充密码块链接-（PCBC，Propagating-cipher-block-chaining）"><span class="toc-number">4.1.4.</span> <span class="toc-text">填充密码块链接 （PCBC，Propagating cipher-block chaining）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密文反馈（CFB，Cipher-feedback）"><span class="toc-number">4.1.5.</span> <span class="toc-text">密文反馈（CFB，Cipher feedback）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出反馈模式（Output-feedback-OFB）"><span class="toc-number">4.1.6.</span> <span class="toc-text">输出反馈模式（Output feedback, OFB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCM"><span class="toc-number">4.1.7.</span> <span class="toc-text">GCM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding"><span class="toc-number">4.2.</span> <span class="toc-text">padding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PKCS-5-PKCS-7-padding"><span class="toc-number">4.2.1.</span> <span class="toc-text">PKCS#5/PKCS#7 padding</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Message-Authentication-Code-MAC"><span class="toc-number">4.3.</span> <span class="toc-text">Message Authentication Code(MAC)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-based-Message-Authentication-Code-HMAC"><span class="toc-number">4.3.1.</span> <span class="toc-text">Hash-based Message Authentication Code(HMAC)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AEAD-Authenticated-Encryption-with-Associated-Data"><span class="toc-number">4.3.2.</span> <span class="toc-text">AEAD(Authenticated Encryption with Associated Data)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AES"><span class="toc-number">4.4.</span> <span class="toc-text">AES</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AES-加密"><span class="toc-number">4.4.1.</span> <span class="toc-text">AES 加密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SubBytes"><span class="toc-number">4.4.1.1.</span> <span class="toc-text">SubBytes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ShiftRows"><span class="toc-number">4.4.1.2.</span> <span class="toc-text">ShiftRows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MixColumns"><span class="toc-number">4.4.1.3.</span> <span class="toc-text">MixColumns</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AddRoundKey"><span class="toc-number">4.4.1.4.</span> <span class="toc-text">AddRoundKey</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AES-解密"><span class="toc-number">4.4.2.</span> <span class="toc-text">AES 解密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InvShiftRows"><span class="toc-number">4.4.2.1.</span> <span class="toc-text">InvShiftRows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InvSubBytes"><span class="toc-number">4.4.2.2.</span> <span class="toc-text">InvSubBytes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InvMixColumns"><span class="toc-number">4.4.2.3.</span> <span class="toc-text">InvMixColumns</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">4.4.3.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RSA"><span class="toc-number">5.</span> <span class="toc-text">RSA</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA算法流程"><span class="toc-number">5.1.</span> <span class="toc-text">RSA算法流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#公钥加密"><span class="toc-number">5.2.</span> <span class="toc-text">公钥加密</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#私钥解密"><span class="toc-number">5.3.</span> <span class="toc-text">私钥解密</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding-1"><span class="toc-number">5.4.</span> <span class="toc-text">padding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PKCS1"><span class="toc-number">5.4.1.</span> <span class="toc-text">PKCS1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OAEP"><span class="toc-number">5.4.2.</span> <span class="toc-text">OAEP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSS"><span class="toc-number">5.4.3.</span> <span class="toc-text">PSS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Paillier同态加密算法-Paillier-Homomorphic-Encryption"><span class="toc-number">6.</span> <span class="toc-text">Paillier同态加密算法(Paillier Homomorphic Encryption)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#密钥生成："><span class="toc-number">6.1.</span> <span class="toc-text">密钥生成：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加密过程："><span class="toc-number">6.2.</span> <span class="toc-text">加密过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解密过程："><span class="toc-number">6.3.</span> <span class="toc-text">解密过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#证明"><span class="toc-number">6.4.</span> <span class="toc-text">证明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同态的性质"><span class="toc-number">6.5.</span> <span class="toc-text">同态的性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同态加法"><span class="toc-number">6.5.1.</span> <span class="toc-text">同态加法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同态乘法"><span class="toc-number">6.5.2.</span> <span class="toc-text">同态乘法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#零知识证明-Zero-knowledge-proof"><span class="toc-number">7.</span> <span class="toc-text">零知识证明 Zero-knowledge proof</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#离散对数体系（Discrete-Logarithm）"><span class="toc-number">8.</span> <span class="toc-text">离散对数体系（Discrete Logarithm）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#D-H"><span class="toc-number">8.1.</span> <span class="toc-text">D-H</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElGamal加密算法"><span class="toc-number">8.2.</span> <span class="toc-text">ElGamal加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成"><span class="toc-number">8.2.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密"><span class="toc-number">8.2.2.</span> <span class="toc-text">加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解密"><span class="toc-number">8.2.3.</span> <span class="toc-text">解密</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElGamal签名算法"><span class="toc-number">8.3.</span> <span class="toc-text">ElGamal签名算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成-1"><span class="toc-number">8.3.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名"><span class="toc-number">8.3.2.</span> <span class="toc-text">签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证"><span class="toc-number">8.3.3.</span> <span class="toc-text">验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DSA-Digital-Signature-Algorithm"><span class="toc-number">8.4.</span> <span class="toc-text">DSA -Digital Signature Algorithm</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成-2"><span class="toc-number">8.4.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名-1"><span class="toc-number">8.4.2.</span> <span class="toc-text">签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证-1"><span class="toc-number">8.4.3.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正确性证明"><span class="toc-number">8.4.4.</span> <span class="toc-text">正确性证明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECDSA"><span class="toc-number">8.5.</span> <span class="toc-text">ECDSA</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#国产密码算法"><span class="toc-number">9.</span> <span class="toc-text">国产密码算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SM2椭圆曲线公钥密码算"><span class="toc-number">9.1.</span> <span class="toc-text">SM2椭圆曲线公钥密码算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SM3杂凑算法"><span class="toc-number">9.2.</span> <span class="toc-text">SM3杂凑算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SM4分组密码算法"><span class="toc-number">9.3.</span> <span class="toc-text">SM4分组密码算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#祖冲之序列密码算法"><span class="toc-number">9.4.</span> <span class="toc-text">祖冲之序列密码算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">10.</span> <span class="toc-text">参考文献</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#base64-32-16编码"><span class="toc-number">1.</span> <span class="toc-text">base64&#x2F;32&#x2F;16编码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stream-cipher"><span class="toc-number">2.</span> <span class="toc-text">stream cipher</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RC4-arch4"><span class="toc-number">2.1.</span> <span class="toc-text">RC4 (arch4)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Salsa20"><span class="toc-number">2.2.</span> <span class="toc-text">Salsa20</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ChaCha"><span class="toc-number">2.3.</span> <span class="toc-text">ChaCha</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#KDF"><span class="toc-number">3.</span> <span class="toc-text">KDF</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#填充模式"><span class="toc-number">4.</span> <span class="toc-text">填充模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#分组密码工作模式-mode-of-operation"><span class="toc-number">4.1.</span> <span class="toc-text">分组密码工作模式 mode of operation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#电子密码本（Electronic-codebook，ECB）"><span class="toc-number">4.1.1.</span> <span class="toc-text">电子密码本（Electronic codebook，ECB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密码块链接（CBC，Cipher-block-chaining）"><span class="toc-number">4.1.2.</span> <span class="toc-text">密码块链接（CBC，Cipher-block chaining）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#计数器模式（CTR，Counter-Mode）"><span class="toc-number">4.1.3.</span> <span class="toc-text">计数器模式（CTR，Counter Mode）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#填充密码块链接-（PCBC，Propagating-cipher-block-chaining）"><span class="toc-number">4.1.4.</span> <span class="toc-text">填充密码块链接 （PCBC，Propagating cipher-block chaining）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密文反馈（CFB，Cipher-feedback）"><span class="toc-number">4.1.5.</span> <span class="toc-text">密文反馈（CFB，Cipher feedback）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出反馈模式（Output-feedback-OFB）"><span class="toc-number">4.1.6.</span> <span class="toc-text">输出反馈模式（Output feedback, OFB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCM"><span class="toc-number">4.1.7.</span> <span class="toc-text">GCM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding"><span class="toc-number">4.2.</span> <span class="toc-text">padding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PKCS-5-PKCS-7-padding"><span class="toc-number">4.2.1.</span> <span class="toc-text">PKCS#5&#x2F;PKCS#7 padding</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Message-Authentication-Code-MAC"><span class="toc-number">4.3.</span> <span class="toc-text">Message Authentication Code(MAC)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-based-Message-Authentication-Code-HMAC"><span class="toc-number">4.3.1.</span> <span class="toc-text">Hash-based Message Authentication Code(HMAC)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AEAD-Authenticated-Encryption-with-Associated-Data"><span class="toc-number">4.3.2.</span> <span class="toc-text">AEAD(Authenticated Encryption with Associated Data)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AES"><span class="toc-number">4.4.</span> <span class="toc-text">AES</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AES-加密"><span class="toc-number">4.4.1.</span> <span class="toc-text">AES 加密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SubBytes"><span class="toc-number">4.4.1.1.</span> <span class="toc-text">SubBytes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ShiftRows"><span class="toc-number">4.4.1.2.</span> <span class="toc-text">ShiftRows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MixColumns"><span class="toc-number">4.4.1.3.</span> <span class="toc-text">MixColumns</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AddRoundKey"><span class="toc-number">4.4.1.4.</span> <span class="toc-text">AddRoundKey</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AES-解密"><span class="toc-number">4.4.2.</span> <span class="toc-text">AES 解密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InvShiftRows"><span class="toc-number">4.4.2.1.</span> <span class="toc-text">InvShiftRows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InvSubBytes"><span class="toc-number">4.4.2.2.</span> <span class="toc-text">InvSubBytes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InvMixColumns"><span class="toc-number">4.4.2.3.</span> <span class="toc-text">InvMixColumns</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">4.4.3.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RSA"><span class="toc-number">5.</span> <span class="toc-text">RSA</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA算法流程"><span class="toc-number">5.1.</span> <span class="toc-text">RSA算法流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Modular-Exponentiation"><span class="toc-number">5.2.</span> <span class="toc-text">Modular Exponentiation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#滑动窗口：sliding-windows"><span class="toc-number">5.2.1.</span> <span class="toc-text">滑动窗口：sliding windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CRT-calculation"><span class="toc-number">5.2.2.</span> <span class="toc-text">CRT calculation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Montgomery-Multiplication"><span class="toc-number">5.2.3.</span> <span class="toc-text">Montgomery Multiplication</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding-1"><span class="toc-number">5.3.</span> <span class="toc-text">padding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PKCS1"><span class="toc-number">5.3.1.</span> <span class="toc-text">PKCS1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OAEP"><span class="toc-number">5.3.2.</span> <span class="toc-text">OAEP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSS"><span class="toc-number">5.3.3.</span> <span class="toc-text">PSS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Paillier同态加密算法-Paillier-Homomorphic-Encryption"><span class="toc-number">6.</span> <span class="toc-text">Paillier同态加密算法(Paillier Homomorphic Encryption)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#密钥生成："><span class="toc-number">6.1.</span> <span class="toc-text">密钥生成：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加密过程："><span class="toc-number">6.2.</span> <span class="toc-text">加密过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解密过程："><span class="toc-number">6.3.</span> <span class="toc-text">解密过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#证明"><span class="toc-number">6.4.</span> <span class="toc-text">证明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同态的性质"><span class="toc-number">6.5.</span> <span class="toc-text">同态的性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同态加法"><span class="toc-number">6.5.1.</span> <span class="toc-text">同态加法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同态乘法"><span class="toc-number">6.5.2.</span> <span class="toc-text">同态乘法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#零知识证明-Zero-knowledge-proof"><span class="toc-number">7.</span> <span class="toc-text">零知识证明 Zero-knowledge proof</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#离散对数体系（Discrete-Logarithm）"><span class="toc-number">8.</span> <span class="toc-text">离散对数体系（Discrete Logarithm）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#D-H"><span class="toc-number">8.1.</span> <span class="toc-text">D-H</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElGamal加密算法"><span class="toc-number">8.2.</span> <span class="toc-text">ElGamal加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成"><span class="toc-number">8.2.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密"><span class="toc-number">8.2.2.</span> <span class="toc-text">加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解密"><span class="toc-number">8.2.3.</span> <span class="toc-text">解密</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElGamal签名算法"><span class="toc-number">8.3.</span> <span class="toc-text">ElGamal签名算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成-1"><span class="toc-number">8.3.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名"><span class="toc-number">8.3.2.</span> <span class="toc-text">签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证"><span class="toc-number">8.3.3.</span> <span class="toc-text">验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DSA-Digital-Signature-Algorithm"><span class="toc-number">8.4.</span> <span class="toc-text">DSA -Digital Signature Algorithm</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成-2"><span class="toc-number">8.4.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名-1"><span class="toc-number">8.4.2.</span> <span class="toc-text">签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证-1"><span class="toc-number">8.4.3.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正确性证明"><span class="toc-number">8.4.4.</span> <span class="toc-text">正确性证明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECDSA"><span class="toc-number">8.5.</span> <span class="toc-text">ECDSA</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#国产密码算法"><span class="toc-number">9.</span> <span class="toc-text">国产密码算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SM2椭圆曲线公钥密码算"><span class="toc-number">9.1.</span> <span class="toc-text">SM2椭圆曲线公钥密码算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SM3杂凑算法"><span class="toc-number">9.2.</span> <span class="toc-text">SM3杂凑算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SM4分组密码算法"><span class="toc-number">9.3.</span> <span class="toc-text">SM4分组密码算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#祖冲之序列密码算法"><span class="toc-number">9.4.</span> <span class="toc-text">祖冲之序列密码算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">10.</span> <span class="toc-text">参考文献</span></a></li></ol>
 		
 		</div>
 		
@@ -260,15 +268,66 @@
 <p><strong>欧拉函数</strong> </p>
 <p>意义是求跟某个数互素，且小于这个数的元素的个数。设数n，那么 $\phi(n)=|Z_n^*|$ 。<br>与n互素且小于n的任意一个数，在计算模n的幂次的时候，等于1的那个最小的幂次。<br>即 $ gcd(a,n)=1 $，那么$ a^{\phi(n)}=1 \pmod {n} $。</p>
 <h2 id="RSA算法流程"><a href="#RSA算法流程" class="headerlink" title="RSA算法流程"></a>RSA算法流程</h2><ol>
-<li>随机生成等二进制长度的两个素数: p、q；</li>
+<li>随机生成等二进制长度的两个素数: $p$、$q$；</li>
 <li>计算 $\phi(n)=(p-1)*(q-1)$，$n=p*q$；</li>
-<li>随机取值e，使e与 $\phi(n)$ 互素；</li>
-<li>计算e对 $\phi(n)$ 的模逆，$e*d=1\pmod {\phi(n)}$；</li>
-<li>(e, n)为公钥，(d, n)为私钥。</li>
+<li>随机取值$e$，使$e$与 $\phi(n)$ 互素；</li>
+<li>计算$e$对 $\phi(n)$ 的模逆，$e*d=1\pmod {\phi(n)}$；</li>
+<li>$(e, n)$为公钥，$(d, n)$为私钥。</li>
 </ol>
-<h2 id="公钥加密"><a href="#公钥加密" class="headerlink" title="公钥加密"></a>公钥加密</h2><p>$$ C = M^e mod n $$</p>
-<h2 id="私钥解密"><a href="#私钥解密" class="headerlink" title="私钥解密"></a>私钥解密</h2><p>$$ M = C^d mod n $$</p>
-<h2 id="padding-1"><a href="#padding-1" class="headerlink" title="padding"></a>padding</h2><h3 id="PKCS1"><a href="#PKCS1" class="headerlink" title="PKCS1"></a>PKCS1</h3><h3 id="OAEP"><a href="#OAEP" class="headerlink" title="OAEP"></a>OAEP</h3><p>OAEP (optimal asymmetric encryption padding)</p>
+<ul>
+<li>公钥加密</li>
+</ul>
+<p>$$ C = M^e \pmod {n} $$</p>
+<ul>
+<li>私钥解密</li>
+</ul>
+<p>$$ M = C^d \pmod {n} $$</p>
+<h2 id="Modular-Exponentiation"><a href="#Modular-Exponentiation" class="headerlink" title="Modular Exponentiation"></a>Modular Exponentiation</h2><p>RSA 的操作主要是模幂运算，这里有 <em>Repeated squaring</em>，<em>Sliding window</em>，<em>Chinese Remainder Theorem (CRT)</em>，<em>Montgomery multiplication</em>，<em>Karatsuba multiplication</em> 等。  </p>
+<h3 id="滑动窗口：sliding-windows"><a href="#滑动窗口：sliding-windows" class="headerlink" title="滑动窗口：sliding windows"></a>滑动窗口：sliding windows</h3><p>Input: $M$; $e$; $n$。<br>Output: $C = M^e \pmod {n}$.</p>
+<ol>
+<li>Compute and store $M^w \pmod {n}$ for all $w = 3, 5, 7, … , 2^d - 1$。</li>
+<li>Decompose $e$ into zero and nonzero windows $F(i)$ of length $L(F(i))$，for $i = 0, 1, 2, … , p - 1$。</li>
+<li>$C := M^{F(p-1)} \pmod {n}$</li>
+<li>for i = p - 2 down to 0<ol>
+<li>$C := C^{2^{L(F(i))}} \pmod {n}$</li>
+<li>if (F(i) != 0), then $C := C * M^{F(i)} \pmod {n}$</li>
+</ol>
+</li>
+<li>return C</li>
+</ol>
+<h3 id="CRT-calculation"><a href="#CRT-calculation" class="headerlink" title="CRT calculation"></a>CRT calculation</h3><ul>
+<li><a href="https://www.cscjournals.org/manuscript/Journals/IJCSS/Volume10/Issue5/IJCSS-1289.pdf" target="_blank" rel="noopener">Implementation of RSA Algorithm with Chinese Remainder Theorem for Modulus N 1024 Bit and 4096 Bit</a></li>
+</ul>
+<p>简介中国剩余定理（Chinese Remainder Theorem，CRT）：  </p>
+<p>p和q是互相独立的大素数，n为p*q，对于任意(m1, m2), (0&lt;=m1&lt; p, 0&lt;=m2&lt; p)<br>必然存在一个唯一的m ,0&lt;=m&lt; n<br>使得<br>$$m1 = m \pmod {p}$$<br>$$m2 = m \pmod {q}$$</p>
+<p>所以换句话说，给定一个(m1,m2)，其满足上述等式的m必定唯一存在。</p>
+<p>通过中国剩余定理计算RSA。<br>需要的参数：  </p>
+<ul>
+<li>Modulus ($n=pq$)</li>
+<li>Public exponent ($e$，通常为3, 17 or 65537)</li>
+<li>Private exponent ($d=e^{−1}\pmod {\phi(n)}$)</li>
+<li>First prime ($p$)</li>
+<li>Second prime ($q$)</li>
+<li>First exponent, used for Chinese remainder theorem ($d_P=d\pmod{p−1}$)</li>
+<li>Second exponent, used for CRT ($d_Q=d\pmod{q−1}$)</li>
+<li>Coefficient, used for CRT ($q_{inv}=q^{−1}\pmod{p}$)</li>
+</ul>
+<p>公钥为 $(e, n)$，私钥为 $(d_P, d_Q, q_{inv}, p, q)$。</p>
+<ul>
+<li>公钥加密</li>
+</ul>
+<p>$$ C = M^e \pmod {n} $$</p>
+<ul>
+<li>私钥解密</li>
+</ul>
+<p>这里和常规方法不同。  </p>
+<ol>
+<li>计算 $C_p = C \pmod{p}$, $C_q = C \pmod{q}$</li>
+<li>计算 $x_1={C_p}^{d_P}\pmod{p}$ , $x_2={C_q}^{d_Q}\pmod{q}$</li>
+<li>计算 $h=q_{inv} \times (x_1-x_2)\pmod{p}$</li>
+<li>明文 $M = x_2+ {h}\times{q}$</li>
+</ol>
+<h3 id="Montgomery-Multiplication"><a href="#Montgomery-Multiplication" class="headerlink" title="Montgomery Multiplication"></a>Montgomery Multiplication</h3><h2 id="padding-1"><a href="#padding-1" class="headerlink" title="padding"></a>padding</h2><h3 id="PKCS1"><a href="#PKCS1" class="headerlink" title="PKCS1"></a>PKCS1</h3><h3 id="OAEP"><a href="#OAEP" class="headerlink" title="OAEP"></a>OAEP</h3><p>OAEP (optimal asymmetric encryption padding)</p>
 <h3 id="PSS"><a href="#PSS" class="headerlink" title="PSS"></a>PSS</h3><p><a href="https://www.di-mgt.com.au/rsa_alg.html" target="_blank" rel="noopener">RSA Algorithom 详尽的介绍</a></p>
 <h1 id="Paillier同态加密算法-Paillier-Homomorphic-Encryption"><a href="#Paillier同态加密算法-Paillier-Homomorphic-Encryption" class="headerlink" title="Paillier同态加密算法(Paillier Homomorphic Encryption)"></a>Paillier同态加密算法(Paillier Homomorphic Encryption)</h1><p>Paillier加密系统是概率公钥加密系统。基于复合剩余类的困难问题。该加密算法是一种同态加密，满足加法和数乘同态。</p>
 <h2 id="密钥生成："><a href="#密钥生成：" class="headerlink" title="密钥生成："></a>密钥生成：</h2><ul>
@@ -482,7 +541,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2017/08/06/密码学EXM/" data-title="密码学EXM? | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2017/08/06/%E5%AF%86%E7%A0%81%E5%AD%A6EXM/" data-title="密码学EXM? | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -495,9 +554,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2017/08/07/格式化字符串漏洞/" title="格式化字符串漏洞">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   格式化字符串漏洞</span>
 </a>
@@ -505,8 +564,8 @@
 
 
 <div class="next">
-<a href="/2017/08/06/sql注入入门/" title="sql注入入门">
- <strong>下一篇：</strong><br> 
+<a href="/2017/08/06/sql注入入门/"  title="sql注入入门">
+ <strong>下一篇：</strong><br/> 
  <span>sql注入入门
 </span>
 </a>
@@ -526,7 +585,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#base64-32-16编码"><span class="toc-number">1.</span> <span class="toc-text">base64/32/16编码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stream-cipher"><span class="toc-number">2.</span> <span class="toc-text">stream cipher</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RC4-arch4"><span class="toc-number">2.1.</span> <span class="toc-text">RC4 (arch4)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Salsa20"><span class="toc-number">2.2.</span> <span class="toc-text">Salsa20</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ChaCha"><span class="toc-number">2.3.</span> <span class="toc-text">ChaCha</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#KDF"><span class="toc-number">3.</span> <span class="toc-text">KDF</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#填充模式"><span class="toc-number">4.</span> <span class="toc-text">填充模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#分组密码工作模式-mode-of-operation"><span class="toc-number">4.1.</span> <span class="toc-text">分组密码工作模式 mode of operation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#电子密码本（Electronic-codebook，ECB）"><span class="toc-number">4.1.1.</span> <span class="toc-text">电子密码本（Electronic codebook，ECB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密码块链接（CBC，Cipher-block-chaining）"><span class="toc-number">4.1.2.</span> <span class="toc-text">密码块链接（CBC，Cipher-block chaining）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#计数器模式（CTR，Counter-Mode）"><span class="toc-number">4.1.3.</span> <span class="toc-text">计数器模式（CTR，Counter Mode）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#填充密码块链接-（PCBC，Propagating-cipher-block-chaining）"><span class="toc-number">4.1.4.</span> <span class="toc-text">填充密码块链接 （PCBC，Propagating cipher-block chaining）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密文反馈（CFB，Cipher-feedback）"><span class="toc-number">4.1.5.</span> <span class="toc-text">密文反馈（CFB，Cipher feedback）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出反馈模式（Output-feedback-OFB）"><span class="toc-number">4.1.6.</span> <span class="toc-text">输出反馈模式（Output feedback, OFB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCM"><span class="toc-number">4.1.7.</span> <span class="toc-text">GCM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding"><span class="toc-number">4.2.</span> <span class="toc-text">padding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PKCS-5-PKCS-7-padding"><span class="toc-number">4.2.1.</span> <span class="toc-text">PKCS#5/PKCS#7 padding</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Message-Authentication-Code-MAC"><span class="toc-number">4.3.</span> <span class="toc-text">Message Authentication Code(MAC)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-based-Message-Authentication-Code-HMAC"><span class="toc-number">4.3.1.</span> <span class="toc-text">Hash-based Message Authentication Code(HMAC)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AEAD-Authenticated-Encryption-with-Associated-Data"><span class="toc-number">4.3.2.</span> <span class="toc-text">AEAD(Authenticated Encryption with Associated Data)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AES"><span class="toc-number">4.4.</span> <span class="toc-text">AES</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AES-加密"><span class="toc-number">4.4.1.</span> <span class="toc-text">AES 加密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SubBytes"><span class="toc-number">4.4.1.1.</span> <span class="toc-text">SubBytes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ShiftRows"><span class="toc-number">4.4.1.2.</span> <span class="toc-text">ShiftRows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MixColumns"><span class="toc-number">4.4.1.3.</span> <span class="toc-text">MixColumns</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AddRoundKey"><span class="toc-number">4.4.1.4.</span> <span class="toc-text">AddRoundKey</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AES-解密"><span class="toc-number">4.4.2.</span> <span class="toc-text">AES 解密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InvShiftRows"><span class="toc-number">4.4.2.1.</span> <span class="toc-text">InvShiftRows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InvSubBytes"><span class="toc-number">4.4.2.2.</span> <span class="toc-text">InvSubBytes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InvMixColumns"><span class="toc-number">4.4.2.3.</span> <span class="toc-text">InvMixColumns</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">4.4.3.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RSA"><span class="toc-number">5.</span> <span class="toc-text">RSA</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA算法流程"><span class="toc-number">5.1.</span> <span class="toc-text">RSA算法流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#公钥加密"><span class="toc-number">5.2.</span> <span class="toc-text">公钥加密</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#私钥解密"><span class="toc-number">5.3.</span> <span class="toc-text">私钥解密</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding-1"><span class="toc-number">5.4.</span> <span class="toc-text">padding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PKCS1"><span class="toc-number">5.4.1.</span> <span class="toc-text">PKCS1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OAEP"><span class="toc-number">5.4.2.</span> <span class="toc-text">OAEP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSS"><span class="toc-number">5.4.3.</span> <span class="toc-text">PSS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Paillier同态加密算法-Paillier-Homomorphic-Encryption"><span class="toc-number">6.</span> <span class="toc-text">Paillier同态加密算法(Paillier Homomorphic Encryption)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#密钥生成："><span class="toc-number">6.1.</span> <span class="toc-text">密钥生成：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加密过程："><span class="toc-number">6.2.</span> <span class="toc-text">加密过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解密过程："><span class="toc-number">6.3.</span> <span class="toc-text">解密过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#证明"><span class="toc-number">6.4.</span> <span class="toc-text">证明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同态的性质"><span class="toc-number">6.5.</span> <span class="toc-text">同态的性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同态加法"><span class="toc-number">6.5.1.</span> <span class="toc-text">同态加法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同态乘法"><span class="toc-number">6.5.2.</span> <span class="toc-text">同态乘法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#零知识证明-Zero-knowledge-proof"><span class="toc-number">7.</span> <span class="toc-text">零知识证明 Zero-knowledge proof</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#离散对数体系（Discrete-Logarithm）"><span class="toc-number">8.</span> <span class="toc-text">离散对数体系（Discrete Logarithm）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#D-H"><span class="toc-number">8.1.</span> <span class="toc-text">D-H</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElGamal加密算法"><span class="toc-number">8.2.</span> <span class="toc-text">ElGamal加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成"><span class="toc-number">8.2.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密"><span class="toc-number">8.2.2.</span> <span class="toc-text">加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解密"><span class="toc-number">8.2.3.</span> <span class="toc-text">解密</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElGamal签名算法"><span class="toc-number">8.3.</span> <span class="toc-text">ElGamal签名算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成-1"><span class="toc-number">8.3.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名"><span class="toc-number">8.3.2.</span> <span class="toc-text">签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证"><span class="toc-number">8.3.3.</span> <span class="toc-text">验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DSA-Digital-Signature-Algorithm"><span class="toc-number">8.4.</span> <span class="toc-text">DSA -Digital Signature Algorithm</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成-2"><span class="toc-number">8.4.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名-1"><span class="toc-number">8.4.2.</span> <span class="toc-text">签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证-1"><span class="toc-number">8.4.3.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正确性证明"><span class="toc-number">8.4.4.</span> <span class="toc-text">正确性证明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECDSA"><span class="toc-number">8.5.</span> <span class="toc-text">ECDSA</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#国产密码算法"><span class="toc-number">9.</span> <span class="toc-text">国产密码算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SM2椭圆曲线公钥密码算"><span class="toc-number">9.1.</span> <span class="toc-text">SM2椭圆曲线公钥密码算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SM3杂凑算法"><span class="toc-number">9.2.</span> <span class="toc-text">SM3杂凑算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SM4分组密码算法"><span class="toc-number">9.3.</span> <span class="toc-text">SM4分组密码算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#祖冲之序列密码算法"><span class="toc-number">9.4.</span> <span class="toc-text">祖冲之序列密码算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">10.</span> <span class="toc-text">参考文献</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#base64-32-16编码"><span class="toc-number">1.</span> <span class="toc-text">base64&#x2F;32&#x2F;16编码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stream-cipher"><span class="toc-number">2.</span> <span class="toc-text">stream cipher</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RC4-arch4"><span class="toc-number">2.1.</span> <span class="toc-text">RC4 (arch4)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Salsa20"><span class="toc-number">2.2.</span> <span class="toc-text">Salsa20</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ChaCha"><span class="toc-number">2.3.</span> <span class="toc-text">ChaCha</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#KDF"><span class="toc-number">3.</span> <span class="toc-text">KDF</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#填充模式"><span class="toc-number">4.</span> <span class="toc-text">填充模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#分组密码工作模式-mode-of-operation"><span class="toc-number">4.1.</span> <span class="toc-text">分组密码工作模式 mode of operation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#电子密码本（Electronic-codebook，ECB）"><span class="toc-number">4.1.1.</span> <span class="toc-text">电子密码本（Electronic codebook，ECB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密码块链接（CBC，Cipher-block-chaining）"><span class="toc-number">4.1.2.</span> <span class="toc-text">密码块链接（CBC，Cipher-block chaining）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#计数器模式（CTR，Counter-Mode）"><span class="toc-number">4.1.3.</span> <span class="toc-text">计数器模式（CTR，Counter Mode）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#填充密码块链接-（PCBC，Propagating-cipher-block-chaining）"><span class="toc-number">4.1.4.</span> <span class="toc-text">填充密码块链接 （PCBC，Propagating cipher-block chaining）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密文反馈（CFB，Cipher-feedback）"><span class="toc-number">4.1.5.</span> <span class="toc-text">密文反馈（CFB，Cipher feedback）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出反馈模式（Output-feedback-OFB）"><span class="toc-number">4.1.6.</span> <span class="toc-text">输出反馈模式（Output feedback, OFB）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GCM"><span class="toc-number">4.1.7.</span> <span class="toc-text">GCM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding"><span class="toc-number">4.2.</span> <span class="toc-text">padding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PKCS-5-PKCS-7-padding"><span class="toc-number">4.2.1.</span> <span class="toc-text">PKCS#5&#x2F;PKCS#7 padding</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Message-Authentication-Code-MAC"><span class="toc-number">4.3.</span> <span class="toc-text">Message Authentication Code(MAC)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-based-Message-Authentication-Code-HMAC"><span class="toc-number">4.3.1.</span> <span class="toc-text">Hash-based Message Authentication Code(HMAC)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AEAD-Authenticated-Encryption-with-Associated-Data"><span class="toc-number">4.3.2.</span> <span class="toc-text">AEAD(Authenticated Encryption with Associated Data)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AES"><span class="toc-number">4.4.</span> <span class="toc-text">AES</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AES-加密"><span class="toc-number">4.4.1.</span> <span class="toc-text">AES 加密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SubBytes"><span class="toc-number">4.4.1.1.</span> <span class="toc-text">SubBytes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ShiftRows"><span class="toc-number">4.4.1.2.</span> <span class="toc-text">ShiftRows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MixColumns"><span class="toc-number">4.4.1.3.</span> <span class="toc-text">MixColumns</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AddRoundKey"><span class="toc-number">4.4.1.4.</span> <span class="toc-text">AddRoundKey</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AES-解密"><span class="toc-number">4.4.2.</span> <span class="toc-text">AES 解密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InvShiftRows"><span class="toc-number">4.4.2.1.</span> <span class="toc-text">InvShiftRows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InvSubBytes"><span class="toc-number">4.4.2.2.</span> <span class="toc-text">InvSubBytes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#InvMixColumns"><span class="toc-number">4.4.2.3.</span> <span class="toc-text">InvMixColumns</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">4.4.3.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RSA"><span class="toc-number">5.</span> <span class="toc-text">RSA</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RSA算法流程"><span class="toc-number">5.1.</span> <span class="toc-text">RSA算法流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Modular-Exponentiation"><span class="toc-number">5.2.</span> <span class="toc-text">Modular Exponentiation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#滑动窗口：sliding-windows"><span class="toc-number">5.2.1.</span> <span class="toc-text">滑动窗口：sliding windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CRT-calculation"><span class="toc-number">5.2.2.</span> <span class="toc-text">CRT calculation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Montgomery-Multiplication"><span class="toc-number">5.2.3.</span> <span class="toc-text">Montgomery Multiplication</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#padding-1"><span class="toc-number">5.3.</span> <span class="toc-text">padding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PKCS1"><span class="toc-number">5.3.1.</span> <span class="toc-text">PKCS1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OAEP"><span class="toc-number">5.3.2.</span> <span class="toc-text">OAEP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSS"><span class="toc-number">5.3.3.</span> <span class="toc-text">PSS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Paillier同态加密算法-Paillier-Homomorphic-Encryption"><span class="toc-number">6.</span> <span class="toc-text">Paillier同态加密算法(Paillier Homomorphic Encryption)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#密钥生成："><span class="toc-number">6.1.</span> <span class="toc-text">密钥生成：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加密过程："><span class="toc-number">6.2.</span> <span class="toc-text">加密过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解密过程："><span class="toc-number">6.3.</span> <span class="toc-text">解密过程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#证明"><span class="toc-number">6.4.</span> <span class="toc-text">证明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同态的性质"><span class="toc-number">6.5.</span> <span class="toc-text">同态的性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同态加法"><span class="toc-number">6.5.1.</span> <span class="toc-text">同态加法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同态乘法"><span class="toc-number">6.5.2.</span> <span class="toc-text">同态乘法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#零知识证明-Zero-knowledge-proof"><span class="toc-number">7.</span> <span class="toc-text">零知识证明 Zero-knowledge proof</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#离散对数体系（Discrete-Logarithm）"><span class="toc-number">8.</span> <span class="toc-text">离散对数体系（Discrete Logarithm）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#D-H"><span class="toc-number">8.1.</span> <span class="toc-text">D-H</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElGamal加密算法"><span class="toc-number">8.2.</span> <span class="toc-text">ElGamal加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成"><span class="toc-number">8.2.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密"><span class="toc-number">8.2.2.</span> <span class="toc-text">加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解密"><span class="toc-number">8.2.3.</span> <span class="toc-text">解密</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElGamal签名算法"><span class="toc-number">8.3.</span> <span class="toc-text">ElGamal签名算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成-1"><span class="toc-number">8.3.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名"><span class="toc-number">8.3.2.</span> <span class="toc-text">签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证"><span class="toc-number">8.3.3.</span> <span class="toc-text">验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DSA-Digital-Signature-Algorithm"><span class="toc-number">8.4.</span> <span class="toc-text">DSA -Digital Signature Algorithm</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#密钥生成-2"><span class="toc-number">8.4.1.</span> <span class="toc-text">密钥生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名-1"><span class="toc-number">8.4.2.</span> <span class="toc-text">签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证-1"><span class="toc-number">8.4.3.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正确性证明"><span class="toc-number">8.4.4.</span> <span class="toc-text">正确性证明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECDSA"><span class="toc-number">8.5.</span> <span class="toc-text">ECDSA</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#国产密码算法"><span class="toc-number">9.</span> <span class="toc-text">国产密码算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SM2椭圆曲线公钥密码算"><span class="toc-number">9.1.</span> <span class="toc-text">SM2椭圆曲线公钥密码算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SM3杂凑算法"><span class="toc-number">9.2.</span> <span class="toc-text">SM3杂凑算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SM4分组密码算法"><span class="toc-number">9.3.</span> <span class="toc-text">SM4分组密码算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#祖冲之序列密码算法"><span class="toc-number">9.4.</span> <span class="toc-text">祖冲之序列密码算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number">10.</span> <span class="toc-text">参考文献</span></a></li></ol>
  
   </div>
 
@@ -538,7 +597,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -553,7 +612,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -561,15 +620,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -578,6 +641,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -597,7 +664,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -641,11 +708,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -654,10 +721,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -678,11 +741,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -694,11 +757,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -715,10 +778,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -742,11 +801,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -777,7 +840,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -786,12 +849,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -811,7 +874,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -1001,7 +1064,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

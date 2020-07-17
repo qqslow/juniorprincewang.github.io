@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>linux操作 | TO DO</title>
@@ -12,18 +12,22 @@
 
     
     <meta name="description" content="对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。">
-<meta name="keywords" content="linux,ssh,scp,ip,zsh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux操作">
-<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/13/linux操作/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/13/linux%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。">
-<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://juniorprincewang.github.io/2017/08/13/linux%E6%93%8D%E4%BD%9C/bash%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%91%BD%E4%BB%A4.jpg">
-<meta property="og:updated_time" content="2019-08-24T09:05:00.992Z">
+<meta property="article:published_time" content="2017-08-13T01:48:19.000Z">
+<meta property="article:modified_time" content="2020-04-03T01:48:10.059Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="ssh">
+<meta property="article:tag" content="scp">
+<meta property="article:tag" content="ip">
+<meta property="article:tag" content="zsh">
+<meta property="article:tag" content="pssh">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux操作">
-<meta name="twitter:description" content="对linux网络操作，文件操作，进程管理拾遗。针对发行版本为Ubuntu 16.04，间或有 Ubuntu 18.04。">
 <meta name="twitter:image" content="http://juniorprincewang.github.io/2017/08/13/linux%E6%93%8D%E4%BD%9C/bash%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%91%BD%E4%BB%A4.jpg">
 
     
@@ -36,16 +40,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -68,13 +76,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -90,7 +98,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2017-08-13T01:48:19.000Z" itemprop="datePublished"> Published 2017-08-13</time>
     
   </p>
@@ -100,7 +108,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-终端命令行快捷键"><span class="toc-number">1.</span> <span class="toc-text">Linux 终端命令行快捷键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#man"><span class="toc-number">2.</span> <span class="toc-text">man</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查找软件源"><span class="toc-number">3.</span> <span class="toc-text">查找软件源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#更新软件源"><span class="toc-number">3.1.</span> <span class="toc-text">更新软件源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找不确定的软件包"><span class="toc-number">3.2.</span> <span class="toc-text">查找不确定的软件包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络操作"><span class="toc-number">4.</span> <span class="toc-text">网络操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置静态ip"><span class="toc-number">4.1.</span> <span class="toc-text">配置静态ip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过IPv6访问Google等"><span class="toc-number">4.2.</span> <span class="toc-text">通过IPv6访问Google等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网桥bridge"><span class="toc-number">4.3.</span> <span class="toc-text">网桥bridge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加网卡-网桥"><span class="toc-number">4.3.1.</span> <span class="toc-text">添加网卡/网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除网卡-网桥"><span class="toc-number">4.3.2.</span> <span class="toc-text">删除网卡/网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netplan-配置网桥"><span class="toc-number">4.3.3.</span> <span class="toc-text">netplan 配置网桥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scp"><span class="toc-number">4.4.</span> <span class="toc-text">scp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表示格式为"><span class="toc-number">4.4.1.</span> <span class="toc-text">表示格式为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令参数"><span class="toc-number">4.4.2.</span> <span class="toc-text">命令参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">4.4.3.</span> <span class="toc-text">实例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件操作"><span class="toc-number">5.</span> <span class="toc-text">文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tar"><span class="toc-number">5.1.</span> <span class="toc-text">tar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tar用法"><span class="toc-number">5.1.1.</span> <span class="toc-text">tar用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tar实例"><span class="toc-number">5.1.2.</span> <span class="toc-text">tar实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ulimit"><span class="toc-number">5.2.</span> <span class="toc-text">ulimit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find"><span class="toc-number">5.3.</span> <span class="toc-text">find</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#params选项"><span class="toc-number">5.3.1.</span> <span class="toc-text">params选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-1"><span class="toc-number">5.3.2.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看文件系统大小"><span class="toc-number">5.4.</span> <span class="toc-text">查看文件系统大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较文件夹"><span class="toc-number">5.5.</span> <span class="toc-text">比较文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#patch打补丁"><span class="toc-number">5.6.</span> <span class="toc-text">patch打补丁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进程管理"><span class="toc-number">6.</span> <span class="toc-text">进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查看进程和端口"><span class="toc-number">6.1.</span> <span class="toc-text">查看进程和端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#列出目前所有的正在内存当中的程序"><span class="toc-number">6.1.1.</span> <span class="toc-text">列出目前所有的正在内存当中的程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netstat"><span class="toc-number">6.1.2.</span> <span class="toc-text">netstat</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#让进程后台运行"><span class="toc-number">6.2.</span> <span class="toc-text">让进程后台运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">6.2.1.</span> <span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nohup"><span class="toc-number">6.2.2.</span> <span class="toc-text">nohup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setsid"><span class="toc-number">6.2.3.</span> <span class="toc-text">setsid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp"><span class="toc-number">6.2.4.</span> <span class="toc-text">&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跟后台进程有关的操作"><span class="toc-number">6.2.5.</span> <span class="toc-text">跟后台进程有关的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注销"><span class="toc-number">6.3.</span> <span class="toc-text">注销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LD-PRELOAD"><span class="toc-number">6.4.</span> <span class="toc-text">LD_PRELOAD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核操作"><span class="toc-number">7.</span> <span class="toc-text">内核操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU"><span class="toc-number">7.1.</span> <span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统内核信息"><span class="toc-number">7.2.</span> <span class="toc-text">当前操作系统内核信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#删除老版本的内核"><span class="toc-number">7.2.1.</span> <span class="toc-text">删除老版本的内核</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统发行版本"><span class="toc-number">7.3.</span> <span class="toc-text">当前操作系统发行版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前CPU运行模式"><span class="toc-number">7.4.</span> <span class="toc-text">当前CPU运行模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内核编译选项查看"><span class="toc-number">7.5.</span> <span class="toc-text">内核编译选项查看</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件下查看"><span class="toc-number">7.5.1.</span> <span class="toc-text">文件下查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从系统-boot目录下获取"><span class="toc-number">7.5.2.</span> <span class="toc-text">从系统/boot目录下获取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tools"><span class="toc-number">8.</span> <span class="toc-text">tools</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell—zsh"><span class="toc-number">8.1.</span> <span class="toc-text">shell—zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove-zsh"><span class="toc-number">8.2.</span> <span class="toc-text">remove zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch-zsh-with-bash"><span class="toc-number">8.3.</span> <span class="toc-text">switch zsh with bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#disable-zsh"><span class="toc-number">8.4.</span> <span class="toc-text">disable zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASH-SHELL-for-Windows10"><span class="toc-number">8.5.</span> <span class="toc-text">BASH SHELL for Windows10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件系统交互"><span class="toc-number">8.5.1.</span> <span class="toc-text">文件系统交互</span></a></li></ol></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-终端命令行快捷键"><span class="toc-number">1.</span> <span class="toc-text">Linux 终端命令行快捷键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#man"><span class="toc-number">2.</span> <span class="toc-text">man</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查找软件源"><span class="toc-number">3.</span> <span class="toc-text">查找软件源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#更新软件源"><span class="toc-number">3.1.</span> <span class="toc-text">更新软件源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找不确定的软件包"><span class="toc-number">3.2.</span> <span class="toc-text">查找不确定的软件包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络操作"><span class="toc-number">4.</span> <span class="toc-text">网络操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置静态ip"><span class="toc-number">4.1.</span> <span class="toc-text">配置静态ip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过IPv6访问Google等"><span class="toc-number">4.2.</span> <span class="toc-text">通过IPv6访问Google等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网桥bridge"><span class="toc-number">4.3.</span> <span class="toc-text">网桥bridge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加网卡-网桥"><span class="toc-number">4.3.1.</span> <span class="toc-text">添加网卡&#x2F;网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除网卡-网桥"><span class="toc-number">4.3.2.</span> <span class="toc-text">删除网卡&#x2F;网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netplan-配置网桥"><span class="toc-number">4.3.3.</span> <span class="toc-text">netplan 配置网桥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scp"><span class="toc-number">4.4.</span> <span class="toc-text">scp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表示格式为"><span class="toc-number">4.4.1.</span> <span class="toc-text">表示格式为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令参数"><span class="toc-number">4.4.2.</span> <span class="toc-text">命令参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">4.4.3.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pssh"><span class="toc-number">4.5.</span> <span class="toc-text">pssh</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">4.5.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令"><span class="toc-number">4.5.2.</span> <span class="toc-text">命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-1"><span class="toc-number">4.5.3.</span> <span class="toc-text">实例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件操作"><span class="toc-number">5.</span> <span class="toc-text">文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#rm"><span class="toc-number">5.1.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xxd"><span class="toc-number">5.2.</span> <span class="toc-text">xxd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tar"><span class="toc-number">5.3.</span> <span class="toc-text">tar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tar用法"><span class="toc-number">5.3.1.</span> <span class="toc-text">tar用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tar实例"><span class="toc-number">5.3.2.</span> <span class="toc-text">tar实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ulimit"><span class="toc-number">5.4.</span> <span class="toc-text">ulimit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find"><span class="toc-number">5.5.</span> <span class="toc-text">find</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#params选项"><span class="toc-number">5.5.1.</span> <span class="toc-text">params选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-2"><span class="toc-number">5.5.2.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看文件系统大小"><span class="toc-number">5.6.</span> <span class="toc-text">查看文件系统大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较文件夹"><span class="toc-number">5.7.</span> <span class="toc-text">比较文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#patch打补丁"><span class="toc-number">5.8.</span> <span class="toc-text">patch打补丁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进程管理"><span class="toc-number">6.</span> <span class="toc-text">进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查看进程和端口"><span class="toc-number">6.1.</span> <span class="toc-text">查看进程和端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#列出目前所有的正在内存当中的程序"><span class="toc-number">6.1.1.</span> <span class="toc-text">列出目前所有的正在内存当中的程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netstat"><span class="toc-number">6.1.2.</span> <span class="toc-text">netstat</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#让进程后台运行"><span class="toc-number">6.2.</span> <span class="toc-text">让进程后台运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">6.2.1.</span> <span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nohup"><span class="toc-number">6.2.2.</span> <span class="toc-text">nohup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setsid"><span class="toc-number">6.2.3.</span> <span class="toc-text">setsid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp"><span class="toc-number">6.2.4.</span> <span class="toc-text">&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跟后台进程有关的操作"><span class="toc-number">6.2.5.</span> <span class="toc-text">跟后台进程有关的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注销"><span class="toc-number">6.3.</span> <span class="toc-text">注销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LD-PRELOAD"><span class="toc-number">6.4.</span> <span class="toc-text">LD_PRELOAD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核操作"><span class="toc-number">7.</span> <span class="toc-text">内核操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU"><span class="toc-number">7.1.</span> <span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统内核信息"><span class="toc-number">7.2.</span> <span class="toc-text">当前操作系统内核信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#删除老版本的内核"><span class="toc-number">7.2.1.</span> <span class="toc-text">删除老版本的内核</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统发行版本"><span class="toc-number">7.3.</span> <span class="toc-text">当前操作系统发行版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前CPU运行模式"><span class="toc-number">7.4.</span> <span class="toc-text">当前CPU运行模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内核编译选项查看"><span class="toc-number">7.5.</span> <span class="toc-text">内核编译选项查看</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件下查看"><span class="toc-number">7.5.1.</span> <span class="toc-text">文件下查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从系统-boot目录下获取"><span class="toc-number">7.5.2.</span> <span class="toc-text">从系统&#x2F;boot目录下获取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tools"><span class="toc-number">8.</span> <span class="toc-text">tools</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell—zsh"><span class="toc-number">8.1.</span> <span class="toc-text">shell—zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove-zsh"><span class="toc-number">8.2.</span> <span class="toc-text">remove zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch-zsh-with-bash"><span class="toc-number">8.3.</span> <span class="toc-text">switch zsh with bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#disable-zsh"><span class="toc-number">8.4.</span> <span class="toc-text">disable zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASH-SHELL-for-Windows10"><span class="toc-number">8.5.</span> <span class="toc-text">BASH SHELL for Windows10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件系统交互"><span class="toc-number">8.5.1.</span> <span class="toc-text">文件系统交互</span></a></li></ol></li></ol></li></ol>
 		
 		</div>
 		
@@ -330,7 +338,60 @@ network:
 
 <p>从远端服务器到本地，只需要把参数颠倒即可。</p>
 <p>[1] <a href="http://www.cnblogs.com/peida/archive/2013/03/15/2960802.html" target="_blank" rel="noopener">每天一个linux命令（60）：scp命令</a></p>
-<h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><h2 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h2><p>tar命令可以为linux的文件和目录创建档案。利用tar命令，可以把一大堆的文件和目录全部打包成一个文件。<br>首先要把打包和压缩两个概念搞清楚，打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过一些压缩算法变成一个小文件。<br>为什么要区分这两个概念呢？这源于Linux中很多压缩程序只能针对一个文件进行压缩，这样当你想要压缩一大堆文件时，你得先将这一大堆文件先打成一个包（tar命令），然后再用压缩程序进行压缩（gzip bzip2命令）。</p>
+<h2 id="pssh"><a href="#pssh" class="headerlink" title="pssh"></a>pssh</h2><p>pssh命令是一个python编写可以在多台服务器上执行命令的工具，全程 parallel-ssh。<br>此命令用于同步在多台虚拟机内测试，终于找到此命令。  </p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>1、ubuntu安装pssh，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install pssh</span><br></pre></td></tr></table></figure>
+
+<p>2、运行 <code>pssh</code>，也许会提示：<em>No command ‘pssh’ found, did you mean:…</em></p>
+<p>解决办法参考<a href="https://askubuntu.com/questions/119232/why-pssh-command-is-not-working" target="_blank" rel="noopener">Why pssh command is not working?</a>。  </p>
+<p>在安装完pssh后，实际上安装了 parallel-ssh，parallel-scp，parallel-rsync，parallel-nuke，parallel-slurp等工具，需要给这些命令设置别名，即 pssh、pscp、prsync、pnuke和pslurp。<br>需要执行如下命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"alias pssh=parallel-ssh"</span> &gt;&gt; ~/.bashrc &amp;&amp; . ~/.bashrc。</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"alias pscp=parallel-scp"</span> &gt;&gt; ~/.bashrc &amp;&amp; . ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"alias prsync=parallel-rsync"</span> &gt;&gt; ~/.bashrc &amp;&amp; . ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"alias pnuke=parallel-nuke"</span> &gt;&gt; ~/.bashrc &amp;&amp; . ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"alias pslurp=parallel-slurp"</span> &gt;&gt; ~/.bashrc &amp;&amp; . ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>其中，</p>
+<ul>
+<li><code>pscp</code>把文件并行地复制到多个客户机；</li>
+<li><code>prsync</code>使用rsync协议从管理机同步到客户机；</li>
+<li><code>pslurp</code> 将文件从客户机复制到管理机；</li>
+<li><code>pnuke</code> 并行地在客户机杀进程。</li>
+</ul>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><p>命令格式：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pssh [OPTIONS] command [...]</span><br></pre></td></tr></table></figure>
+
+<p>其中 OPTIONS 为  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">--version：查看版本</span><br><span class="line">--help：查看帮助，即此信息</span><br><span class="line">-h：主机文件列表，内容格式”[user@]host[:port]”</span><br><span class="line">-H：主机字符串，内容格式”[user@]host[:port]”</span><br><span class="line">-l：登录使用的用户名</span><br><span class="line">-p：并发的线程数【可选】</span><br><span class="line">-o：输出的文件目录【可选】</span><br><span class="line">-e：错误输入文件【可选】</span><br><span class="line">-t：TIMEOUT 超时时间设置，0无限制【可选】</span><br><span class="line">-O：SSH的选项</span><br><span class="line">-v：详细模式</span><br><span class="line">-A：手动输入密码模式</span><br><span class="line">-x：额外的命令行参数使用空白符号，引号，反斜线处理</span><br><span class="line">-X：额外的命令行参数，单个参数模式，同-x</span><br><span class="line">-i：每个服务器内部处理信息输出</span><br><span class="line">-P：打印出服务器返回信息</span><br></pre></td></tr></table></figure>
+
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>具体操作在准备阶段需要在管理机上制作密钥对，将公钥添加给客户机，然后通过ssh免密登录。  </p>
+<p>新建客户机user和ip列表hosts.txt。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">test@192.168.0.101</span><br><span class="line">test@192.168.0.102</span><br><span class="line">test@192.168.0.103</span><br></pre></td></tr></table></figure>
+
+<p>在客户机上执行 <code>uptime</code> 并将结果保存到管理机。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pssh -h hosts.txt -i -o /tmp/pssh/ uptime</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://man.linuxde.net/pssh" target="_blank" rel="noopener">pssh命令</a>  </li>
+<li><a href="http://www.theether.org/pssh/docs/0.2.3/pssh-HOWTO.html" target="_blank" rel="noopener">pssh HOWTO</a>  </li>
+<li><a href="https://www.jianshu.com/p/d6c8b7aac221" target="_blank" rel="noopener">使用PSSH批量管理Linux</a></li>
+</ul>
+<h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><h2 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h2><ul>
+<li><a href="https://askubuntu.com/a/482183" target="_blank" rel="noopener">Unable to remove a file which has a name like a command argument [duplicate]</a>  </li>
+</ul>
+<p>删除带有 <code>-</code> 这些命令字符的文件夹，使用 <code>--</code> 来将后面紧跟的输入不当成命令参数。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -- -r</span><br></pre></td></tr></table></figure>
+
+<p>当然也可以使用全路径，比如：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm /home/you/directory/-r</span><br></pre></td></tr></table></figure>
+
+<h2 id="xxd"><a href="#xxd" class="headerlink" title="xxd"></a>xxd</h2><p>将文件以二进制呈现。  </p>
+<ul>
+<li><p>hex:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xxd file</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>bin:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xxd -b file</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h2><p>tar命令可以为linux的文件和目录创建档案。利用tar命令，可以把一大堆的文件和目录全部打包成一个文件。<br>首先要把打包和压缩两个概念搞清楚，打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过一些压缩算法变成一个小文件。<br>为什么要区分这两个概念呢？这源于Linux中很多压缩程序只能针对一个文件进行压缩，这样当你想要压缩一大堆文件时，你得先将这一大堆文件先打成一个包（tar命令），然后再用压缩程序进行压缩（gzip bzip2命令）。</p>
 <h3 id="tar用法"><a href="#tar用法" class="headerlink" title="tar用法"></a>tar用法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar &lt;选项&gt; (打包的文件或目录列表)</span><br></pre></td></tr></table></figure>
 
 <p>选项为：</p>
@@ -386,7 +447,7 @@ network:
 
 <h3 id="params选项"><a href="#params选项" class="headerlink" title="params选项"></a>params选项</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-atime&lt;24小时数&gt;：查找在指定时间曾被存取过的文件或目录，单位以24小时计算；</span><br><span class="line">-ctime&lt;24小时数&gt;：查找在指定时间之时被更改的文件或目录，单位以24小时计算；</span><br><span class="line">-mtime&lt;24小时数&gt;：查找在指定时间曾被更改过的文件或目录，单位以24小时计算；</span><br><span class="line">-exec&lt;执行指令&gt;：假设find指令的回传值为True，就执行该指令；</span><br><span class="line">-name&lt;范本样式&gt;：指定字符串作为寻找文件或目录的范本样式；</span><br><span class="line">-iname&lt;范本样式&gt;：此参数的效果和指定“-name”参数类似，但忽略字符大小写的差别；</span><br><span class="line">-gid&lt;群组识别码&gt;：查找符合指定之群组识别码的文件或目录；</span><br><span class="line">-path&lt;范本样式&gt;：指定字符串作为寻找目录的范本样式；</span><br><span class="line">-perm&lt;权限数值&gt;：查找符合指定的权限数值的文件或目录；</span><br><span class="line">-print：假设find指令的回传值为Ture，就将文件或目录名称列出到标准输出。格式为每列一个名称，每个名称前皆有&quot;./&quot;字符串；</span><br><span class="line">-size&lt;文件大小&gt;：查找符合指定的文件大小的文件；</span><br><span class="line">-uid&lt;用户识别码&gt;：查找符合指定的用户识别码的文件或目录；</span><br><span class="line">-user&lt;拥有者名称&gt;：查找符和指定的拥有者名称的文件或目录；</span><br></pre></td></tr></table></figure>
 
-<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p>可以根据文件或正则表达式匹配。</p>
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><p>可以根据文件或正则表达式匹配。</p>
 <p>在当前目录查找后缀名为<code>txt</code>的文件。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -name &quot;*.txt&quot;</span><br></pre></td></tr></table></figure>
 
@@ -708,7 +769,7 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/ssh/">ssh</a><a href="/tags/scp/">scp</a><a href="/tags/ip/">ip</a><a href="/tags/zsh/">zsh</a>
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/ssh/">ssh</a><a href="/tags/scp/">scp</a><a href="/tags/ip/">ip</a><a href="/tags/zsh/">zsh</a><a href="/tags/pssh/">pssh</a>
   </div>
 
 </div>
@@ -717,7 +778,7 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2017/08/13/linux操作/" data-title="linux操作 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2017/08/13/linux%E6%93%8D%E4%BD%9C/" data-title="linux操作 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -730,9 +791,9 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2017/08/13/pwnable-kr笔记/" title="pwnable.kr笔记">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   pwnable.kr笔记</span>
 </a>
@@ -740,8 +801,8 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 
 
 <div class="next">
-<a href="/2017/08/09/mysql知识点拾遗/" title="mysql知识点拾遗">
- <strong>下一篇：</strong><br> 
+<a href="/2017/08/09/mysql知识点拾遗/"  title="mysql知识点拾遗">
+ <strong>下一篇：</strong><br/> 
  <span>mysql知识点拾遗
 </span>
 </a>
@@ -761,7 +822,7 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-终端命令行快捷键"><span class="toc-number">1.</span> <span class="toc-text">Linux 终端命令行快捷键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#man"><span class="toc-number">2.</span> <span class="toc-text">man</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查找软件源"><span class="toc-number">3.</span> <span class="toc-text">查找软件源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#更新软件源"><span class="toc-number">3.1.</span> <span class="toc-text">更新软件源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找不确定的软件包"><span class="toc-number">3.2.</span> <span class="toc-text">查找不确定的软件包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络操作"><span class="toc-number">4.</span> <span class="toc-text">网络操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置静态ip"><span class="toc-number">4.1.</span> <span class="toc-text">配置静态ip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过IPv6访问Google等"><span class="toc-number">4.2.</span> <span class="toc-text">通过IPv6访问Google等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网桥bridge"><span class="toc-number">4.3.</span> <span class="toc-text">网桥bridge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加网卡-网桥"><span class="toc-number">4.3.1.</span> <span class="toc-text">添加网卡/网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除网卡-网桥"><span class="toc-number">4.3.2.</span> <span class="toc-text">删除网卡/网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netplan-配置网桥"><span class="toc-number">4.3.3.</span> <span class="toc-text">netplan 配置网桥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scp"><span class="toc-number">4.4.</span> <span class="toc-text">scp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表示格式为"><span class="toc-number">4.4.1.</span> <span class="toc-text">表示格式为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令参数"><span class="toc-number">4.4.2.</span> <span class="toc-text">命令参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">4.4.3.</span> <span class="toc-text">实例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件操作"><span class="toc-number">5.</span> <span class="toc-text">文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tar"><span class="toc-number">5.1.</span> <span class="toc-text">tar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tar用法"><span class="toc-number">5.1.1.</span> <span class="toc-text">tar用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tar实例"><span class="toc-number">5.1.2.</span> <span class="toc-text">tar实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ulimit"><span class="toc-number">5.2.</span> <span class="toc-text">ulimit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find"><span class="toc-number">5.3.</span> <span class="toc-text">find</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#params选项"><span class="toc-number">5.3.1.</span> <span class="toc-text">params选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-1"><span class="toc-number">5.3.2.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看文件系统大小"><span class="toc-number">5.4.</span> <span class="toc-text">查看文件系统大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较文件夹"><span class="toc-number">5.5.</span> <span class="toc-text">比较文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#patch打补丁"><span class="toc-number">5.6.</span> <span class="toc-text">patch打补丁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进程管理"><span class="toc-number">6.</span> <span class="toc-text">进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查看进程和端口"><span class="toc-number">6.1.</span> <span class="toc-text">查看进程和端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#列出目前所有的正在内存当中的程序"><span class="toc-number">6.1.1.</span> <span class="toc-text">列出目前所有的正在内存当中的程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netstat"><span class="toc-number">6.1.2.</span> <span class="toc-text">netstat</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#让进程后台运行"><span class="toc-number">6.2.</span> <span class="toc-text">让进程后台运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">6.2.1.</span> <span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nohup"><span class="toc-number">6.2.2.</span> <span class="toc-text">nohup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setsid"><span class="toc-number">6.2.3.</span> <span class="toc-text">setsid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp"><span class="toc-number">6.2.4.</span> <span class="toc-text">&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跟后台进程有关的操作"><span class="toc-number">6.2.5.</span> <span class="toc-text">跟后台进程有关的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注销"><span class="toc-number">6.3.</span> <span class="toc-text">注销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LD-PRELOAD"><span class="toc-number">6.4.</span> <span class="toc-text">LD_PRELOAD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核操作"><span class="toc-number">7.</span> <span class="toc-text">内核操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU"><span class="toc-number">7.1.</span> <span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统内核信息"><span class="toc-number">7.2.</span> <span class="toc-text">当前操作系统内核信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#删除老版本的内核"><span class="toc-number">7.2.1.</span> <span class="toc-text">删除老版本的内核</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统发行版本"><span class="toc-number">7.3.</span> <span class="toc-text">当前操作系统发行版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前CPU运行模式"><span class="toc-number">7.4.</span> <span class="toc-text">当前CPU运行模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内核编译选项查看"><span class="toc-number">7.5.</span> <span class="toc-text">内核编译选项查看</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件下查看"><span class="toc-number">7.5.1.</span> <span class="toc-text">文件下查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从系统-boot目录下获取"><span class="toc-number">7.5.2.</span> <span class="toc-text">从系统/boot目录下获取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tools"><span class="toc-number">8.</span> <span class="toc-text">tools</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell—zsh"><span class="toc-number">8.1.</span> <span class="toc-text">shell—zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove-zsh"><span class="toc-number">8.2.</span> <span class="toc-text">remove zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch-zsh-with-bash"><span class="toc-number">8.3.</span> <span class="toc-text">switch zsh with bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#disable-zsh"><span class="toc-number">8.4.</span> <span class="toc-text">disable zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASH-SHELL-for-Windows10"><span class="toc-number">8.5.</span> <span class="toc-text">BASH SHELL for Windows10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件系统交互"><span class="toc-number">8.5.1.</span> <span class="toc-text">文件系统交互</span></a></li></ol></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-终端命令行快捷键"><span class="toc-number">1.</span> <span class="toc-text">Linux 终端命令行快捷键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#man"><span class="toc-number">2.</span> <span class="toc-text">man</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查找软件源"><span class="toc-number">3.</span> <span class="toc-text">查找软件源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#更新软件源"><span class="toc-number">3.1.</span> <span class="toc-text">更新软件源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找不确定的软件包"><span class="toc-number">3.2.</span> <span class="toc-text">查找不确定的软件包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络操作"><span class="toc-number">4.</span> <span class="toc-text">网络操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置静态ip"><span class="toc-number">4.1.</span> <span class="toc-text">配置静态ip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过IPv6访问Google等"><span class="toc-number">4.2.</span> <span class="toc-text">通过IPv6访问Google等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网桥bridge"><span class="toc-number">4.3.</span> <span class="toc-text">网桥bridge</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加网卡-网桥"><span class="toc-number">4.3.1.</span> <span class="toc-text">添加网卡&#x2F;网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除网卡-网桥"><span class="toc-number">4.3.2.</span> <span class="toc-text">删除网卡&#x2F;网桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netplan-配置网桥"><span class="toc-number">4.3.3.</span> <span class="toc-text">netplan 配置网桥</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scp"><span class="toc-number">4.4.</span> <span class="toc-text">scp</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表示格式为"><span class="toc-number">4.4.1.</span> <span class="toc-text">表示格式为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令参数"><span class="toc-number">4.4.2.</span> <span class="toc-text">命令参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例"><span class="toc-number">4.4.3.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pssh"><span class="toc-number">4.5.</span> <span class="toc-text">pssh</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">4.5.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令"><span class="toc-number">4.5.2.</span> <span class="toc-text">命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-1"><span class="toc-number">4.5.3.</span> <span class="toc-text">实例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件操作"><span class="toc-number">5.</span> <span class="toc-text">文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#rm"><span class="toc-number">5.1.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xxd"><span class="toc-number">5.2.</span> <span class="toc-text">xxd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tar"><span class="toc-number">5.3.</span> <span class="toc-text">tar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tar用法"><span class="toc-number">5.3.1.</span> <span class="toc-text">tar用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tar实例"><span class="toc-number">5.3.2.</span> <span class="toc-text">tar实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ulimit"><span class="toc-number">5.4.</span> <span class="toc-text">ulimit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find"><span class="toc-number">5.5.</span> <span class="toc-text">find</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#params选项"><span class="toc-number">5.5.1.</span> <span class="toc-text">params选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例-2"><span class="toc-number">5.5.2.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看文件系统大小"><span class="toc-number">5.6.</span> <span class="toc-text">查看文件系统大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比较文件夹"><span class="toc-number">5.7.</span> <span class="toc-text">比较文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#patch打补丁"><span class="toc-number">5.8.</span> <span class="toc-text">patch打补丁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#进程管理"><span class="toc-number">6.</span> <span class="toc-text">进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查看进程和端口"><span class="toc-number">6.1.</span> <span class="toc-text">查看进程和端口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#列出目前所有的正在内存当中的程序"><span class="toc-number">6.1.1.</span> <span class="toc-text">列出目前所有的正在内存当中的程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#netstat"><span class="toc-number">6.1.2.</span> <span class="toc-text">netstat</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#让进程后台运行"><span class="toc-number">6.2.</span> <span class="toc-text">让进程后台运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">6.2.1.</span> <span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nohup"><span class="toc-number">6.2.2.</span> <span class="toc-text">nohup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setsid"><span class="toc-number">6.2.3.</span> <span class="toc-text">setsid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp"><span class="toc-number">6.2.4.</span> <span class="toc-text">&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#跟后台进程有关的操作"><span class="toc-number">6.2.5.</span> <span class="toc-text">跟后台进程有关的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注销"><span class="toc-number">6.3.</span> <span class="toc-text">注销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LD-PRELOAD"><span class="toc-number">6.4.</span> <span class="toc-text">LD_PRELOAD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核操作"><span class="toc-number">7.</span> <span class="toc-text">内核操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU"><span class="toc-number">7.1.</span> <span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统内核信息"><span class="toc-number">7.2.</span> <span class="toc-text">当前操作系统内核信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#删除老版本的内核"><span class="toc-number">7.2.1.</span> <span class="toc-text">删除老版本的内核</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前操作系统发行版本"><span class="toc-number">7.3.</span> <span class="toc-text">当前操作系统发行版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#当前CPU运行模式"><span class="toc-number">7.4.</span> <span class="toc-text">当前CPU运行模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内核编译选项查看"><span class="toc-number">7.5.</span> <span class="toc-text">内核编译选项查看</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件下查看"><span class="toc-number">7.5.1.</span> <span class="toc-text">文件下查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从系统-boot目录下获取"><span class="toc-number">7.5.2.</span> <span class="toc-text">从系统&#x2F;boot目录下获取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tools"><span class="toc-number">8.</span> <span class="toc-text">tools</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell—zsh"><span class="toc-number">8.1.</span> <span class="toc-text">shell—zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove-zsh"><span class="toc-number">8.2.</span> <span class="toc-text">remove zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch-zsh-with-bash"><span class="toc-number">8.3.</span> <span class="toc-text">switch zsh with bash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#disable-zsh"><span class="toc-number">8.4.</span> <span class="toc-text">disable zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BASH-SHELL-for-Windows10"><span class="toc-number">8.5.</span> <span class="toc-text">BASH SHELL for Windows10</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件系统交互"><span class="toc-number">8.5.1.</span> <span class="toc-text">文件系统交互</span></a></li></ol></li></ol></li></ol>
  
   </div>
 
@@ -773,7 +834,7 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -788,7 +849,7 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -796,15 +857,19 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -813,6 +878,10 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -832,7 +901,7 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -876,11 +945,11 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -889,10 +958,6 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -913,11 +978,11 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -929,11 +994,11 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -950,10 +1015,6 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -977,11 +1038,15 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -1012,7 +1077,7 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -1021,12 +1086,12 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -1046,7 +1111,7 @@ Only in dir2: only-2</code></pre><p><a href="https://stackoverflow.com/a/6217722
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -1236,7 +1301,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

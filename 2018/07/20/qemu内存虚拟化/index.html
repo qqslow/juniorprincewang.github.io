@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>QEMU-KVM内存虚拟化 | TO DO</title>
@@ -12,17 +12,21 @@
 
     
     <meta name="description" content="qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 GPA 转换成 HVA 。">
-<meta name="keywords" content="QEMU,vm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="QEMU-KVM内存虚拟化">
-<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/20/qemu内存虚拟化/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/20/qemu%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 GPA 转换成 HVA 。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.260Z">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/07/20/qemu%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/gva2hva.png">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/07/20/qemu%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/ept.jpg">
+<meta property="og:image" content="http://juniorprincewang.github.io/2018/07/20/qemu%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/qemu_memory.png">
+<meta property="article:published_time" content="2018-07-20T08:59:26.000Z">
+<meta property="article:modified_time" content="2019-12-18T02:31:59.444Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="QEMU">
+<meta property="article:tag" content="vm">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="QEMU-KVM内存虚拟化">
-<meta name="twitter:description" content="qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 GPA 转换成 HVA 。">
+<meta name="twitter:image" content="http://juniorprincewang.github.io/2018/07/20/qemu%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/gva2hva.png">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -34,16 +38,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -66,13 +74,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -88,7 +96,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2018-07-20T08:59:26.000Z" itemprop="datePublished"> Published 2018-07-20</time>
     
   </p>
@@ -98,7 +106,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#词汇约定"><span class="toc-number">1.</span> <span class="toc-text">词汇约定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#页表"><span class="toc-number">2.</span> <span class="toc-text">页表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内存虚拟化"><span class="toc-number">3.</span> <span class="toc-text">QEMU内存虚拟化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SPT"><span class="toc-number">3.1.</span> <span class="toc-text">SPT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EPT-NPT"><span class="toc-number">3.2.</span> <span class="toc-text">EPT/NPT</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内存数据结构"><span class="toc-number">4.</span> <span class="toc-text">内存数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCDIMMDevice"><span class="toc-number">4.1.</span> <span class="toc-text">PCDIMMDevice</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HostMemoryBackend"><span class="toc-number">4.2.</span> <span class="toc-text">HostMemoryBackend</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegion"><span class="toc-number">4.3.</span> <span class="toc-text">MemoryRegion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AddressSpace"><span class="toc-number">4.4.</span> <span class="toc-text">AddressSpace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMBlock"><span class="toc-number">4.5.</span> <span class="toc-text">RAMBlock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMList"><span class="toc-number">4.6.</span> <span class="toc-text">RAMList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegionSection"><span class="toc-number">4.7.</span> <span class="toc-text">MemoryRegionSection</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#词汇约定"><span class="toc-number">1.</span> <span class="toc-text">词汇约定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#页表"><span class="toc-number">2.</span> <span class="toc-text">页表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内存虚拟化"><span class="toc-number">3.</span> <span class="toc-text">QEMU内存虚拟化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#影子页表（SPT）"><span class="toc-number">3.1.</span> <span class="toc-text">影子页表（SPT）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展页表（EPT-NPT）"><span class="toc-number">3.2.</span> <span class="toc-text">扩展页表（EPT&#x2F;NPT）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内存数据结构"><span class="toc-number">4.</span> <span class="toc-text">内存数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCDIMMDevice"><span class="toc-number">4.1.</span> <span class="toc-text">PCDIMMDevice</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HostMemoryBackend"><span class="toc-number">4.2.</span> <span class="toc-text">HostMemoryBackend</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegion"><span class="toc-number">4.3.</span> <span class="toc-text">MemoryRegion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AddressSpace"><span class="toc-number">4.4.</span> <span class="toc-text">AddressSpace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMBlock"><span class="toc-number">4.5.</span> <span class="toc-text">RAMBlock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMList"><span class="toc-number">4.6.</span> <span class="toc-text">RAMList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegionSection"><span class="toc-number">4.7.</span> <span class="toc-text">MemoryRegionSection</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -166,11 +174,11 @@
 </tr>
 <tr>
 <td>GFN</td>
-<td>Guest Frame Number</td>
+<td>Guest Frame Number，虚拟机的页框号</td>
 </tr>
 <tr>
 <td>PFN</td>
-<td>Host Page Frame Number</td>
+<td>Host Page Frame Number，宿主机的页框号</td>
 </tr>
 <tr>
 <td>SPT</td>
@@ -178,16 +186,42 @@
 </tr>
 </tbody></table>
 <h1 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h1><p>64位CPU上支持 48 位的虚拟地址寻址空间，和 52 位的物理地址寻址空间。Linux采用4级页表机制将虚拟地址（VA）转换成物理地址(PA)，先从页表的 <code>基地址寄存器 (CR3)</code> 中读取页表的起始地址，然后加上页号得到对应页的页表项，从中取出页的物理地址，再加上偏移量得到 PA。</p>
-<p>分级的查询页表过程为：<br>Page Map Level 4(PML4) =&gt; Page Directory Pointer Table(PDPT) =&gt; Page Directory(PD) =&gt; Page Table(PT)</p>
-<p>在某些地方被称为： Page Global Directory(PGD) =&gt; Page Upper Directory(PUD) =&gt; Page Middle Directory(PMD) =&gt; Page Table(PT)</p>
-<h1 id="QEMU内存虚拟化"><a href="#QEMU内存虚拟化" class="headerlink" title="QEMU内存虚拟化"></a>QEMU内存虚拟化</h1><p>QEMU 利用 mmap 系统调用，在进程的虚拟地址空间中申请连续的大小的空间，作为 Guest 的物理内存。</p>
+<p>分级的查询页表过程为：</p>
+<pre><code>Page Map Level 4(PML4) =&gt; 
+    Page Directory Pointer Table(PDPT) =&gt; 
+        Page Directory(PD) =&gt; 
+            Page Table(PT)</code></pre><p>在某些地方被称为： </p>
+<pre><code>Page Global Directory(PGD) =&gt; 
+    Page Upper Directory(PUD) =&gt; 
+        Page Middle Directory(PMD) =&gt; 
+            Page Table(PT)</code></pre><h1 id="QEMU内存虚拟化"><a href="#QEMU内存虚拟化" class="headerlink" title="QEMU内存虚拟化"></a>QEMU内存虚拟化</h1><p>QEMU 利用 mmap 系统调用，在QEMU进程的虚拟地址空间中申请连续的大小的空间，作为 Guest 的物理内存，即 <strong>内存的申请是在用户空间完成的</strong>。  
+通过 KVM 提供的 API，QEMU 将 Guest 内存的地址信息传递并注册到 KVM 中维护，即内存的管理是由内核空间的 KVM 实现的。  </p>
 <p>在这样的架构下，内存地址访问有四层映射：</p>
 <blockquote>
 <p>GVA -&gt; GPA -&gt; HVA -&gt; HPA</p>
 </blockquote>
-<p>GVA - GPA 的映射由 guest OS 负责维护，而 HVA - HPA 由 host OS 负责维护。<br>我们重点要研究的是 <code>GPA -&gt; HVA</code> 的映射。<br>常用的实现有 <code>SPT(Shadow Page Table)</code> 和 <code>EPT/NPT</code> ，前者通过软件维护影子页表，后者通过硬件特性实现二级映射。</p>
-<h2 id="SPT"><a href="#SPT" class="headerlink" title="SPT"></a>SPT</h2><h2 id="EPT-NPT"><a href="#EPT-NPT" class="headerlink" title="EPT/NPT"></a>EPT/NPT</h2><h1 id="内存数据结构"><a href="#内存数据结构" class="headerlink" title="内存数据结构"></a>内存数据结构</h1><p>QEMU虚拟内存最重要的几个数据结构 <code>AddressSpace</code> 、 <code>MemoryRegion</code> 、 <code>MemoryRegionSection</code> 、 <code>RAMBlock</code> 、 <code>kvm_userspace_memory_region</code> 。</p>
-<p>![QEMU 内存结构图](../QEMU内存虚拟化/QEMU memory.png)</p>
+<p>GVA - GPA 的映射由 guest OS 负责维护，而 HVA - HPA 由 host OS 负责维护。<br>而内存虚拟化的关键是 <code>GPA -&gt; HVA</code> 的映射。<br><img src="gva2hva.png" alt="QEMU内存映射"></p>
+<p>为了提高从GVA到HPA的转换效率，KVM常用的实现有 <code>SPT(Shadow Page Table)</code> 和 <code>EPT/NPT</code> ，前者通过软件维护影子页表直接将GVA转换成HPA，省略中间的映射；后者通过硬件特性实现二级映射（<code>two dimentional paging</code>），将GPA转换成HPA。  </p>
+<h2 id="影子页表（SPT）"><a href="#影子页表（SPT）" class="headerlink" title="影子页表（SPT）"></a>影子页表（SPT）</h2><ul>
+<li><a href="http://ningfxkvm.blogspot.com/2015/11/kvm-mmu.html" target="_blank" rel="noopener">KVM MMU</a>  </li>
+<li><a href="https://abelsu7.top/2019/07/07/kvm-memory-virtualization/#1-%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96%E6%A6%82%E8%BF%B0" target="_blank" rel="noopener">QEMU 内存虚拟化源码分析</a>  </li>
+</ul>
+<p>影子页表是在KVM维护记录的，可以<strong>直接将 GVA 转换为 HPA</strong>，影子页表可被载入物理 MMU 为客户机直接寻址使用， 减少了地址转换带来的开销。<br>在guest中的虚拟内存管理中，通过查询<code>CR3</code>寄存器完成完成 GVA-&gt;GPA。<br>CR3保存了Guest的页表基址地址，然后载入MMU中进行地址转换。 </p>
+<p>在加入了SPT技术后，当Guest访问CR3时，KVM捕获此访问操作，即 <code>EXIT_REASON_CR_ACCESS</code>，之后KVM载入特殊的CR3和影子页表。之后访存操作和传统方式一样，只需要经过一层影子页表就可以访问到物理地址。<br>而且，在 TLB 和 CPU 缓存上缓存的是来自影子页表中GVA和HPA之间的映射，也因此提高了缓存的效率。</p>
+<p><strong>影子页表异常处理机制</strong><br>在通过影子页表进行寻址的过程中，有两种原因会引起影子页表的缺页异常，一种是由客户机本身所引起的缺页异常， 具体来说就是客户机所访问的客户机页表项存在位 (Present Bit) 为 0，或者写一个只读的客户机物理页，再者所访问的客户机虚拟地址无效等。<br>另一种异常是由客户机页表和影子页表不一致引起的异常。</p>
+<p>当Guest对页表修改时会触发Page Fault，VM-EXIT 到 KVM，之后 KVM 会对 GVA 对应的页表项进行访问权限检查，结合错误码进行判断与处理。<br>如果该异常是由客户机本身引起的，KVM 直接把该异常交由客户机的缺页异常处理机制来进行处理。<br>如果该异常是由客户机页表和影子页表不一致引起的，KVM 则根据客户机页表同步影子页表。<br>为此，KVM 要建立起相应的影子页表数据结构，根据 Guest 页表和 mmap 映射找到 GPA 到 HVA 的映射关系，在SPT中填充GVA-&gt;HPA的页表项，还要根据Guest页表项的访问权限修改SPT对应页表项的访问权限。</p>
+<p><strong>哈希链表</strong></p>
+<p>为了快速检索Guest页表对应的影子页表，KVM为每个客户机维护了一个hash表来进行客户机页表到影子页表之间的映射。<br>对于每一个Guest来说，其页目录和页表都有唯一的GPA，通过页目录/页表的GPA就可以在哈希链表中快速地找到对应的影子页目录/页表。<br>当Guest切换进程时，Guest会把待切换进程的页表基址载入 CR3，而 KVM 将会截获这一特权指令。KVM在哈希表中找到与此页表基址对应的影子页表基址，载入Guest CR3，使Guest在恢复运行时 CR3 实际指向的是新切换进程对应的影子页表。</p>
+<p><strong>缺点</strong>：</p>
+<p>影子页表的引入也意味着 KVM 需要为每个客户机的<strong>每个进程的页表</strong>都要维护一套相应的影子页表，这会带来较大内存上的额外开销。<br>同时影子页表的建立是很耗时的，如果 Guest 的进程过多，将导致影子页表频繁切换。<br>此外，客户机页表和和影子页表的同步也比较复杂。</p>
+<h2 id="扩展页表（EPT-NPT）"><a href="#扩展页表（EPT-NPT）" class="headerlink" title="扩展页表（EPT/NPT）"></a>扩展页表（EPT/NPT）</h2><p>Intel 的 EPT（Extent Page Table）技术和 AMD 的 NPT（Nest Page Table）技术都对内存虚拟化提供了硬件支持。<br>这两种技术原理类似，都是在硬件层面上实现GVA到HPA之间的转换。<br>下面就以 EPT 为例分析一下 KVM 基于硬件辅助的内存虚拟化实现。</p>
+<p><img src="ept.jpg" alt="EPT技术"></p>
+<p>EPT 技术采用了在两级页表结构，即原有Guest OS页表对GVA-&gt;GPA映射的基础上，又引入了 EPT 页表来实现GPA-&gt;HPA的另一次映射，这两次地址映射都是由硬件自动完成。<br>Guest运行时，客户机页表被载入 CR3，实现 GVA 到 GPA 的转换。<br>而 EPT 页表被载入专门的 EPT 页表指针寄存器 EPTP。EPT 中维护着 GPA 到 HPA 的映射，而 EPTP 负责指向 EPT。<br>EPT 页表对地址的映射机理与Guest页表对地址的映射机理相同。</p>
+<p>在GPA到HPA转换的过程中，由于缺页、写权限不足等原因也会导致VM exit，产生 EPT 异常。<br>对于 EPT Page Fault，KVM 首先根据引起异常的GPA映射到对应的HVA，然后为此虚拟地址分配新的物理页，最后 KVM 再更新 EPT 页表，建立起引起异常的GPA到HPA之间的映射。对 EPT 写权限引起的异常，KVM 则通过更新相应的 EPT 页表来解决。</p>
+<p><strong>优势</strong>：   </p>
+<p>Guest 的缺页在 Guest OS 内部处理，不会 VM-EXIT 到 KVM 中。<br>地址转化基本由硬件（MMU）查页表来完成，大大提升了效率。<br>KVM 只需为每个客户机维护一套 EPT 页表，也大大减少了内存的额外开销。  </p>
+<h1 id="内存数据结构"><a href="#内存数据结构" class="headerlink" title="内存数据结构"></a>内存数据结构</h1><p>QEMU虚拟内存最重要的几个数据结构 <code>AddressSpace</code> 、 <code>MemoryRegion</code> 、 <code>MemoryRegionSection</code> 、 <code>RAMBlock</code> 、 <code>kvm_userspace_memory_region</code> 。</p>
+<p><img src="qemu_memory.png" alt="QEMU内存结构图"></p>
 <h2 id="PCDIMMDevice"><a href="#PCDIMMDevice" class="headerlink" title="PCDIMMDevice"></a>PCDIMMDevice</h2><p>PC DIMM内存设备模拟，通过 QOM(qemu object model) 定义的虚拟内存条。可通过 QEMU 命令行进行管理。通过增加/移除该对象实现 VM 中内存的热插拔。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/include/hw/mem/pc-dimm.h</span><br><span class="line">/**</span><br><span class="line"> * PCDIMMDevice:</span><br><span class="line"> * @addr: starting guest physical address, where @PCDIMMDevice is mapped.</span><br><span class="line"> *         Default value: 0, means that address is auto-allocated.</span><br><span class="line"> * @node: numa node to which @PCDIMMDevice is attached.</span><br><span class="line"> * @slot: slot number into which @PCDIMMDevice is plugged in.</span><br><span class="line"> *        Default value: -1, means that slot is auto-allocated.</span><br><span class="line"> * @hostmem: host memory backend providing memory for @PCDIMMDevice</span><br><span class="line"> */</span><br><span class="line">typedef struct PCDIMMDevice &#123;</span><br><span class="line">    /* private */</span><br><span class="line">    DeviceState parent_obj;</span><br><span class="line"></span><br><span class="line">    /* public */</span><br><span class="line">    uint64_t addr;          // 映射到的起始 GPA</span><br><span class="line">    uint32_t node;             // 映射到的 numa 节点</span><br><span class="line">    int32_t slot;               // 插入的内存槽编号，默认为 -1，表示自动分配</span><br><span class="line">    HostMemoryBackend *hostmem;     // 对应的 backend</span><br><span class="line">&#125; PCDIMMDevice;</span><br></pre></td></tr></table></figure>
 
@@ -244,7 +278,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2018/07/20/qemu内存虚拟化/" data-title="QEMU-KVM内存虚拟化 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2018/07/20/qemu%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" data-title="QEMU-KVM内存虚拟化 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -257,9 +291,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2018/07/23/qemu源码添加设备/" title="QEMU设备的对象模型QOM">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   QEMU设备的对象模型QOM</span>
 </a>
@@ -267,8 +301,8 @@
 
 
 <div class="next">
-<a href="/2018/07/18/nouveau资料整理/" title="nouveau资料整理">
- <strong>下一篇：</strong><br> 
+<a href="/2018/07/18/nouveau资料整理/"  title="nouveau资料整理">
+ <strong>下一篇：</strong><br/> 
  <span>nouveau资料整理
 </span>
 </a>
@@ -288,7 +322,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#词汇约定"><span class="toc-number">1.</span> <span class="toc-text">词汇约定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#页表"><span class="toc-number">2.</span> <span class="toc-text">页表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内存虚拟化"><span class="toc-number">3.</span> <span class="toc-text">QEMU内存虚拟化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SPT"><span class="toc-number">3.1.</span> <span class="toc-text">SPT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EPT-NPT"><span class="toc-number">3.2.</span> <span class="toc-text">EPT/NPT</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内存数据结构"><span class="toc-number">4.</span> <span class="toc-text">内存数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCDIMMDevice"><span class="toc-number">4.1.</span> <span class="toc-text">PCDIMMDevice</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HostMemoryBackend"><span class="toc-number">4.2.</span> <span class="toc-text">HostMemoryBackend</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegion"><span class="toc-number">4.3.</span> <span class="toc-text">MemoryRegion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AddressSpace"><span class="toc-number">4.4.</span> <span class="toc-text">AddressSpace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMBlock"><span class="toc-number">4.5.</span> <span class="toc-text">RAMBlock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMList"><span class="toc-number">4.6.</span> <span class="toc-text">RAMList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegionSection"><span class="toc-number">4.7.</span> <span class="toc-text">MemoryRegionSection</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#词汇约定"><span class="toc-number">1.</span> <span class="toc-text">词汇约定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#页表"><span class="toc-number">2.</span> <span class="toc-text">页表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内存虚拟化"><span class="toc-number">3.</span> <span class="toc-text">QEMU内存虚拟化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#影子页表（SPT）"><span class="toc-number">3.1.</span> <span class="toc-text">影子页表（SPT）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展页表（EPT-NPT）"><span class="toc-number">3.2.</span> <span class="toc-text">扩展页表（EPT&#x2F;NPT）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内存数据结构"><span class="toc-number">4.</span> <span class="toc-text">内存数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCDIMMDevice"><span class="toc-number">4.1.</span> <span class="toc-text">PCDIMMDevice</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HostMemoryBackend"><span class="toc-number">4.2.</span> <span class="toc-text">HostMemoryBackend</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegion"><span class="toc-number">4.3.</span> <span class="toc-text">MemoryRegion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AddressSpace"><span class="toc-number">4.4.</span> <span class="toc-text">AddressSpace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMBlock"><span class="toc-number">4.5.</span> <span class="toc-text">RAMBlock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAMList"><span class="toc-number">4.6.</span> <span class="toc-text">RAMList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MemoryRegionSection"><span class="toc-number">4.7.</span> <span class="toc-text">MemoryRegionSection</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -300,7 +334,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -315,7 +349,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -323,15 +357,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -340,6 +378,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -359,7 +401,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -403,11 +445,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -416,10 +458,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -440,11 +478,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -456,11 +494,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -477,10 +515,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -504,11 +538,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -539,7 +577,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -548,12 +586,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -573,7 +611,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -763,7 +801,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

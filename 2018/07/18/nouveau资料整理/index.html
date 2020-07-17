@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>nouveau资料整理 | TO DO</title>
@@ -12,18 +12,20 @@
 
     
     <meta name="description" content="nouveau是LINUX内核中NVIDIA显卡的开源驱动，但是它不对CUDA支持，熟悉nouveau对于加强掌握NVIDIA GPU显卡有极大的帮助。本文整理了阅读到的nouveau资料。">
-<meta name="keywords" content="CUDA,nouveau,linux,gpu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nouveau资料整理">
-<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/18/nouveau资料整理/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/18/nouveau%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="nouveau是LINUX内核中NVIDIA显卡的开源驱动，但是它不对CUDA支持，熟悉nouveau对于加强掌握NVIDIA GPU显卡有极大的帮助。本文整理了阅读到的nouveau资料。">
-<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://juniorprincewang.github.io/2018/07/18/nouveau%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/Linux_Graphics_Stack_2013.svg">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.253Z">
+<meta property="article:published_time" content="2018-07-18T06:18:35.000Z">
+<meta property="article:modified_time" content="2020-07-16T11:11:57.949Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="GPU">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="CUDA">
+<meta property="article:tag" content="nouveau">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nouveau资料整理">
-<meta name="twitter:description" content="nouveau是LINUX内核中NVIDIA显卡的开源驱动，但是它不对CUDA支持，熟悉nouveau对于加强掌握NVIDIA GPU显卡有极大的帮助。本文整理了阅读到的nouveau资料。">
 <meta name="twitter:image" content="http://juniorprincewang.github.io/2018/07/18/nouveau%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/Linux_Graphics_Stack_2013.svg">
 
     
@@ -36,16 +38,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -68,13 +74,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -90,7 +96,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2018-07-18T06:18:35.000Z" itemprop="datePublished"> Published 2018-07-18</time>
     
   </p>
@@ -100,7 +106,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#development"><span class="toc-number">1.</span> <span class="toc-text">development</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CodeNames"><span class="toc-number">1.1.</span> <span class="toc-text">CodeNames</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#riva128-txt"><span class="toc-number">1.2.</span> <span class="toc-text">riva128.txt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ContextSwitching"><span class="toc-number">1.3.</span> <span class="toc-text">ContextSwitching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fence"><span class="toc-number">1.4.</span> <span class="toc-text">fence</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#向上支持的接口"><span class="toc-number">2.</span> <span class="toc-text">向上支持的接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA支持"><span class="toc-number">2.1.</span> <span class="toc-text">CUDA支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Coriander"><span class="toc-number">2.2.</span> <span class="toc-text">Coriander</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gdev"><span class="toc-number">2.3.</span> <span class="toc-text">Gdev</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nouveau-代码"><span class="toc-number">3.</span> <span class="toc-text">nouveau 代码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#nouveau-代码的地址"><span class="toc-number">3.1.</span> <span class="toc-text">nouveau 代码的地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NVKM-short-for-NVIDIA-Kernel-Module"><span class="toc-number">3.2.</span> <span class="toc-text">NVKM short for NVIDIA Kernel Module</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IRC-nouveau"><span class="toc-number">4.</span> <span class="toc-text">IRC #nouveau</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#development"><span class="toc-number">1.</span> <span class="toc-text">development</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CodeNames"><span class="toc-number">1.1.</span> <span class="toc-text">CodeNames</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#riva128-txt"><span class="toc-number">1.2.</span> <span class="toc-text">riva128.txt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ContextSwitching"><span class="toc-number">1.3.</span> <span class="toc-text">ContextSwitching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fence"><span class="toc-number">1.4.</span> <span class="toc-text">fence</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#向上支持的接口"><span class="toc-number">2.</span> <span class="toc-text">向上支持的接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA支持"><span class="toc-number">2.1.</span> <span class="toc-text">CUDA支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Coriander"><span class="toc-number">2.2.</span> <span class="toc-text">Coriander</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gdev"><span class="toc-number">2.3.</span> <span class="toc-text">Gdev</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nouveau-代码"><span class="toc-number">3.</span> <span class="toc-text">nouveau 代码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#nouveau-代码的地址"><span class="toc-number">3.1.</span> <span class="toc-text">nouveau 代码的地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NVKM-short-for-NVIDIA-Kernel-Module"><span class="toc-number">3.2.</span> <span class="toc-text">NVKM short for NVIDIA Kernel Module</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#libdrm"><span class="toc-number">3.3.</span> <span class="toc-text">libdrm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mesa"><span class="toc-number">3.4.</span> <span class="toc-text">mesa</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL"><span class="toc-number">3.4.1.</span> <span class="toc-text">OpenGL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gallium3D"><span class="toc-number">3.4.2.</span> <span class="toc-text">Gallium3D</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IRC-nouveau"><span class="toc-number">4.</span> <span class="toc-text">IRC #nouveau</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -143,7 +149,29 @@
 <blockquote>
 <p>Because there’s already a large amount of churn here anyway, this is<br>as good a time as any to also switch to NVIDIA’s device and chipset<br>naming to ease collaboration with them.</p>
 </blockquote>
-<p>## </p>
+<h2 id="libdrm"><a href="#libdrm" class="headerlink" title="libdrm"></a>libdrm</h2><h2 id="mesa"><a href="#mesa" class="headerlink" title="mesa"></a>mesa</h2><p><a href="https://mesa3d.org/" target="_blank" rel="noopener">mesa 3D</a> 的介绍就一句话：  </p>
+<blockquote>
+<p>Open source implementations of OpenGL, OpenGL ES, Vulkan, OpenCL, and more!</p>
+</blockquote>
+<p>其他可以阅读的资料：  </p>
+<p><a href="https://en.wikipedia.org/wiki/Mesa_(computer_graphics)" target="_blank" rel="noopener">mesa3D wikipedia</a>：讲了Mesa3D的前生今世。<br><a href="https://blogs.igalia.com/itoral/" target="_blank" rel="noopener">lago Toral 博客</a>：介绍了很多mesa3d原理和linux图形栈的分析。<br><a href="https://www.cnblogs.com/shoemaker/tag/AMD%E6%98%BE%E5%8D%A1/" target="_blank" rel="noopener">Linux图形系统和AMD显卡编程 系列教程</a><br><a href="https://gallium.readthedocs.io/en/latest/" target="_blank" rel="noopener">Gallium3D</a>:Gallium3D是Mesa3D的一个非常重要组成部分  </p>
+<p><a href="https://docs.mesa3d.org/" target="_blank" rel="noopener">mesa3d 文档</a>  </p>
+<p><a href="https://docs.mesa3d.org/sourcetree.html" target="_blank" rel="noopener">mesa source code tree</a><br><a href="https://winddoing.github.io/post/39ae47e2.html" target="_blank" rel="noopener">mesa 框架与目录结构</a>   </p>
+<p>以10.1.4版本的Mesa3D为例，主要由mesa主模块、gallium模块、egl模块、glsl模块和glx等模块组成. 其中最重要的模块就是主模块，它主要包括mesa/和mapi/这两个folder. mapi/负责所有API的初始化工作，为各个API设置分发表等；mesa/则是整个Mesa3D图形库的核心，它负责的有vbo相关工作、非Gallium3D支持的驱动DRI实现以及软件实现渲染管道等等. gallium模块则是Mesa3D整合原开源项目Gallium的结果，主要实现驱动无关的硬件加速. egl模块用来实现EGL库，glsl模块用来实现GLSL编译器，glx模块用来实现GLX库.</p>
+<p><a href="https://juejin.im/post/5cd40e35f265da039f0f2b3c" target="_blank" rel="noopener">Mesa &amp; Gallium3D 介绍</a>  </p>
+<h3 id="OpenGL"><a href="#OpenGL" class="headerlink" title="OpenGL"></a>OpenGL</h3><p>OpenGL API 是定义了一个跨编程语言、跨平台的应用程序接口(API)的规范，它用于生成2D和3D图像，而它仅仅是定义了一种API，并没有任何实现细节。<br>而OpenGL API的具体实现有很多，主要分为开源实现和闭源实现， 闭源实现如各大GPU厂商自己实现的闭源OpenGL图形库，例如AMD显卡的Catalyst闭源驱动；而开源实现便是Mesa3D。</p>
+<h3 id="Gallium3D"><a href="#Gallium3D" class="headerlink" title="Gallium3D"></a>Gallium3D</h3><p><a href="https://www.freedesktop.org/wiki/Software/gallium/" target="_blank" rel="noopener">Gallium3D Technical Overview from freedesktop</a><br><a href="https://dri.freedesktop.org/doxygen/gallium/index.html" target="_blank" rel="noopener">Gallium3D Documentation</a>  </p>
+<p>Mesa的框架决定了它驱动开发的复杂性：每个显卡厂商的3D驱动都有各自不同的应用后端，通过此调用 Mesa 的 API 来实现 3D 加速。<br>Intel、AMD 和 NVIDIA 这三大厂商的显卡都具备各自不同的应用后端，造成了开发和维护困难。  </p>
+<p>Gallium3D 提供一套统一的 API，这套API将标准的硬件特性（而非软件特性）暴露出来（如shader units），也就是说，Gallium3D 直接与统一的硬件级特性打交道，而非充当一个纯软件层。</p>
+<p>因此，这些 API 使得 OpenGL 1.x/2.x，OpenGL 3.x，OpenVG，GPGPU 架构甚至 Direct3D 的实现，都只需要通过一个单独的后端即可。而无须各个厂商自行开发各自不同的后端。</p>
+<p>这不仅让开发和维护显示驱动带来了极大的方便，而且统一的 API 使得 Mesa的灵活性和扩展性大大增强。  </p>
+<p>Gallium3D 的目的：</p>
+<ul>
+<li>make driver smaller and smaller</li>
+<li>model modern graphics hardware</li>
+<li>support multiple graphics API’s</li>
+<li>Support multiple operating systems</li>
+</ul>
 <h1 id="IRC-nouveau"><a href="#IRC-nouveau" class="headerlink" title="IRC #nouveau"></a>IRC #nouveau</h1><p>此频道所有的日志文件存放在了 <a href="https://people.freedesktop.org/~cbrill/dri-log/index.php" target="_blank" rel="noopener">https://people.freedesktop.org/~cbrill/dri-log/index.php</a> 中。</p>
 <p><a href="http://webchat.freenode.net/" target="_blank" rel="noopener">http://webchat.freenode.net/</a> 频道为 <code>#nouveau</code>  </p>
 <p>如果要发言，需要提前注册下，<a href="https://freenode.net/kb/answer/registration" target="_blank" rel="noopener">IRC 账号注册</a> 。  </p>
@@ -164,7 +192,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/CUDA/">CUDA</a><a href="/tags/nouveau/">nouveau</a><a href="/tags/linux/">linux</a><a href="/tags/gpu/">gpu</a>
+  <span></span> <a href="/tags/GPU/">GPU</a><a href="/tags/linux/">linux</a><a href="/tags/CUDA/">CUDA</a><a href="/tags/nouveau/">nouveau</a>
   </div>
 
 </div>
@@ -173,7 +201,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2018/07/18/nouveau资料整理/" data-title="nouveau资料整理 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2018/07/18/nouveau%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/" data-title="nouveau资料整理 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -186,9 +214,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2018/07/20/qemu内存虚拟化/" title="QEMU-KVM内存虚拟化">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   QEMU-KVM内存虚拟化</span>
 </a>
@@ -196,8 +224,8 @@
 
 
 <div class="next">
-<a href="/2018/07/14/NVIDIA-GPU-硬件介绍/" title="NVIDIA GPU 硬件介绍">
- <strong>下一篇：</strong><br> 
+<a href="/2018/07/14/NVIDIA-GPU-硬件介绍/"  title="NVIDIA GPU 硬件介绍">
+ <strong>下一篇：</strong><br/> 
  <span>NVIDIA GPU 硬件介绍
 </span>
 </a>
@@ -217,7 +245,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#development"><span class="toc-number">1.</span> <span class="toc-text">development</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CodeNames"><span class="toc-number">1.1.</span> <span class="toc-text">CodeNames</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#riva128-txt"><span class="toc-number">1.2.</span> <span class="toc-text">riva128.txt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ContextSwitching"><span class="toc-number">1.3.</span> <span class="toc-text">ContextSwitching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fence"><span class="toc-number">1.4.</span> <span class="toc-text">fence</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#向上支持的接口"><span class="toc-number">2.</span> <span class="toc-text">向上支持的接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA支持"><span class="toc-number">2.1.</span> <span class="toc-text">CUDA支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Coriander"><span class="toc-number">2.2.</span> <span class="toc-text">Coriander</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gdev"><span class="toc-number">2.3.</span> <span class="toc-text">Gdev</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nouveau-代码"><span class="toc-number">3.</span> <span class="toc-text">nouveau 代码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#nouveau-代码的地址"><span class="toc-number">3.1.</span> <span class="toc-text">nouveau 代码的地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NVKM-short-for-NVIDIA-Kernel-Module"><span class="toc-number">3.2.</span> <span class="toc-text">NVKM short for NVIDIA Kernel Module</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IRC-nouveau"><span class="toc-number">4.</span> <span class="toc-text">IRC #nouveau</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#development"><span class="toc-number">1.</span> <span class="toc-text">development</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CodeNames"><span class="toc-number">1.1.</span> <span class="toc-text">CodeNames</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#riva128-txt"><span class="toc-number">1.2.</span> <span class="toc-text">riva128.txt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ContextSwitching"><span class="toc-number">1.3.</span> <span class="toc-text">ContextSwitching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fence"><span class="toc-number">1.4.</span> <span class="toc-text">fence</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#向上支持的接口"><span class="toc-number">2.</span> <span class="toc-text">向上支持的接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA支持"><span class="toc-number">2.1.</span> <span class="toc-text">CUDA支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Coriander"><span class="toc-number">2.2.</span> <span class="toc-text">Coriander</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gdev"><span class="toc-number">2.3.</span> <span class="toc-text">Gdev</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nouveau-代码"><span class="toc-number">3.</span> <span class="toc-text">nouveau 代码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#nouveau-代码的地址"><span class="toc-number">3.1.</span> <span class="toc-text">nouveau 代码的地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NVKM-short-for-NVIDIA-Kernel-Module"><span class="toc-number">3.2.</span> <span class="toc-text">NVKM short for NVIDIA Kernel Module</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#libdrm"><span class="toc-number">3.3.</span> <span class="toc-text">libdrm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mesa"><span class="toc-number">3.4.</span> <span class="toc-text">mesa</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenGL"><span class="toc-number">3.4.1.</span> <span class="toc-text">OpenGL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gallium3D"><span class="toc-number">3.4.2.</span> <span class="toc-text">Gallium3D</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IRC-nouveau"><span class="toc-number">4.</span> <span class="toc-text">IRC #nouveau</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -229,7 +257,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -244,7 +272,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -252,15 +280,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -269,6 +301,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -288,7 +324,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -332,11 +368,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -345,10 +381,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -369,11 +401,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -385,11 +417,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -406,10 +438,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -433,11 +461,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -468,7 +500,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -477,12 +509,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -502,7 +534,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -692,7 +724,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>Hexo的搭建 | TO DO</title>
@@ -12,17 +12,16 @@
 
     
     <meta name="description" content="本篇博客记录了如何简单搭建Hexo，并对搭建好的Hexo主题博客进行设置，包括主题，布局，风格等等。">
-<meta name="keywords" content="hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo的搭建">
-<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/07/Hexo的配置/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/07/Hexo%E7%9A%84%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客记录了如何简单搭建Hexo，并对搭建好的Hexo主题博客进行设置，包括主题，布局，风格等等。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-14T00:27:12.654Z">
+<meta property="article:published_time" content="2017-08-07T12:44:39.000Z">
+<meta property="article:modified_time" content="2020-07-17T10:21:42.588Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo的搭建">
-<meta name="twitter:description" content="本篇博客记录了如何简单搭建Hexo，并对搭建好的Hexo主题博客进行设置，包括主题，布局，风格等等。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -34,16 +33,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -66,13 +69,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -88,7 +91,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2017-08-07T12:44:39.000Z" itemprop="datePublished"> Published 2017-08-07</time>
     
   </p>
@@ -98,7 +101,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#搭建"><span class="toc-number">1.</span> <span class="toc-text">搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">1.1.</span> <span class="toc-text">发布到github</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Permission-denied-publickey"><span class="toc-number">1.1.1.</span> <span class="toc-text">Permission denied (publickey).</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo-Error-Host-key-verification-failed"><span class="toc-number">1.1.2.</span> <span class="toc-text">hexo Error: Host key verification failed.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加访问统计"><span class="toc-number">1.2.</span> <span class="toc-text">添加访问统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文章按照更新时间排序"><span class="toc-number">1.3.</span> <span class="toc-text">文章按照更新时间排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-s命令失效"><span class="toc-number">1.4.</span> <span class="toc-text">hexo s命令失效</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发布新文章-5"><span class="toc-number">2.1.</span> <span class="toc-text">发布新文章 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#草稿"><span class="toc-number">2.2.</span> <span class="toc-text">草稿</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#搭建"><span class="toc-number">1.</span> <span class="toc-text">搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">1.1.</span> <span class="toc-text">发布到github</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Permission-denied-publickey"><span class="toc-number">1.1.1.</span> <span class="toc-text">Permission denied (publickey).</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo-Error-Host-key-verification-failed"><span class="toc-number">1.1.2.</span> <span class="toc-text">hexo Error: Host key verification failed.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加访问统计"><span class="toc-number">1.2.</span> <span class="toc-text">添加访问统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文章按照更新时间排序"><span class="toc-number">1.3.</span> <span class="toc-text">文章按照更新时间排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-s命令失效"><span class="toc-number">1.4.</span> <span class="toc-text">hexo s命令失效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#升级依赖包"><span class="toc-number">1.5.</span> <span class="toc-text">升级依赖包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发布新文章"><span class="toc-number">2.1.</span> <span class="toc-text">发布新文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#草稿"><span class="toc-number">2.2.</span> <span class="toc-text">草稿</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -113,14 +116,14 @@
 </blockquote>
 <p>然后安装 hexo</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
 <p>完工。</p>
 <h2 id="发布到github"><a href="#发布到github" class="headerlink" title="发布到github"></a>发布到github</h2><h3 id="Permission-denied-publickey"><a href="#Permission-denied-publickey" class="headerlink" title="Permission denied (publickey)."></a>Permission denied (publickey).</h3><p>在使用 <code>git push</code>  时候报以下错误。</p>
 <pre><code>Permission denied (publickey).
 fatal: Could not read from remote repository.
 
 Please make sure you have the correct access rights
-and the repository exists.</code></pre><p>原因：电脑公钥（publickey）未添加至github,所以无法识别。 因而需要获取本地电脑公钥，然后登录github账号，添加公钥至github就OK了。<br>设置Git的user name和email  </p>
+and the repository exists.</code></pre>
+<p>原因：电脑公钥（publickey）未添加至github,所以无法识别。 因而需要获取本地电脑公钥，然后登录github账号，添加公钥至github就OK了。<br>设置Git的user name和email  </p>
 <blockquote>
 <p>git config –global user.name “yourname”<br>git config –global user.email “youremail” </p>
 </blockquote>
@@ -130,27 +133,28 @@ and the repository exists.</code></pre><p>原因：电脑公钥（publickey）�
 <p>然后再登录github，进入个人设置settings—&gt;ssh and gpg keys–&gt;new ssh key 添加新生成的公钥即可。</p>
 <h3 id="hexo-Error-Host-key-verification-failed"><a href="#hexo-Error-Host-key-verification-failed" class="headerlink" title="hexo Error: Host key verification failed."></a>hexo Error: Host key verification failed.</h3><p>今天电脑重装系统，我决定将这个hexo文件夹整个拷贝到新电脑，配置好本地环境后，再部署的时候遇到了问题。</p>
 <pre><code>hexo Error: Host key verification failed. 
-fatal: Could not read from remote repository.</code></pre><p>很明显没有在本地配置github的环境和账户。接下来步骤可参考<a href="https://help.github.com/articles/connecting-to-github-with-ssh/" target="_blank" rel="noopener">https://help.github.com/articles/connecting-to-github-with-ssh/</a><br>所以打开<code>Git Bash</code>，检查是否已经存在了SSH keys。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 查看.ssh目录下是否已经有私钥和公钥</span><br><span class="line">ls -al ~/.ssh</span><br><span class="line"># 如果有，删除。并重新生成</span><br><span class="line">ssh-keygen -t rsa -C &quot;your_github_email&quot;</span><br><span class="line">ssh-agent -s</span><br><span class="line">ssh-add ~/.ssh/id_rsa</span><br><span class="line"># 这里会出错，如果出错了输入下面的指令。</span><br><span class="line"># eval `ssh-agent -s`</span><br><span class="line"># ssh-add</span><br><span class="line"># 拷贝公钥</span><br><span class="line">clip &lt; ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+fatal: Could not read from remote repository.</code></pre>
+<p>很明显没有在本地配置github的环境和账户。接下来步骤可参考<a href="https://help.github.com/articles/connecting-to-github-with-ssh/" target="_blank" rel="noopener">https://help.github.com/articles/connecting-to-github-with-ssh/</a><br>所以打开<code>Git Bash</code>，检查是否已经存在了SSH keys。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 查看.ssh目录下是否已经有私钥和公钥</span><br><span class="line">ls -al ~&#x2F;.ssh</span><br><span class="line"># 如果有，删除。并重新生成</span><br><span class="line">ssh-keygen -t rsa -C &quot;your_github_email&quot;</span><br><span class="line">ssh-agent -s</span><br><span class="line">ssh-add ~&#x2F;.ssh&#x2F;id_rsa</span><br><span class="line"># 这里会出错，如果出错了输入下面的指令。</span><br><span class="line"># eval &#96;ssh-agent -s&#96;</span><br><span class="line"># ssh-add</span><br><span class="line"># 拷贝公钥</span><br><span class="line">clip &lt; ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
 
 <p>然后到github.com个人中心的settings的SSH keys页面，点击<code>New SSH Key</code>添加公钥。<br>添加完毕后，测试是否连接成功。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-
 <p>一般在添加完公钥之后, 很多人经常会遇到下面这种问题：</p>
 <pre><code>**Host key verification failed.**
-fatal: Could not read from remote repository.</code></pre><p>这是由于.ssh文件夹下缺少了<code>known_hosts</code>文件。输入以下命令即可。</p>
+fatal: Could not read from remote repository.</code></pre>
+<p>这是由于.ssh文件夹下缺少了<code>known_hosts</code>文件。输入以下命令即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
 
 <p>最后输入指令部署即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d -g</span><br></pre></td></tr></table></figure>
 
-<h2 id="添加访问统计"><a href="#添加访问统计" class="headerlink" title="添加访问统计"></a>添加访问统计</h2><p>我喜欢在自己的布局文件的侧栏添加访问量。<br>路径为：<code>/themes/jacman/layout/_partial/sidebar.ejs</code>.
-添加本站访问人数和访问人次总数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;linkslist&quot;&gt;</span><br><span class="line">&lt;span id=&quot;busuanzi_container_site_uv&quot;&gt; </span><br><span class="line">  本站访客数&lt;span id=&quot;busuanzi_value_site_uv&quot;&gt;&lt;/span&gt;人次</span><br><span class="line">&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;linkslist&quot;&gt;</span><br><span class="line">&lt;span id=&quot;busuanzi_container_site_pv&quot;&gt;</span><br><span class="line">    本站总访问量&lt;span id=&quot;busuanzi_value_site_pv&quot;&gt;&lt;/span&gt;次</span><br><span class="line">&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="添加访问统计"><a href="#添加访问统计" class="headerlink" title="添加访问统计"></a>添加访问统计</h2><p>我喜欢在自己的布局文件的侧栏添加访问量。<br>路径为：<code>/themes/jacman/layout/_partial/sidebar.ejs</code>.<br>添加本站访问人数和访问人次总数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;linkslist&quot;&gt;</span><br><span class="line">&lt;span id&#x3D;&quot;busuanzi_container_site_uv&quot;&gt; </span><br><span class="line">  本站访客数&lt;span id&#x3D;&quot;busuanzi_value_site_uv&quot;&gt;&lt;&#x2F;span&gt;人次</span><br><span class="line">&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div class&#x3D;&quot;linkslist&quot;&gt;</span><br><span class="line">&lt;span id&#x3D;&quot;busuanzi_container_site_pv&quot;&gt;</span><br><span class="line">    本站总访问量&lt;span id&#x3D;&quot;busuanzi_value_site_pv&quot;&gt;&lt;&#x2F;span&gt;次</span><br><span class="line">&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
 
 <p><a href="http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html" target="_blank" rel="noopener">更多炫酷的主题个性化</a>  </p>
 <h2 id="文章按照更新时间排序"><a href="#文章按照更新时间排序" class="headerlink" title="文章按照更新时间排序"></a>文章按照更新时间排序</h2><p>找到主配置文件 <em>_config.yml</em>，然后修改或者添加 <code>index_generator</code> 的 <code>order_by</code> 为 <code>-updated</code> 即可:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">index_generator:</span><br><span class="line">  path: &apos;&apos;</span><br><span class="line">  per_page: 10</span><br><span class="line">  order_by: -updated</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">index_generator:</span><br><span class="line">  path: &#39;&#39;</span><br><span class="line">  per_page: 10</span><br><span class="line">  order_by: -updated</span><br></pre></td></tr></table></figure>
 
 <p>重新生成页面：  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
@@ -158,10 +162,24 @@ fatal: Could not read from remote repository.</code></pre><p>这是由于.ssh文
 <p><a href="http://aiellochan.com/2018/02/13/hexo/Hexo-%E6%96%87%E7%AB%A0%E6%8C%89%E7%85%A7%E6%9B%B4%E6%96%B0%E6%97%B6%E9%97%B4%E6%8E%92%E5%BA%8F/" target="_blank" rel="noopener">Hexo 文章按照更新时间排序</a>  </p>
 <h2 id="hexo-s命令失效"><a href="#hexo-s命令失效" class="headerlink" title="hexo s命令失效"></a><code>hexo s</code>命令失效</h2><p>我将hexo整个文件夹上传到github服务器，在另一台电脑下载下来，运行<code>hexo s</code>失效，从显示结果来看，不存在此命令。<br>这是由于Hexo3将<code>hexo-server</code>独立出来了，如果需要本地调试，需要先安装server。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-server --save</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-
 <p>重新生成静态文档，启动本地服务。<br>问题又出现了，网页空白，并且命令行窗口显示：</p>
-<pre><code>WARN  No layout: index.html</code></pre><p>这种情况的出现是由于主题配置出错。查看<code>themes</code>文件夹下是否有相关文件夹并且文件夹下是否有文件；<code>_config.yml</code>内<code>theme</code>是否和主题名称对应。</p>
-<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="发布新文章-5"><a href="#发布新文章-5" class="headerlink" title="发布新文章 5"></a>发布新文章 <a href="https://lanjingling.github.io/2015/09/24/use-of-hexo-2/" target="_blank" rel="noopener">5</a></h2><p>执行 new 命令， 生成指定名称的文章至 <em>hexo\source_posts\postName.md</em> 。  </p>
+<pre><code>WARN  No layout: index.html</code></pre>
+<p>这种情况的出现是由于主题配置出错。查看<code>themes</code>文件夹下是否有相关文件夹并且文件夹下是否有文件；<code>_config.yml</code>内<code>theme</code>是否和主题名称对应。</p>
+<h2 id="升级依赖包"><a href="#升级依赖包" class="headerlink" title="升级依赖包"></a>升级依赖包</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-cli -g</span><br><span class="line">npm update</span><br></pre></td></tr></table></figure>
+
+<p>查看更新到的版本。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo vesion</span><br></pre></td></tr></table></figure>
+
+<p>检查更新。   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm-check</span><br><span class="line">npm-check</span><br></pre></td></tr></table></figure>
+<p>升级。   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm-upgrade</span><br><span class="line">npm-upgrade</span><br></pre></td></tr></table></figure>
+
+<p>一路回车确认安装即可。<br>接下来在本地生产环境安装  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://hexo.imydl.tech/archives/51612.html" target="_blank" rel="noopener">Hexo博客及环境依赖包的正确升级方法</a>  </p>
+<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="发布新文章"><a href="#发布新文章" class="headerlink" title="发布新文章"></a>发布新文章</h2><p>执行 new 命令， 生成指定名称的文章至 <em>hexo\source_posts\postName.md</em> 。  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new [layout] &quot;postName&quot;</span><br></pre></td></tr></table></figure>
 
 <p>其中layout是可选参数，默认值为post。有哪些layout呢，请到scaffolds目录下查看，这些文件名称就是layout名称。<br>当然你可以添加自己的layout，方法就是添加一个文件即可，同时你也可以编辑现有的layout，比如post的layout默认是 <em>hexo\scaffolds\post.md</em>。  </p>
@@ -175,7 +193,8 @@ tags: #文章标签，可空，多标签请用格式[tag1,tag2,tag3]，注意:�
 - tag2
 description: #概要信息
 ---
-正文。</code></pre><h2 id="草稿"><a href="#草稿" class="headerlink" title="草稿"></a>草稿</h2><p>草稿默认不会显示在页面上，链接也搜索不到。会在 <em>source/_drafts</em> 目录下生成一个 <em>new-draft.md</em> 文件。  </p>
+正文。</code></pre>
+<h2 id="草稿"><a href="#草稿" class="headerlink" title="草稿"></a>草稿</h2><p>草稿默认不会显示在页面上，链接也搜索不到。会在 <em>source/_drafts</em> 目录下生成一个 <em>new-draft.md</em> 文件。  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new draft &quot;new draft&quot;</span><br></pre></td></tr></table></figure>
 
 <p>如果预览草稿，可</p>
@@ -186,7 +205,15 @@ description: #概要信息
 <p>下面这条命令可以把草稿变成文章，或者页面：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo publish [layout] &lt;filename&gt;</span><br></pre></td></tr></table></figure>
 
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1] <a href="http://www.jianshu.com/p/808554f12929" target="_blank" rel="noopener">Hexo｜快速搭建自己（Github）博客</a><br>[2] <a href="http://www.jianshu.com/p/8a8f880f40c0" target="_blank" rel="noopener">给Hexo博客添加访问统计</a><br>[3] <a href="https://m.paopaoche.net/new/85988" target="_blank" rel="noopener">搭建hexo部署到github图文教程 亲测可用超详细</a><br>[4] <a href="http://forsweet.github.io/hexo/%E7%94%A8Hexo%E6%90%AD%E5%BB%BAGithub%E5%8D%9A%E5%AE%A2/" target="_blank" rel="noopener">用Hexo 3 搭建github blog</a><br>[5] <a href="https://lanjingling.github.io/2015/09/24/use-of-hexo-2/" target="_blank" rel="noopener">hexo使用心得（二）</a></p>
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="http://www.jianshu.com/p/808554f12929" target="_blank" rel="noopener">Hexo｜快速搭建自己（Github）博客</a>  </li>
+<li><a href="http://www.jianshu.com/p/8a8f880f40c0" target="_blank" rel="noopener">给Hexo博客添加访问统计</a>  </li>
+<li><a href="https://m.paopaoche.net/new/85988" target="_blank" rel="noopener">搭建hexo部署到github图文教程 亲测可用超详细</a></li>
+<li><a href="http://forsweet.github.io/hexo/%E7%94%A8Hexo%E6%90%AD%E5%BB%BAGithub%E5%8D%9A%E5%AE%A2/" target="_blank" rel="noopener">用Hexo 3 搭建github blog</a>  </li>
+<li><a href="https://lanjingling.github.io/2015/09/24/use-of-hexo-2/" target="_blank" rel="noopener">hexo使用心得（二）</a></li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -209,7 +236,7 @@ description: #概要信息
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2017/08/07/Hexo的配置/" data-title="Hexo的搭建 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2017/08/07/Hexo%E7%9A%84%E9%85%8D%E7%BD%AE/" data-title="Hexo的搭建 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -222,9 +249,9 @@ description: #概要信息
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2017/08/09/mysql知识点拾遗/" title="mysql知识点拾遗">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   mysql知识点拾遗</span>
 </a>
@@ -232,8 +259,8 @@ description: #概要信息
 
 
 <div class="next">
-<a href="/2017/08/07/格式化字符串漏洞/" title="格式化字符串漏洞">
- <strong>下一篇：</strong><br> 
+<a href="/2017/08/07/格式化字符串漏洞/"  title="格式化字符串漏洞">
+ <strong>下一篇：</strong><br/> 
  <span>格式化字符串漏洞
 </span>
 </a>
@@ -253,7 +280,7 @@ description: #概要信息
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#搭建"><span class="toc-number">1.</span> <span class="toc-text">搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">1.1.</span> <span class="toc-text">发布到github</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Permission-denied-publickey"><span class="toc-number">1.1.1.</span> <span class="toc-text">Permission denied (publickey).</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo-Error-Host-key-verification-failed"><span class="toc-number">1.1.2.</span> <span class="toc-text">hexo Error: Host key verification failed.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加访问统计"><span class="toc-number">1.2.</span> <span class="toc-text">添加访问统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文章按照更新时间排序"><span class="toc-number">1.3.</span> <span class="toc-text">文章按照更新时间排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-s命令失效"><span class="toc-number">1.4.</span> <span class="toc-text">hexo s命令失效</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发布新文章-5"><span class="toc-number">2.1.</span> <span class="toc-text">发布新文章 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#草稿"><span class="toc-number">2.2.</span> <span class="toc-text">草稿</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#搭建"><span class="toc-number">1.</span> <span class="toc-text">搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">1.1.</span> <span class="toc-text">发布到github</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Permission-denied-publickey"><span class="toc-number">1.1.1.</span> <span class="toc-text">Permission denied (publickey).</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo-Error-Host-key-verification-failed"><span class="toc-number">1.1.2.</span> <span class="toc-text">hexo Error: Host key verification failed.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加访问统计"><span class="toc-number">1.2.</span> <span class="toc-text">添加访问统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文章按照更新时间排序"><span class="toc-number">1.3.</span> <span class="toc-text">文章按照更新时间排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-s命令失效"><span class="toc-number">1.4.</span> <span class="toc-text">hexo s命令失效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#升级依赖包"><span class="toc-number">1.5.</span> <span class="toc-text">升级依赖包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#发布新文章"><span class="toc-number">2.1.</span> <span class="toc-text">发布新文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#草稿"><span class="toc-number">2.2.</span> <span class="toc-text">草稿</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -265,7 +292,7 @@ description: #概要信息
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -280,7 +307,7 @@ description: #概要信息
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -288,15 +315,19 @@ description: #概要信息
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -305,6 +336,10 @@ description: #概要信息
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -324,7 +359,7 @@ description: #概要信息
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -368,11 +403,11 @@ description: #概要信息
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -381,10 +416,6 @@ description: #概要信息
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -405,11 +436,11 @@ description: #概要信息
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -421,11 +452,11 @@ description: #概要信息
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -442,10 +473,6 @@ description: #概要信息
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -469,11 +496,15 @@ description: #概要信息
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -504,7 +535,7 @@ description: #概要信息
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -513,12 +544,12 @@ description: #概要信息
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -538,7 +569,7 @@ description: #概要信息
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -728,7 +759,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

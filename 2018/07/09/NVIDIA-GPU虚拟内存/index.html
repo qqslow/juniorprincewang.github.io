@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>NVIDIA GPU虚拟内存 | TO DO</title>
@@ -11,19 +11,19 @@
     
 
     
-    <meta name="description" content="本文分析 NVIDIA GPU 的虚拟内存（virtual memory），由 envytools 工具和文档提供。">
-<meta name="keywords" content="GPU,virtual memory">
+    <meta name="description" content="本文分析 NVIDIA GPU 的虚拟内存（virtual memory），由 envytools 工具和文档提供。分析的G80显卡。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NVIDIA GPU虚拟内存">
-<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/09/NVIDIA-GPU虚拟内存/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/09/NVIDIA-GPU%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/index.html">
 <meta property="og:site_name" content="TO DO">
-<meta property="og:description" content="本文分析 NVIDIA GPU 的虚拟内存（virtual memory），由 envytools 工具和文档提供。">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:description" content="本文分析 NVIDIA GPU 的虚拟内存（virtual memory），由 envytools 工具和文档提供。分析的G80显卡。">
 <meta property="og:image" content="http://juniorprincewang.github.io/2018/07/09/NVIDIA-GPU%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/GPU%E9%A1%B5%E8%A1%A8.png">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.207Z">
+<meta property="article:published_time" content="2018-07-09T01:14:15.000Z">
+<meta property="article:modified_time" content="2020-06-06T12:59:02.059Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="GPU">
+<meta property="article:tag" content="virtual memory">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NVIDIA GPU虚拟内存">
-<meta name="twitter:description" content="本文分析 NVIDIA GPU 的虚拟内存（virtual memory），由 envytools 工具和文档提供。">
 <meta name="twitter:image" content="http://juniorprincewang.github.io/2018/07/09/NVIDIA-GPU%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/GPU%E9%A1%B5%E8%A1%A8.png">
 
     
@@ -36,16 +36,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -68,13 +72,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -90,7 +94,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2018-07-09T01:14:15.000Z" itemprop="datePublished"> Published 2018-07-09</time>
     
   </p>
@@ -104,7 +108,7 @@
 		
 		</div>
 		
-		<p>本文分析 <code>NVIDIA GPU</code> 的虚拟内存（virtual memory），由 <code>envytools</code> 工具和文档提供。</p>
+		<p>本文分析 <code>NVIDIA GPU</code> 的虚拟内存（virtual memory），由 <code>envytools</code> 工具和文档提供。分析的G80显卡。  </p>
 <a id="more"></a>
 
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>G80 一代的显卡的内存管理模块，即MMU，将用户可见的虚拟内存地址转换成设备物理地址。<br>转换分成两层，DMA对象（如同 x86 的段） 和 页表。<br>转换包括以下地址空间。</p>
@@ -113,7 +117,7 @@
 </li>
 <li><p><strong>虚拟地址</strong>：40位的虚拟地址 + channel描述符地址。 指定地址将会在相关channel中的页表中查询。虚拟地址总是逻辑地址转换的结果，并且不能被直接指定。</p>
 </li>
-<li><p><strong>线性地址</strong>：40位的线性地址 + 目标区分符（target specifier）。 区分符可以是 <code>VRAM</code> 、 <code>SYSRAM_SNOOP</code> 、 <code>SYSRAM_NOSNOOP</code>。</p>
+<li><p><strong>线性地址</strong>：40位的线性地址 + 目标区分符（target specifier）。 区分符可以是 video memory <code>VRAM</code> 、 coherent system memory <code>SYSRAM_SNOOP</code>或者<code>HOST</code> 、 non-coherent system memory <code>SYSRAM_NOSNOOP</code>或者<code>NCOH</code>。</p>
 <ul>
 <li>VRAM: 32位线性地址，高8位忽略，在设备板上的内存。</li>
 <li>SYSRAM: 40位的线性地址，访问此空间会使得显卡对给定的地址调用PCI/PCIe读写事务，允许访问系统内存（CPU）或者别的PCI设备内存。 <code>SYSRAM_SNOOP</code> 使用正常的 PCIe 事务，<code>SYSRAM_NOSNOOP</code> 使用PCIe 事务，启用了 <code>no snoop</code> 位。<br>大多数时候，线性地址是逻辑地址翻译的结果，但是一些内存区域可以被它们的线性地址直接赋值。</li>
@@ -126,14 +130,14 @@
 </ul>
 <p>虚拟内存(以下简称VM)的作用是将逻辑地址转换成相关的数据，可以转换成设备物理地址或者主机物理地址。</p>
 <ul>
-<li>linear address</li>
-<li>target: <code>VRAM</code> , <code>SYSRAM_SNOOP</code> , <code>SYSRAM_NOSNOOP</code> 。</li>
-<li>read only flag</li>
-<li>supervisor-only flag</li>
-<li>storage type: 一个特殊值，选择包含数据的内部结构，通过增加cache的局部性来更有效的访问。</li>
-<li>compression mode：</li>
-<li>compression tag address：</li>
-<li>partition cycle：</li>
+<li>linear address <code>addr</code></li>
+<li>target specifier <code>aper</code>: <code>VRAM</code> , <code>HOST</code> , <code>NCOH</code> 。</li>
+<li>read only flag <code>ro</code></li>
+<li>supervisor-only flag <code>priv</code></li>
+<li>storage type:  <code>kind</code> 一个特殊值，选择包含数据的内部结构，通过增加cache的局部性来更有效的访问。</li>
+<li>compression mode： <code>comp</code></li>
+<li>compression tag address： <code>ctag</code></li>
+<li>partition cycle： </li>
 <li>encryption flag：</li>
 </ul>
 <p><img src="../NVIDIA-GPU%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/GPU%E9%A1%B5%E8%A1%A8.png" alt="GPU页表"></p>
@@ -143,7 +147,7 @@
 <p>一个channel由 channel描述符（channel descriptor）标识，这是一个30位的数，指向了channel内存结构的基址。</p>
 <ul>
 <li>位0-27：channel内存结构体的12-39位，线性地址。</li>
-<li>位28-29： channel 内存结构体的target specifier - 0：VRAM; 1:invalid,不使用; 2: SYSRAM_SNOOP - 3: SYSRAM_NOSNOOP</li>
+<li>位28-29： channel 内存结构体的target specifier - 0：VRAM; 1:invalid,不使用; 2: SYSRAM_SNOOP or HOST - 3: SYSRAM_NOSNOOP or NCOH</li>
 </ul>
 <p>channel内存结构体包含一些固定偏移的元素，也包含可以放置在结构体内任何位置的channel对象，比如DMA对象。<br>channel结构体没有固定的大小，尽管channel对象的最大地址是0xffff0。 channel结构体也必须0x1000字节对齐。</p>
 <p>原始的G80 channel 有以下固定的元素：</p>
@@ -166,10 +170,9 @@
 </ul>
 <p>DMA对象由16位 selector 区分。在FIFO引擎中，<code>RAMHT</code> 用于将用户可见的32位handles 转换到 selector。<br>selector 向左位移4位，并且增加到channel结构体基地址来获取DMA对象结构体的地址， DMA对象结构体的地址是0x18字节长，由32位小端字组成。</p>
 <ul>
-<li><p>word 0</p>
-<ul>
+<li>word 0<ul>
 <li>bits 0-15: object class.<br>Ignored by VM, but usually validated by fifo engines- should be 0x2 [read-only], 0x3 [write-only], or 0x3d [read-write]</li>
-<li>bits 16-17: target specifier:<ul>
+<li>bits 16-17: target specifier:  <ul>
 <li>0: VM - paged object - the logical address is to be added to the base address to obtain a virtual address, then the virtual address should be translated via the page tables</li>
 <li>1: VRAM - unpaged object - the logical address should be added to the base address to directly obtain the linear address in VRAM</li>
 <li>2: SYSRAM_SNOOP - like VRAM, but gives SYSRAM address</li>
@@ -198,33 +201,28 @@
 <li>3: use compression mode from page tables</li>
 </ul>
 </li>
-<li>bit 31: if set, is a supervisor DMA object, user DMA object otherwise</li>
+<li>bit 31: if set, is a supervisor DMA object, user DMA object otherwise  </li>
 </ul>
 </li>
-<li><p>word 1:</p>
-<ul>
+<li>word 1:<ul>
 <li>bits 0-31 of limit address</li>
 </ul>
 </li>
-<li><p>word 2:</p>
-<ul>
+<li>word 2:<ul>
 <li>bits 0-31 of base address</li>
 </ul>
 </li>
-<li><p>word 3:</p>
-<ul>
+<li>word 3:<ul>
 <li>bits 0-7: bits 32-39 of base address</li>
 <li>bits 24-31: bits 32-39 of limit address</li>
 </ul>
 </li>
-<li><p>word 4:</p>
-<ul>
+<li>word 4:<ul>
 <li>bits 0-11: base tag address</li>
 <li>bits 16-27: limit tag address</li>
 </ul>
 </li>
-<li><p>word 5:</p>
-<ul>
+<li>word 5:<ul>
 <li>bits 0-15: compression base address bits 16-31 [bits 0-15 are forced to 0]</li>
 <li>bits 16-17: partition cycle<ul>
 <li>0: use partition cycle from page tables</li>
@@ -431,12 +429,15 @@
 </li>
 </ul>
 <h1 id="TLB-flush"><a href="#TLB-flush" class="headerlink" title="TLB flush"></a>TLB flush</h1><p>页表内容缓存在每个引擎的TLB中。为了清楚TLB缓存，TLB flush register 0x100c80 被使用。</p>
-<p>MMIO 0x100c80:</p>
+<p><strong>MMIO 0x100c80</strong>:</p>
 <ul>
 <li>bit 0: trigger. When set, triggers the TLB flush. Will auto-reset to 0 when flush is complete.</li>
 <li>bits 16-19: 要flush的VM engine</li>
 </ul>
 <p>flush操作包括将 <code>engine &lt;&lt; 16 | 1</code> 命令写入到此寄存器中，并且等待 位0 变为 0。</p>
+<p>源码见 <em>nouveau\nvkm\subdev\mmu\vmmnv50.c</em> 的 <code>nv50_vmm_flush()</code>   </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">nv50_vmm_flush</span><span class="params">(struct nvkm_vmm *vmm, <span class="keyword">int</span> level)</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">switch</span> (i) &#123;</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_GR    : id = <span class="number">0x00</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_VP    :</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_MSPDEC: id = <span class="number">0x01</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> NVKM_SUBDEV_BAR   : id = <span class="number">0x06</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_MSPPP :</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_MPEG  : id = <span class="number">0x08</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_BSP   :</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_MSVLD : id = <span class="number">0x09</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_CIPHER:</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_SEC   : id = <span class="number">0x0a</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> NVKM_ENGINE_CE0   : id = <span class="number">0x0d</span>; <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	nvkm_wr32(device, <span class="number">0x100c80</span>, (id &lt;&lt; <span class="number">16</span>) | <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span> (nvkm_msec(device, <span class="number">2000</span>,</span><br><span class="line">			<span class="keyword">if</span> (!(nvkm_rd32(device, <span class="number">0x100c80</span>) &amp; <span class="number">0x00000001</span>))</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		) &lt; <span class="number">0</span>)</span><br><span class="line">			nvkm_error(subdev, <span class="string">"%s mmu invalidate timeout\n"</span>,</span><br><span class="line">				   nvkm_subdev_name[i]);</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p><a href="http://envytools.readthedocs.io/en/latest/hw/memory/g80-vm.html" target="_blank" rel="noopener">Tesla virtual memory¶</a></p>
   
 	</div>
@@ -460,7 +461,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2018/07/09/NVIDIA-GPU虚拟内存/" data-title="NVIDIA GPU虚拟内存 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2018/07/09/NVIDIA-GPU%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" data-title="NVIDIA GPU虚拟内存 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -473,9 +474,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2018/07/09/PCI-driver-model/" title="PCI driver model">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   PCI driver model</span>
 </a>
@@ -483,8 +484,8 @@
 
 
 <div class="next">
-<a href="/2018/06/18/GPU的全虚拟化技术/" title="GPU的全虚拟化技术">
- <strong>下一篇：</strong><br> 
+<a href="/2018/06/18/GPU的全虚拟化技术/"  title="GPU的全虚拟化技术">
+ <strong>下一篇：</strong><br/> 
  <span>GPU的全虚拟化技术
 </span>
 </a>
@@ -516,7 +517,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -531,7 +532,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -539,15 +540,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -556,6 +561,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -575,7 +584,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -619,11 +628,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -632,10 +641,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -656,11 +661,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -672,11 +677,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -693,10 +698,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -720,11 +721,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -755,7 +760,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -764,12 +769,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -789,7 +794,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -979,7 +984,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

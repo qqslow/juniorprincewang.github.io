@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>TO DO</title>
@@ -17,10 +17,8 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/page/7/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="文章本天成，妙手偶得之。">
-<meta property="og:locale" content="zh-Hans">
+<meta property="article:author" content="Max">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TO DO">
-<meta name="twitter:description" content="文章本天成，妙手偶得之。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -32,16 +30,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -64,13 +66,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -82,32 +84,87 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/22/fsb/" title="fsb" itemprop="url">fsb</a>
+      <a href="/2018/02/08/python之pickle的任意代码执行漏洞/" title="python之pickle的任意代码执行漏洞" itemprop="url">python之pickle的任意代码执行漏洞</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2017-08-22T01:55:21.000Z" itemprop="datePublished"> Published 2017-08-22</time>
+  <p class="article-time">
+    <time datetime="2018-02-08T07:30:48.000Z" itemprop="datePublished"> Published 2018-02-08</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>pwnable.kr fsb，本题目重点在栈上被调函数的ebp指向了调用函数的ebp。<br>%n的含义是%n符号前的输出的字符数量，<em>引用</em>传值，也就是参数是指针，而不是值。我们利用的代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf(&quot;aaaa%2$n&quot;);</span><br></pre></td></tr></table></figure>
-
-<p>这里将4写入了相对栈顶的第二个偏移量参数作地址的位置，而不是写在第二个参数位置。<br>我简单做了个小实验，输入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aaaa%18$n</span><br></pre></td></tr></table></figure>
-
-<p>得到的结果为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/x $esp+18*4</span><br><span class="line">0xffb5d5d8:	0xffb5f768</span><br><span class="line">(gdb) x/x 0xffb5f768</span><br><span class="line">0xffb5f768:	0x00000004</span><br></pre></td></tr></table></figure>
+        <pre><code>Warning The pickle module is not secure against erroneous or maliciously constructed data. 
+Never unpickle data received from an untrusted or unauthenticated source.</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/22/fsb/#more">Read More</a>
+            <a href="/2018/02/08/python%E4%B9%8Bpickle%E7%9A%84%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/python/">python</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/pickle/">pickle</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/08/01/pwn入门/" title="安全入门" itemprop="url">安全入门</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  <p class="article-time">
+    <time datetime="2017-08-01T14:13:00.000Z" itemprop="datePublished"> Published 2017-08-01</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这里有关于pwn、web、逆向的资料整理。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/08/01/pwn%E5%85%A5%E9%97%A8/#more">Read More</a>
           
        </p>
     </div>
@@ -122,7 +179,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a><a href="/tags/pwnable-kr/">pwnable.kr</a>
+  <span></span> <a href="/tags/pwn/">pwn</a>
   </div>
 
 </div>
@@ -150,40 +207,35 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/05/18/expect实现shell得自动化交互/" title="expect实现shell得自动化交互" itemprop="url">expect实现shell得自动化交互</a>
+      <a href="/2017/10/01/pwnable-tw之calc/" title="pwnable.tw之calc" itemprop="url">pwnable.tw之calc</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2019-05-18T05:09:09.000Z" itemprop="datePublished"> Published 2019-05-18</time>
+  <p class="article-time">
+    <time datetime="2017-10-01T10:19:50.000Z" itemprop="datePublished"> Published 2017-10-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>expect命令可以帮助shell自动化交互，省去了手动输入选项得烦恼。本篇博客讲解了expect得shell脚本编写。</p>
+        <p>本题考查的是对程序逻辑的理解，达到任意地址读写的目的，并最终利用ROP技术执行<code>execve(&#39;/bin/sh&#39;)</code>。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2019/05/18/expect实现shell得自动化交互/#more">Read More</a>
+            <a href="/2017/10/01/pwnable-tw%E4%B9%8Bcalc/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/shell/">shell</a>
-</div>
-
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/expect/">expect</a>
+  <span></span> <a href="/tags/pwn/">pwn</a><a href="/tags/pwnable-tw/">pwnable.tw</a><a href="/tags/rop/">rop</a>
   </div>
 
 </div>
@@ -211,25 +263,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2019/01/09/doxygen源码文档生成器/" title="doxygen源码文档生成器" itemprop="url">doxygen源码文档生成器</a>
+      <a href="/2017/08/13/pwnable-kr笔记/" title="pwnable.kr笔记" itemprop="url">pwnable.kr笔记</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2019-01-09T11:02:25.000Z" itemprop="datePublished"> Published 2019-01-09</time>
+  <p class="article-time">
+    <time datetime="2017-08-13T07:23:28.000Z" itemprop="datePublished"> Published 2017-08-13</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>苦于看内核驱动源码的烦恼，Doxygen工具很好的解决了此问题。  Doxygen可以很好的构建出类层次结构和全局变量，不同的用户定义类型，以及函数调用图分析等等。</p>
+        <p>pwnable.kr算是pwn入门级别的题目，做一遍记录下大概的知识点。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2019/01/09/doxygen源码文档生成器/#more">Read More</a>
+            <a href="/2017/08/13/pwnable-kr%E7%AC%94%E8%AE%B0/#more">Read More</a>
           
        </p>
     </div>
@@ -238,13 +290,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/tools/">tools</a>
+  <a class="article-category-link" href="/categories/ctf/">ctf</a>►<a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/doxgen/">doxgen</a>
+  <span></span> <a href="/tags/pwnable-kr/">pwnable.kr</a>
   </div>
 
 </div>
@@ -272,25 +324,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/11/c文件调用cuda函数/" title="c文件调用cuda函数" itemprop="url">c文件调用cuda函数</a>
+      <a href="/2017/08/20/passcode/" title="passcode" itemprop="url">passcode</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-04-11T09:30:30.000Z" itemprop="datePublished"> Published 2018-04-11</time>
+  <p class="article-time">
+    <time datetime="2017-08-20T15:55:21.000Z" itemprop="datePublished"> Published 2017-08-20</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>经过无数次的折腾，终于成功在C文件中调用了cu文件里面定义的函数。</p>
+        <p>多种想法，运来GOT表这么覆盖！</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/04/11/c文件调用cuda函数/#more">Read More</a>
+            <a href="/2017/08/20/passcode/#more">Read More</a>
           
        </p>
     </div>
@@ -299,13 +351,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/CUDA/">CUDA</a>
+  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/CUDA/">CUDA</a>
+  <span></span> <a href="/tags/pwn/">pwn</a><a href="/tags/pwnable-kr/">pwnable.kr</a><a href="/tags/got/">got</a>
   </div>
 
 </div>
@@ -333,40 +385,35 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/03/centos启动加载驱动/" title="centos启动加载驱动" itemprop="url">centos启动加载驱动</a>
+      <a href="/2018/06/11/openssl/" title="openssl" itemprop="url">openssl</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-04-03T03:31:36.000Z" itemprop="datePublished"> Published 2018-04-03</time>
+  <p class="article-time">
+    <time datetime="2018-06-11T08:00:14.000Z" itemprop="datePublished"> Published 2018-06-11</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本篇博客记载了在centos启动时，自动加载内核模块的探索过程。</p>
+        <p>介绍openssl 软件和库的一些知识点。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/04/03/centos启动加载驱动/#more">Read More</a>
+            <a href="/2018/06/11/openssl/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
-</div>
-
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/centos/">centos</a><a href="/tags/driver/">driver</a>
+  <span></span> <a href="/tags/openssl/">openssl</a>
   </div>
 
 </div>
@@ -394,25 +441,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/10/14/alf-nu-alert1总结/" title="alf.nu/alert1总结" itemprop="url">alf.nu/alert1总结</a>
+      <a href="/2019/01/25/nouveau安装/" title="nouveau安装" itemprop="url">nouveau安装</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-10-14T04:39:04.000Z" itemprop="datePublished"> Published 2018-10-14</time>
+  <p class="article-time">
+    <time datetime="2019-01-25T01:58:32.000Z" itemprop="datePublished"> Published 2019-01-25</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在做 alf.nu/alert1 时候的一些总结，主要是xss这种低安全级别的注意事项。</p>
+        <p>本篇博客介绍了nouveau安装以及卸载nouveau遇到的<em>Error: Module nouveau is in use</em> 问题。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/10/14/alf-nu-alert1总结/#more">Read More</a>
+            <a href="/2019/01/25/nouveau%E5%AE%89%E8%A3%85/#more">Read More</a>
           
        </p>
     </div>
@@ -421,13 +468,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/web安全/">web安全</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/nouveau/">nouveau</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/xss/">xss</a>
+  <span></span> <a href="/tags/nouveau/">nouveau</a>
   </div>
 
 </div>
@@ -455,40 +502,35 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/10/22/alf-nu-ReturnTrue-总结/" title="alf.nu/ReturnTrue 总结" itemprop="url">alf.nu/ReturnTrue 总结</a>
+      <a href="/2017/08/09/mysql知识点拾遗/" title="mysql知识点拾遗" itemprop="url">mysql知识点拾遗</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-10-22T01:02:11.000Z" itemprop="datePublished"> Published 2018-10-22</time>
+  <p class="article-time">
+    <time datetime="2017-08-09T01:32:45.000Z" itemprop="datePublished"> Published 2017-08-09</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><code>alf.nu/ReturnTrue</code> 答题的总结。</p>
+        <p>本篇介绍mysql以及sql知识点的补充和拾遗。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/10/22/alf-nu-ReturnTrue-总结/#more">Read More</a>
+            <a href="/2017/08/09/mysql%E7%9F%A5%E8%AF%86%E7%82%B9%E6%8B%BE%E9%81%97/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/web安全/">web安全</a>
-</div>
-
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/xss/">xss</a>
+  <span></span> <a href="/tags/mysql/">mysql</a><a href="/tags/sql/">sql</a>
   </div>
 
 </div>
@@ -516,25 +558,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/04/RedTiger-s-Hackit-writeup/" title="RedTiger&#39;s Hackit writeup" itemprop="url">RedTiger&#39;s Hackit writeup</a>
+      <a href="/2018/04/13/kvm虚拟机磁盘扩容/" title="kvm虚拟机磁盘扩容" itemprop="url">kvm虚拟机磁盘扩容</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-04-04T00:52:34.000Z" itemprop="datePublished"> Published 2018-04-04</time>
+  <p class="article-time">
+    <time datetime="2018-04-13T07:02:18.000Z" itemprop="datePublished"> Published 2018-04-13</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>网上很多关于RedTiger的writeup已失效，所以重新整理下，算是小白入门。</p>
+        <p>kvm虚拟机的磁盘空间告急，怎么有效进行扩容。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/04/04/RedTiger-s-Hackit-writeup/#more">Read More</a>
+            <a href="/2018/04/13/kvm%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9/#more">Read More</a>
           
        </p>
     </div>
@@ -543,13 +585,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/sql注入/">sql注入</a>
+  <a class="article-category-link" href="/categories/solutions/">solutions</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/sql注入/">sql注入</a>
+  <span></span> <a href="/tags/kvm/">kvm</a><a href="/tags/qemu/">qemu</a>
   </div>
 
 </div>
@@ -577,25 +619,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/12/05/QEMU源码字符设备/" title="QEMU源码字符设备" itemprop="url">QEMU源码字符设备</a>
+      <a href="/2019/05/20/kernel源码中编译nouveau-module/" title="kernel源码中编译nouveau module" itemprop="url">kernel源码中编译nouveau module</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-12-05T07:59:03.000Z" itemprop="datePublished"> Published 2018-12-05</time>
+  <p class="article-time">
+    <time datetime="2019-05-20T02:54:03.000Z" itemprop="datePublished"> Published 2019-05-20</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>分析QEMU源码中的 <code>virtconsole</code> 字符设备文件，选择 <code>QEMU v2.12.0</code> 版本。</p>
+        <p>nouveau可以从单独的module中编译，也可以从kernel source code中单独编译出nouveau.ko。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/12/05/QEMU源码字符设备/#more">Read More</a>
+            <a href="/2019/05/20/kernel%E6%BA%90%E7%A0%81%E4%B8%AD%E7%BC%96%E8%AF%91nouveau-module/#more">Read More</a>
           
        </p>
     </div>
@@ -604,74 +646,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/nouveau/">nouveau</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/virtio/">virtio</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/11/15/QEMU学习/" title="QEMU 学习" itemprop="url">QEMU 学习</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2018-11-15T12:22:10.000Z" itemprop="datePublished"> Published 2018-11-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>本篇博客记录了在学习使用<code>QEMU</code>时的资料。包括 <code>QEMU</code> 的整体架构和命令行。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/11/15/QEMU学习/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/emulate/">emulate</a><a href="/tags/virtio/">virtio</a><a href="/tags/KVM/">KVM</a>
+  <span></span> <a href="/tags/nouveau/">nouveau</a><a href="/tags/kernel/">kernel</a><a href="/tags/module/">module</a>
   </div>
 
 </div>
@@ -695,7 +676,7 @@
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/6/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/6/">&lt;span&gt;&lt;&#x2F;span&gt;Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/8/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
   </nav>
 
 </div>
@@ -711,7 +692,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -726,7 +707,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -734,15 +715,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -751,6 +736,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -770,7 +759,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -814,11 +803,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -827,10 +816,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -851,11 +836,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -867,11 +852,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -888,10 +873,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -915,11 +896,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -950,7 +935,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -959,12 +944,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -984,7 +969,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -1097,7 +1082,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

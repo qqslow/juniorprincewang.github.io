@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>hexo中MarkDown语法 | TO DO</title>
@@ -12,17 +12,17 @@
 
     
     <meta name="description" content="本篇博客介绍了Markdown最常见命令的语法，有代码有效果。持续更新">
-<meta name="keywords" content="hexo,markdown">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo中MarkDown语法">
-<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/01/hexo中MarkDown语法，持续更新/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/01/hexo%E4%B8%ADMarkDown%E8%AF%AD%E6%B3%95%EF%BC%8C%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客介绍了Markdown最常见命令的语法，有代码有效果。持续更新">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.236Z">
+<meta property="article:published_time" content="2017-08-01T14:51:53.000Z">
+<meta property="article:modified_time" content="2019-12-25T01:09:57.454Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="markdown">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo中MarkDown语法">
-<meta name="twitter:description" content="本篇博客介绍了Markdown最常见命令的语法，有代码有效果。持续更新">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -34,16 +34,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -66,13 +70,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -88,7 +92,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2017-08-01T14:51:53.000Z" itemprop="datePublished"> Published 2017-08-01</time>
     
   </p>
@@ -98,9 +102,9 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#文章头格式"><span class="toc-number">1.</span> <span class="toc-text">文章头格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分级标题"><span class="toc-number">2.</span> <span class="toc-text">分级标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斜体与粗体"><span class="toc-number">3.</span> <span class="toc-text">斜体与粗体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分割线和删除线"><span class="toc-number">4.</span> <span class="toc-text">分割线和删除线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#超链接"><span class="toc-number">5.</span> <span class="toc-text">超链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文字链接"><span class="toc-number">5.1.</span> <span class="toc-text">文字链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片链接"><span class="toc-number">5.2.</span> <span class="toc-text">图片链接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hexo的文章资源文件夹-3"><span class="toc-number">5.2.1.</span> <span class="toc-text">hexo的文章资源文件夹[3]</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视频链接"><span class="toc-number">5.3.</span> <span class="toc-text">视频链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">6.</span> <span class="toc-text">引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#外引用"><span class="toc-number">6.1.</span> <span class="toc-text">外引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内引用"><span class="toc-number">6.2.</span> <span class="toc-text">内引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交叉引用"><span class="toc-number">6.3.</span> <span class="toc-text">交叉引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表格"><span class="toc-number">7.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列"><span class="toc-number">8.</span> <span class="toc-text">序列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无序列表"><span class="toc-number">8.1.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序列表"><span class="toc-number">8.2.</span> <span class="toc-text">有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码块"><span class="toc-number">9.</span> <span class="toc-text">代码块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#行内代码块"><span class="toc-number">9.1.</span> <span class="toc-text">行内代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多行代码块"><span class="toc-number">9.2.</span> <span class="toc-text">多行代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加强的代码块"><span class="toc-number">9.3.</span> <span class="toc-text">加强的代码块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">10.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#段落与换行"><span class="toc-number">11.</span> <span class="toc-text">段落与换行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LaTeX-公式"><span class="toc-number">12.</span> <span class="toc-text">LaTeX 公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#支持markdown公式编辑"><span class="toc-number">13.</span> <span class="toc-text">支持markdown公式编辑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入公式"><span class="toc-number">13.1.</span> <span class="toc-text">插入公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入上下标"><span class="toc-number">13.2.</span> <span class="toc-text">输入上下标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入括号和分隔符"><span class="toc-number">13.3.</span> <span class="toc-text">输入括号和分隔符</span></a></li></ol></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#参考网站"><span class="toc-number"></span> <span class="toc-text">参考网站</span></a>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#文章头格式"><span class="toc-number">1.</span> <span class="toc-text">文章头格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分级标题"><span class="toc-number">2.</span> <span class="toc-text">分级标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斜体与粗体"><span class="toc-number">3.</span> <span class="toc-text">斜体与粗体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分割线和删除线"><span class="toc-number">4.</span> <span class="toc-text">分割线和删除线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#超链接"><span class="toc-number">5.</span> <span class="toc-text">超链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文字链接"><span class="toc-number">5.1.</span> <span class="toc-text">文字链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片链接"><span class="toc-number">5.2.</span> <span class="toc-text">图片链接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hexo的文章资源文件夹-3"><span class="toc-number">5.2.1.</span> <span class="toc-text">hexo的文章资源文件夹[3]</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视频链接"><span class="toc-number">5.3.</span> <span class="toc-text">视频链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">6.</span> <span class="toc-text">引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#外引用"><span class="toc-number">6.1.</span> <span class="toc-text">外引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内引用"><span class="toc-number">6.2.</span> <span class="toc-text">内引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交叉引用"><span class="toc-number">6.3.</span> <span class="toc-text">交叉引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表格"><span class="toc-number">7.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列"><span class="toc-number">8.</span> <span class="toc-text">序列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无序列表"><span class="toc-number">8.1.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序列表"><span class="toc-number">8.2.</span> <span class="toc-text">有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码块"><span class="toc-number">9.</span> <span class="toc-text">代码块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#行内代码块"><span class="toc-number">9.1.</span> <span class="toc-text">行内代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多行代码块"><span class="toc-number">9.2.</span> <span class="toc-text">多行代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加强的代码块"><span class="toc-number">9.3.</span> <span class="toc-text">加强的代码块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">10.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#段落与换行"><span class="toc-number">11.</span> <span class="toc-text">段落与换行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LaTeX-公式"><span class="toc-number">12.</span> <span class="toc-text">LaTeX 公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#支持markdown公式编辑"><span class="toc-number">13.</span> <span class="toc-text">支持markdown公式编辑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入公式"><span class="toc-number">13.1.</span> <span class="toc-text">插入公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入上下标"><span class="toc-number">13.2.</span> <span class="toc-text">输入上下标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入括号和分隔符"><span class="toc-number">13.3.</span> <span class="toc-text">输入括号和分隔符</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考网站"><span class="toc-number"></span> <span class="toc-text">参考网站</span></a>
 		
-		</li></div>
+		</div>
 		
 		<p>本篇博客介绍了Markdown最常见命令的语法，有代码有效果。持续更新</p>
 <a id="more"></a>
@@ -144,7 +148,11 @@
 <h4 id="hexo的文章资源文件夹-3"><a href="#hexo的文章资源文件夹-3" class="headerlink" title="hexo的文章资源文件夹[3]"></a>hexo的文章资源文件夹[3]</h4><p>通过将 config.yml 文件中的 post_asset_folder 选项设为 true 来打开。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_config.yml</span><br><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure>
 
-<p>当资源文件管理功能打开后，Hexo将会在你每一次通过 <code>hexo new [layout] &lt;title&gt;</code>命令创建新文章时自动创建一个文件夹。这个资源文件夹将会有与这个 markdown 文件一样的名字。<br>将所有与你的文章有关的资源放在这个关联文件夹中之后，你可以通过相对路径来引用它们。<br>目录名和文章名一致，只要使用 <code>![logo](../本地图片测试/logo.jpg)</code>就可以插入图片。其中[]里面不写文字则没有图片标题。</p>
+<p>当资源文件管理功能打开后，Hexo将会在你每一次通过 <code>hexo new [layout] &lt;title&gt;</code>命令创建新文章时自动创建一个文件夹。这个资源文件夹将会有与这个 markdown 文件一样的名字。<br><strong>引入图片相对路径</strong></p>
+<p>将所有与你的文章有关的资源放在这个关联文件夹中之后，你可以通过相对路径来引用它们。<br>目录名和文章名一致，只要使用 <del><code>![logo](../本地图片测试/logo.jpg)</code></del> <code>![logo](logo.jpg)</code>就可以插入图片。其中[]里面不写文字则没有图片标题。</p>
+<ul>
+<li><a href="https://yanyinhong.github.io/2017/05/02/How-to-insert-image-in-hexo-post/" target="_blank" rel="noopener">Hexo博客搭建之在文章中插入图片</a>  </li>
+</ul>
 <h3 id="视频链接"><a href="#视频链接" class="headerlink" title="视频链接"></a>视频链接</h3><p>引用视频，需要加入一段iframe代码。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;/js/youtube-autoresizer.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;iframe width=&quot;640&quot; height=&quot;360&quot; src=&quot;https://www.youtube.com/embed/HfElOZSEqn4&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
 
@@ -301,6 +309,8 @@
 <td>$\rbrace$</td>
 </tr>
 </tbody></table>
+<p>其他符号：  </p>
+<p><code>\times</code> : $\times$</p>
 <p>更多的去参考 <a href="https://www.zybuluo.com/codeep/note/163962" target="_blank" rel="noopener">Cmd Markdown 公式指导手册</a></p>
 <h1 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h1><p>[1] <a href="https://hyxxsfwy.github.io/2016/01/15/Hexo-Markdown-%E7%AE%80%E6%98%8E%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C/" target="_blank" rel="noopener">Hexo Markdown 简明语法手册</a><br>[2] <a href="https://yuxishe.github.io/2016/11/15/Hexo/" target="_blank" rel="noopener">Hexo基础操作和Markdown语法</a><br>[3] <a href="https://hexo.io/zh-cn/docs/asset-folders.html" target="_blank" rel="noopener">Hexo doc 资源文件夹</a><br>[4] <a href="https://coding.net/help/doc/project/markdown.html#section-2" target="_blank" rel="noopener">Markdown语法介绍</a><br>[5] <a href="https://sspai.com/post/37273" target="_blank" rel="noopener">少为人知的Markdown基础知识</a><br>[6] <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener">Mastering Markdown</a><br>[7] <a href="http://aiellochan.com/2018/02/13/hexo/Hexo-%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%A4%9A%E4%B8%AA-categories/" target="_blank" rel="noopener">Hexo 一篇文章多个 categories</a></p>
   
@@ -325,7 +335,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2017/08/01/hexo中MarkDown语法，持续更新/" data-title="hexo中MarkDown语法 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2017/08/01/hexo%E4%B8%ADMarkDown%E8%AF%AD%E6%B3%95%EF%BC%8C%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" data-title="hexo中MarkDown语法 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -338,9 +348,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2017/08/04/搭建vps/" title="搭建vps">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   搭建vps</span>
 </a>
@@ -348,8 +358,8 @@
 
 
 <div class="next">
-<a href="/2017/08/01/pwn入门/" title="安全入门">
- <strong>下一篇：</strong><br> 
+<a href="/2017/08/01/pwn入门/"  title="安全入门">
+ <strong>下一篇：</strong><br/> 
  <span>安全入门
 </span>
 </a>
@@ -369,9 +379,9 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#文章头格式"><span class="toc-number">1.</span> <span class="toc-text">文章头格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分级标题"><span class="toc-number">2.</span> <span class="toc-text">分级标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斜体与粗体"><span class="toc-number">3.</span> <span class="toc-text">斜体与粗体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分割线和删除线"><span class="toc-number">4.</span> <span class="toc-text">分割线和删除线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#超链接"><span class="toc-number">5.</span> <span class="toc-text">超链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文字链接"><span class="toc-number">5.1.</span> <span class="toc-text">文字链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片链接"><span class="toc-number">5.2.</span> <span class="toc-text">图片链接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hexo的文章资源文件夹-3"><span class="toc-number">5.2.1.</span> <span class="toc-text">hexo的文章资源文件夹[3]</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视频链接"><span class="toc-number">5.3.</span> <span class="toc-text">视频链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">6.</span> <span class="toc-text">引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#外引用"><span class="toc-number">6.1.</span> <span class="toc-text">外引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内引用"><span class="toc-number">6.2.</span> <span class="toc-text">内引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交叉引用"><span class="toc-number">6.3.</span> <span class="toc-text">交叉引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表格"><span class="toc-number">7.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列"><span class="toc-number">8.</span> <span class="toc-text">序列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无序列表"><span class="toc-number">8.1.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序列表"><span class="toc-number">8.2.</span> <span class="toc-text">有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码块"><span class="toc-number">9.</span> <span class="toc-text">代码块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#行内代码块"><span class="toc-number">9.1.</span> <span class="toc-text">行内代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多行代码块"><span class="toc-number">9.2.</span> <span class="toc-text">多行代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加强的代码块"><span class="toc-number">9.3.</span> <span class="toc-text">加强的代码块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">10.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#段落与换行"><span class="toc-number">11.</span> <span class="toc-text">段落与换行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LaTeX-公式"><span class="toc-number">12.</span> <span class="toc-text">LaTeX 公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#支持markdown公式编辑"><span class="toc-number">13.</span> <span class="toc-text">支持markdown公式编辑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入公式"><span class="toc-number">13.1.</span> <span class="toc-text">插入公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入上下标"><span class="toc-number">13.2.</span> <span class="toc-text">输入上下标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入括号和分隔符"><span class="toc-number">13.3.</span> <span class="toc-text">输入括号和分隔符</span></a></li></ol></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#参考网站"><span class="toc-number"></span> <span class="toc-text">参考网站</span></a>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#文章头格式"><span class="toc-number">1.</span> <span class="toc-text">文章头格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分级标题"><span class="toc-number">2.</span> <span class="toc-text">分级标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斜体与粗体"><span class="toc-number">3.</span> <span class="toc-text">斜体与粗体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分割线和删除线"><span class="toc-number">4.</span> <span class="toc-text">分割线和删除线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#超链接"><span class="toc-number">5.</span> <span class="toc-text">超链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文字链接"><span class="toc-number">5.1.</span> <span class="toc-text">文字链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片链接"><span class="toc-number">5.2.</span> <span class="toc-text">图片链接</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hexo的文章资源文件夹-3"><span class="toc-number">5.2.1.</span> <span class="toc-text">hexo的文章资源文件夹[3]</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视频链接"><span class="toc-number">5.3.</span> <span class="toc-text">视频链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">6.</span> <span class="toc-text">引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#外引用"><span class="toc-number">6.1.</span> <span class="toc-text">外引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内引用"><span class="toc-number">6.2.</span> <span class="toc-text">内引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交叉引用"><span class="toc-number">6.3.</span> <span class="toc-text">交叉引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表格"><span class="toc-number">7.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列"><span class="toc-number">8.</span> <span class="toc-text">序列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无序列表"><span class="toc-number">8.1.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序列表"><span class="toc-number">8.2.</span> <span class="toc-text">有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码块"><span class="toc-number">9.</span> <span class="toc-text">代码块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#行内代码块"><span class="toc-number">9.1.</span> <span class="toc-text">行内代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多行代码块"><span class="toc-number">9.2.</span> <span class="toc-text">多行代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加强的代码块"><span class="toc-number">9.3.</span> <span class="toc-text">加强的代码块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">10.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#段落与换行"><span class="toc-number">11.</span> <span class="toc-text">段落与换行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LaTeX-公式"><span class="toc-number">12.</span> <span class="toc-text">LaTeX 公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#支持markdown公式编辑"><span class="toc-number">13.</span> <span class="toc-text">支持markdown公式编辑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入公式"><span class="toc-number">13.1.</span> <span class="toc-text">插入公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入上下标"><span class="toc-number">13.2.</span> <span class="toc-text">输入上下标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入括号和分隔符"><span class="toc-number">13.3.</span> <span class="toc-text">输入括号和分隔符</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考网站"><span class="toc-number"></span> <span class="toc-text">参考网站</span></a>
  
-  </li></div>
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
@@ -381,7 +391,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -396,7 +406,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -404,15 +414,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -421,6 +435,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -440,7 +458,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -484,11 +502,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -497,10 +515,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -521,11 +535,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -537,11 +551,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -558,10 +572,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -585,11 +595,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -620,7 +634,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -629,12 +643,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -654,7 +668,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -844,7 +858,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

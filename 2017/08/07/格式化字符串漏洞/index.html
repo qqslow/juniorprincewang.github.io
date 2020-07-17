@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>格式化字符串漏洞 | TO DO</title>
@@ -12,17 +12,17 @@
 
     
     <meta name="description" content="格式化漏洞的原理printf函数在处理参数的时候，每遇到一个%开头的标记，就会根据这个%开头的字符所规定的规则执行，即使没有传入参数，也会认定栈上相应的位置为参数。每一个格式化字符串的 % 之后可以跟一个十进制的常数再跟一个 $ 符号, 表示格式化指定位置的参数">
-<meta name="keywords" content="pwn,格式化字符串">
 <meta property="og:type" content="article">
 <meta property="og:title" content="格式化字符串漏洞">
-<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/07/格式化字符串漏洞/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2017/08/07/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="格式化漏洞的原理printf函数在处理参数的时候，每遇到一个%开头的标记，就会根据这个%开头的字符所规定的规则执行，即使没有传入参数，也会认定栈上相应的位置为参数。每一个格式化字符串的 % 之后可以跟一个十进制的常数再跟一个 $ 符号, 表示格式化指定位置的参数">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.359Z">
+<meta property="article:published_time" content="2017-08-07T12:38:44.000Z">
+<meta property="article:modified_time" content="2019-06-12T06:41:26.359Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="格式化字符串">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="格式化字符串漏洞">
-<meta name="twitter:description" content="格式化漏洞的原理printf函数在处理参数的时候，每遇到一个%开头的标记，就会根据这个%开头的字符所规定的规则执行，即使没有传入参数，也会认定栈上相应的位置为参数。每一个格式化字符串的 % 之后可以跟一个十进制的常数再跟一个 $ 符号, 表示格式化指定位置的参数">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -34,16 +34,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -66,13 +70,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -88,7 +92,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2017-08-07T12:38:44.000Z" itemprop="datePublished"> Published 2017-08-07</time>
     
   </p>
@@ -98,9 +102,9 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#格式化字符串利用目的"><span class="toc-number">1.</span> <span class="toc-text">格式化字符串利用目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问任意位置内存"><span class="toc-number">2.</span> <span class="toc-text">访问任意位置内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在内存中写一个数字"><span class="toc-number">3.</span> <span class="toc-text">在内存中写一个数字</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#知识点"><span class="toc-number"></span> <span class="toc-text">知识点</span></a>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#格式化字符串利用目的"><span class="toc-number">1.</span> <span class="toc-text">格式化字符串利用目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问任意位置内存"><span class="toc-number">2.</span> <span class="toc-text">访问任意位置内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在内存中写一个数字"><span class="toc-number">3.</span> <span class="toc-text">在内存中写一个数字</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#知识点"><span class="toc-number"></span> <span class="toc-text">知识点</span></a>
 		
-		</li></div>
+		</div>
 		
 		<p>格式化漏洞的原理<br>printf函数在处理参数的时候，每遇到一个%开头的标记，就会根据这个%开头的字符所规定的规则执行，即使没有传入参数，也会认定栈上相应的位置为参数。<br>每一个格式化字符串的 % 之后可以跟一个十进制的常数再跟一个 $ 符号, 表示格式化指定位置的参数</p>
 <a id="more"></a>
@@ -207,7 +211,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2017/08/07/格式化字符串漏洞/" data-title="格式化字符串漏洞 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2017/08/07/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/" data-title="格式化字符串漏洞 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -220,9 +224,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2017/08/07/Hexo的配置/" title="Hexo的搭建">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   Hexo的搭建</span>
 </a>
@@ -230,8 +234,8 @@
 
 
 <div class="next">
-<a href="/2017/08/06/密码学EXM/" title="密码学EXM?">
- <strong>下一篇：</strong><br> 
+<a href="/2017/08/06/密码学EXM/"  title="密码学EXM?">
+ <strong>下一篇：</strong><br/> 
  <span>密码学EXM?
 </span>
 </a>
@@ -251,9 +255,9 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#格式化字符串利用目的"><span class="toc-number">1.</span> <span class="toc-text">格式化字符串利用目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问任意位置内存"><span class="toc-number">2.</span> <span class="toc-text">访问任意位置内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在内存中写一个数字"><span class="toc-number">3.</span> <span class="toc-text">在内存中写一个数字</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#知识点"><span class="toc-number"></span> <span class="toc-text">知识点</span></a>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#格式化字符串利用目的"><span class="toc-number">1.</span> <span class="toc-text">格式化字符串利用目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问任意位置内存"><span class="toc-number">2.</span> <span class="toc-text">访问任意位置内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在内存中写一个数字"><span class="toc-number">3.</span> <span class="toc-text">在内存中写一个数字</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#知识点"><span class="toc-number"></span> <span class="toc-text">知识点</span></a>
  
-  </li></div>
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
@@ -263,7 +267,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -278,7 +282,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -286,15 +290,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -303,6 +311,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -322,7 +334,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -366,11 +378,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -379,10 +391,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -403,11 +411,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -419,11 +427,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -440,10 +448,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -467,11 +471,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -502,7 +510,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -511,12 +519,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -536,7 +544,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -726,7 +734,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

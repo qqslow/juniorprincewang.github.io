@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>Git命令 | TO DO</title>
@@ -12,17 +12,16 @@
 
     
     <meta name="description" content="总结经常使用到的git命令。">
-<meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git命令">
-<meta property="og:url" content="http://juniorprincewang.github.io/2019/05/13/Git命令/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2019/05/13/Git%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="总结经常使用到的git命令。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-17T12:22:31.477Z">
+<meta property="article:published_time" content="2019-05-13T06:58:10.000Z">
+<meta property="article:modified_time" content="2020-05-19T14:17:35.169Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Git命令">
-<meta name="twitter:description" content="总结经常使用到的git命令。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -34,16 +33,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -66,13 +69,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -88,7 +91,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2019-05-13T06:58:10.000Z" itemprop="datePublished"> Published 2019-05-13</time>
     
   </p>
@@ -98,7 +101,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#init-repository"><span class="toc-number">1.</span> <span class="toc-text">init repository</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-number">2.</span> <span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#branch"><span class="toc-number">3.</span> <span class="toc-text">branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tag"><span class="toc-number">4.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#版本管理"><span class="toc-number">5.</span> <span class="toc-text">版本管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#git-reset"><span class="toc-number">5.1.</span> <span class="toc-text">git reset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Revert"><span class="toc-number">5.2.</span> <span class="toc-text">Revert</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-all-changes"><span class="toc-number">6.</span> <span class="toc-text">undo all changes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ignoring-changes-to-a-single-already-versioned-file"><span class="toc-number">6.1.</span> <span class="toc-text">ignoring changes to a single already versioned file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository"><span class="toc-number">6.2.</span> <span class="toc-text">completely ignore a specific single file preventing it from being created at repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-without-binary-files"><span class="toc-number">6.3.</span> <span class="toc-text">gitignore without binary files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-does-not-work"><span class="toc-number">6.4.</span> <span class="toc-text">gitignore does not work</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github操作"><span class="toc-number">7.</span> <span class="toc-text">github操作</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#init-repository"><span class="toc-number">1.</span> <span class="toc-text">init repository</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-number">2.</span> <span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#branch"><span class="toc-number">3.</span> <span class="toc-text">branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tag"><span class="toc-number">4.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#版本管理"><span class="toc-number">5.</span> <span class="toc-text">版本管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#git-reset"><span class="toc-number">5.1.</span> <span class="toc-text">git reset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Revert"><span class="toc-number">5.2.</span> <span class="toc-text">Revert</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-all-changes"><span class="toc-number">6.</span> <span class="toc-text">undo all changes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ignoring-changes-to-a-single-already-versioned-file"><span class="toc-number">6.1.</span> <span class="toc-text">ignoring changes to a single already versioned file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository"><span class="toc-number">6.2.</span> <span class="toc-text">completely ignore a specific single file preventing it from being created at repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitkeep"><span class="toc-number">6.3.</span> <span class="toc-text">.gitkeep</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-without-binary-files"><span class="toc-number">6.4.</span> <span class="toc-text">gitignore without binary files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-does-not-work"><span class="toc-number">6.5.</span> <span class="toc-text">gitignore does not work</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git-checkout-error"><span class="toc-number">6.6.</span> <span class="toc-text">git checkout error</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github操作"><span class="toc-number">7.</span> <span class="toc-text">github操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#github如何向开源项目提交pr"><span class="toc-number">7.1.</span> <span class="toc-text">github如何向开源项目提交pr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git-fork后同步-upstream-repository"><span class="toc-number">7.2.</span> <span class="toc-text">git fork后同步 upstream repository</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -174,14 +177,33 @@
 <ul>
 <li>列出所有tag</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git tag -l</span><br><span class="line">git tag -l &apos;v3.14.*&apos;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git tag  </span><br><span class="line">git tag -l</span><br><span class="line">git tag -l <span class="string">'v3.14.*'</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>checkout a specific tag</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout tags/&lt;tag_name&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout tags/&lt;tag_name&gt;</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://stackoverflow.com/a/792027" target="_blank" rel="noopener">Download a specific tag with Git</a></p>
+<ul>
+<li>add tag  </li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v2.1.0 -m <span class="string">"xyz feature is released in this tag."</span></span><br><span class="line">git tag v2.0.0</span><br></pre></td></tr></table></figure>
+
+<p>push tag  </p>
+<p>just push particular tag  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin v1.0.3</span><br></pre></td></tr></table></figure>
+
+<p>push all tags:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --tags</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://stackoverflow.com/a/48534947" target="_blank" rel="noopener">Create a tag in a GitHub repository</a>  </p>
+<ul>
+<li>delete tag  </li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// delete a remote tag</span><br><span class="line">git push --delete origin v1.0.0</span><br><span class="line">// also delete the <span class="built_in">local</span> tag</span><br><span class="line">git tag --delete tagname</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://stackoverflow.com/a/5480292" target="_blank" rel="noopener">How to delete a remote tag?</a>  </p>
 <h1 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h1><ul>
 <li><a href="https://github.com/geeeeeeeeek/git-recipes/wiki/5.2-%E4%BB%A3%E7%A0%81%E5%9B%9E%E6%BB%9A%EF%BC%9AReset%E3%80%81Checkout%E3%80%81Revert-%E7%9A%84%E9%80%89%E6%8B%A9" target="_blank" rel="noopener">5.2 代码回滚：Reset、Checkout、Revert 的选择</a>  </li>
 </ul>
@@ -220,6 +242,12 @@
 
 <p><a href="https://stackoverflow.com/a/4475506" target="_blank" rel="noopener">Add all files to a commit except a single file</a></p>
 <h2 id="completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository"><a href="#completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository" class="headerlink" title="completely ignore a specific single file preventing it from being created at repository"></a>completely ignore a specific single file preventing it from being created at repository</h2><p>完全忽略某一文件：<br>在仓库根目录创建 <em>.gitignore</em> 文件，并将要忽略的文件相对路径写入。</p>
+<h2 id="gitkeep"><a href="#gitkeep" class="headerlink" title=".gitkeep"></a><em>.gitkeep</em></h2><p>git无法追踪一个空的文件夹，当用户需要追踪(track)一个空的文件夹的时候，按照惯例，大家会把一个称为.gitkeep的文件放在这些文件夹里。  </p>
+<p>主要用在：使git忽略一个文件夹下的所有文件，并保留该文件夹。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># .gitignore </span><br><span class="line"></span><br><span class="line"># ignore all files in lib/</span><br><span class="line">lib/*</span><br><span class="line"># except for .gitkeep</span><br><span class="line">!.gitkeep</span><br><span class="line"># ignore TODO file in root directory,not subdir/TODO</span><br><span class="line">/TODO</span><br></pre></td></tr></table></figure>
+
+<p>当.gitignore采用上面的写法时，git会忽略lib文件夹下除了.gitkeep外的所有文件。  </p>
+<p>+<a href="https://www.jianshu.com/p/2507dfdb35d8" target="_blank" rel="noopener">.gitkeep说明</a>  </p>
 <h2 id="gitignore-without-binary-files"><a href="#gitignore-without-binary-files" class="headerlink" title="gitignore without binary files"></a>gitignore without binary files</h2><ul>
 <li><a href="https://stackoverflow.com/a/7834886" target="_blank" rel="noopener">ignore binary file in git</a></li>
 </ul>
@@ -235,6 +263,20 @@
 <p>或者简单粗暴全部删除再提交。  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rm -rf --cached .</span><br><span class="line">git add .</span><br></pre></td></tr></table></figure>
 
+<h2 id="git-checkout-error"><a href="#git-checkout-error" class="headerlink" title="git checkout error"></a>git checkout error</h2><p>git切换分支时出错：</p>
+<blockquote>
+<p>error: The following untracked working tree files would be overwritten by checkout</p>
+</blockquote>
+<p>这是由于一些untracked working tree files引起的问题。解决方法：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clean -d -fx</span><br></pre></td></tr></table></figure>
+
+<p><code>git clean</code> 参数:  </p>
+<ul>
+<li><code>-n</code> 显示将要删除的文件和目录；</li>
+<li><code>-x</code> 删除忽略文件已经对git来说不识别的文件</li>
+<li><code>-d</code> 删除未被添加到git的路径中的文件</li>
+<li><code>-f</code> 强制运行</li>
+</ul>
 <h1 id="github操作"><a href="#github操作" class="headerlink" title="github操作"></a>github操作</h1><p>为了方便管理repository，免去每次push时候输入账户名和密码，接下来我们需要生成SSH公私钥对，并将公钥上传到 project-&gt;Settings-&gt;Deploy keys-&gt;Add deploy key。<br>首先<a href="https://help.github.com/en/articles/checking-for-existing-ssh-keys" target="_blank" rel="noopener">检查是否已经存在 SSH key</a> 。  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -al ~/.ssh</span><br></pre></td></tr></table></figure>
 
@@ -262,6 +304,56 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 <p>之后将 <em>~/.ssh/id_rsa.pub</em> 内容拷贝到github的project-&gt;Settings-&gt;Deploy keys-&gt;Add deploy key。</p>
 <p>这时执行 <code>push</code> 命令可能还会出现输入密码的问题，或者说没有权限。<br>查看<em>.git/config</em>文件查看传输协议, 如果是https模式改为ssh模式即可。  </p>
 <p><a href="https://www.jianshu.com/p/8d0fae451745" target="_blank" rel="noopener">Github Deploy Key 操作如何避免输密码</a>  </p>
+<h2 id="github如何向开源项目提交pr"><a href="#github如何向开源项目提交pr" class="headerlink" title="github如何向开源项目提交pr"></a>github如何向开源项目提交pr</h2><ol>
+<li><p><code>fork</code> 到自己的仓库  </p>
+</li>
+<li><p>git clone 到本地  </p>
+</li>
+<li><p>上游建立连接<br><code>git remote add upstream 开源项目地址</code></p>
+</li>
+<li><p>创建开发分支 (非必须)<br><code>git checkout -b dev</code></p>
+</li>
+<li><p>修改提交代码  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git status </span><br><span class="line">git add . </span><br><span class="line">git commit -m &quot;message&quot;</span><br><span class="line">git push origin branch</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同步代码三部曲  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git fetch upstream </span><br><span class="line">git rebase upstream/master </span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>提交pr<br>去自己github仓库对应fork的项目下new pull request</p>
+</li>
+</ol>
+<ul>
+<li><a href="https://github.com/gnipbao/iblog/issues/19" target="_blank" rel="noopener">github如何向开源项目提交pr </a>  </li>
+</ul>
+<h2 id="git-fork后同步-upstream-repository"><a href="#git-fork后同步-upstream-repository" class="headerlink" title="git fork后同步 upstream repository"></a>git fork后同步 upstream repository</h2><p>分两个步骤，</p>
+<ol>
+<li>给fork配置远程仓库</li>
+</ol>
+<p>查看远程仓库。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+
+<p>指定一个可以同步的远程upstream 仓库。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git</span><br></pre></td></tr></table></figure>
+
+<p>可以再次验证新的远程的upstream 仓库。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>同步fork  </li>
+</ol>
+<p>从上游仓库 fetch 分支和提交点，所有上游分支并会被存储在本地分支，比如 master分支的提交会存储在 upstream/master。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch upstream</span><br></pre></td></tr></table></figure>
+
+<p>切换到本地分支(比如master)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure>
+
+<p>将 upstream/master分支的更新merge到本地master分支。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge upstream/master</span><br></pre></td></tr></table></figure>
+
+<p>提交更新</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.zhihu.com/question/28676261" target="_blank" rel="noopener">gitlab或github下fork后如何同步源的新更新内容？</a><br><a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork" target="_blank" rel="noopener">Configuring a remote for a fork</a><br><a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork" target="_blank" rel="noopener">Sync a fork of a repository to keep it up-to-date with the upstream repository.</a>   </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -284,7 +376,7 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2019/05/13/Git命令/" data-title="Git命令 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2019/05/13/Git%E5%91%BD%E4%BB%A4/" data-title="Git命令 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -297,9 +389,9 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2019/05/18/expect实现shell得自动化交互/" title="expect实现shell得自动化交互">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   expect实现shell得自动化交互</span>
 </a>
@@ -307,8 +399,8 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 
 
 <div class="next">
-<a href="/2019/05/07/CUDA-handbook/" title="CUDA handbook">
- <strong>下一篇：</strong><br> 
+<a href="/2019/05/07/CUDA-handbook/"  title="CUDA handbook">
+ <strong>下一篇：</strong><br/> 
  <span>CUDA handbook
 </span>
 </a>
@@ -328,7 +420,7 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#init-repository"><span class="toc-number">1.</span> <span class="toc-text">init repository</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-number">2.</span> <span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#branch"><span class="toc-number">3.</span> <span class="toc-text">branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tag"><span class="toc-number">4.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#版本管理"><span class="toc-number">5.</span> <span class="toc-text">版本管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#git-reset"><span class="toc-number">5.1.</span> <span class="toc-text">git reset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Revert"><span class="toc-number">5.2.</span> <span class="toc-text">Revert</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-all-changes"><span class="toc-number">6.</span> <span class="toc-text">undo all changes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ignoring-changes-to-a-single-already-versioned-file"><span class="toc-number">6.1.</span> <span class="toc-text">ignoring changes to a single already versioned file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository"><span class="toc-number">6.2.</span> <span class="toc-text">completely ignore a specific single file preventing it from being created at repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-without-binary-files"><span class="toc-number">6.3.</span> <span class="toc-text">gitignore without binary files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-does-not-work"><span class="toc-number">6.4.</span> <span class="toc-text">gitignore does not work</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github操作"><span class="toc-number">7.</span> <span class="toc-text">github操作</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#init-repository"><span class="toc-number">1.</span> <span class="toc-text">init repository</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clone"><span class="toc-number">2.</span> <span class="toc-text">clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#branch"><span class="toc-number">3.</span> <span class="toc-text">branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tag"><span class="toc-number">4.</span> <span class="toc-text">tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#版本管理"><span class="toc-number">5.</span> <span class="toc-text">版本管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#git-reset"><span class="toc-number">5.1.</span> <span class="toc-text">git reset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Revert"><span class="toc-number">5.2.</span> <span class="toc-text">Revert</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undo-all-changes"><span class="toc-number">6.</span> <span class="toc-text">undo all changes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ignoring-changes-to-a-single-already-versioned-file"><span class="toc-number">6.1.</span> <span class="toc-text">ignoring changes to a single already versioned file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#completely-ignore-a-specific-single-file-preventing-it-from-being-created-at-repository"><span class="toc-number">6.2.</span> <span class="toc-text">completely ignore a specific single file preventing it from being created at repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitkeep"><span class="toc-number">6.3.</span> <span class="toc-text">.gitkeep</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-without-binary-files"><span class="toc-number">6.4.</span> <span class="toc-text">gitignore without binary files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-does-not-work"><span class="toc-number">6.5.</span> <span class="toc-text">gitignore does not work</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git-checkout-error"><span class="toc-number">6.6.</span> <span class="toc-text">git checkout error</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#github操作"><span class="toc-number">7.</span> <span class="toc-text">github操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#github如何向开源项目提交pr"><span class="toc-number">7.1.</span> <span class="toc-text">github如何向开源项目提交pr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git-fork后同步-upstream-repository"><span class="toc-number">7.2.</span> <span class="toc-text">git fork后同步 upstream repository</span></a></li></ol></li></ol>
  
   </div>
 
@@ -340,7 +432,7 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -355,7 +447,7 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -363,15 +455,19 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -380,6 +476,10 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -399,7 +499,7 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -443,11 +543,11 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -456,10 +556,6 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -480,11 +576,11 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -496,11 +592,11 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -517,10 +613,6 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -544,11 +636,15 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -579,7 +675,7 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -588,12 +684,12 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -613,7 +709,7 @@ id_rsa.pub</code></pre><p>如果想继续使用上述密钥，可直接将公钥
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -803,7 +899,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>shell脚本编程简介 | TO DO</title>
@@ -12,17 +12,16 @@
 
     
     <meta name="description" content="本篇博客介绍shell脚本的语法知识。">
-<meta name="keywords" content="shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell脚本编程简介">
-<meta property="og:url" content="http://juniorprincewang.github.io/2018/04/16/shell脚本编程简介/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/04/16/shell%E8%84%9A%E6%9C%AC%E7%BC%96%E7%A8%8B%E7%AE%80%E4%BB%8B/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客介绍shell脚本的语法知识。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-27T03:23:38.886Z">
+<meta property="article:published_time" content="2018-04-16T01:43:08.000Z">
+<meta property="article:modified_time" content="2020-04-05T12:07:59.451Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="shell">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="shell脚本编程简介">
-<meta name="twitter:description" content="本篇博客介绍shell脚本的语法知识。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -34,16 +33,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -66,13 +69,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -88,7 +91,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2018-04-16T01:43:08.000Z" itemprop="datePublished"> Published 2018-04-16</time>
     
   </p>
@@ -98,7 +101,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#解释器"><span class="toc-number">1.</span> <span class="toc-text">解释器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-number">2.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义变量"><span class="toc-number">2.1.</span> <span class="toc-text">定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用变量"><span class="toc-number">2.2.</span> <span class="toc-text">使用变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重定义变量"><span class="toc-number">2.3.</span> <span class="toc-text">重定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊变量"><span class="toc-number">2.4.</span> <span class="toc-text">特殊变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#脚本传参"><span class="toc-number">2.4.1.</span> <span class="toc-text">脚本传参</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-number">4.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单引号"><span class="toc-number">4.1.</span> <span class="toc-text">单引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双引号"><span class="toc-number">4.2.</span> <span class="toc-text">双引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串操作"><span class="toc-number">4.3.</span> <span class="toc-text">字符串操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拼接字符串"><span class="toc-number">4.3.1.</span> <span class="toc-text">拼接字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取字符串长度："><span class="toc-number">4.3.2.</span> <span class="toc-text">获取字符串长度：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#提取子字符串"><span class="toc-number">4.3.3.</span> <span class="toc-text">提取子字符串</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多"><span class="toc-number">4.4.</span> <span class="toc-text">更多</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试"><span class="toc-number">5.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-number">6.</span> <span class="toc-text">条件判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#流程控制"><span class="toc-number">6.1.</span> <span class="toc-text">流程控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if-else"><span class="toc-number">6.2.</span> <span class="toc-text">if else</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#if"><span class="toc-number">6.2.1.</span> <span class="toc-text">if</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-1"><span class="toc-number">6.2.2.</span> <span class="toc-text">if else</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-if-else"><span class="toc-number">6.2.3.</span> <span class="toc-text">if else-if else</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-while"><span class="toc-number">6.3.</span> <span class="toc-text">for while</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for"><span class="toc-number">6.3.1.</span> <span class="toc-text">for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C风格的for"><span class="toc-number">6.3.2.</span> <span class="toc-text">C风格的for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#while"><span class="toc-number">6.3.3.</span> <span class="toc-text">while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无限循环"><span class="toc-number">6.3.4.</span> <span class="toc-text">无限循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#until"><span class="toc-number">6.3.5.</span> <span class="toc-text">until</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#case"><span class="toc-number">6.4.</span> <span class="toc-text">case</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#amp-amp-和"><span class="toc-number">6.5.</span> <span class="toc-text">&amp;&amp; 和 ||</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件包含"><span class="toc-number">7.</span> <span class="toc-text">文件包含</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户输入"><span class="toc-number">8.</span> <span class="toc-text">用户输入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#执行脚本时传入"><span class="toc-number">8.1.</span> <span class="toc-text">执行脚本时传入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本运行中输入"><span class="toc-number">8.2.</span> <span class="toc-text">脚本运行中输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select菜单"><span class="toc-number">8.3.</span> <span class="toc-text">select菜单</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stdin和stdout"><span class="toc-number">9.</span> <span class="toc-text">stdin和stdout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用的命令"><span class="toc-number">10.</span> <span class="toc-text">常用的命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">10.1.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep"><span class="toc-number">10.2.</span> <span class="toc-text">grep</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排除grep自身"><span class="toc-number">10.2.1.</span> <span class="toc-text">排除grep自身</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找与target相邻的结果"><span class="toc-number">10.2.2.</span> <span class="toc-text">查找与target相邻的结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#awk"><span class="toc-number">10.3.</span> <span class="toc-text">awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">10.4.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入"><span class="toc-number">10.4.1.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换"><span class="toc-number">10.4.2.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-number">10.4.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xargs"><span class="toc-number">10.5.</span> <span class="toc-text">xargs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#curl"><span class="toc-number">10.6.</span> <span class="toc-text">curl</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">11.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Makefile-中判断一个文件是否存在"><span class="toc-number">12.</span> <span class="toc-text">Makefile 中判断一个文件是否存在</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">13.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#解释器"><span class="toc-number">1.</span> <span class="toc-text">解释器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-number">2.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义变量"><span class="toc-number">2.1.</span> <span class="toc-text">定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组"><span class="toc-number">2.2.</span> <span class="toc-text">数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用变量"><span class="toc-number">2.3.</span> <span class="toc-text">使用变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重定义变量"><span class="toc-number">2.4.</span> <span class="toc-text">重定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊变量"><span class="toc-number">2.5.</span> <span class="toc-text">特殊变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#脚本传参"><span class="toc-number">2.5.1.</span> <span class="toc-text">脚本传参</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-number">4.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单引号"><span class="toc-number">4.1.</span> <span class="toc-text">单引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双引号"><span class="toc-number">4.2.</span> <span class="toc-text">双引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串操作"><span class="toc-number">4.3.</span> <span class="toc-text">字符串操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拼接字符串"><span class="toc-number">4.3.1.</span> <span class="toc-text">拼接字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取字符串长度："><span class="toc-number">4.3.2.</span> <span class="toc-text">获取字符串长度：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#提取子字符串"><span class="toc-number">4.3.3.</span> <span class="toc-text">提取子字符串</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多"><span class="toc-number">4.4.</span> <span class="toc-text">更多</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试"><span class="toc-number">5.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-number">6.</span> <span class="toc-text">条件判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#流程控制"><span class="toc-number">6.1.</span> <span class="toc-text">流程控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if-else"><span class="toc-number">6.2.</span> <span class="toc-text">if else</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#if"><span class="toc-number">6.2.1.</span> <span class="toc-text">if</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-1"><span class="toc-number">6.2.2.</span> <span class="toc-text">if else</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-if-else"><span class="toc-number">6.2.3.</span> <span class="toc-text">if else-if else</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-while"><span class="toc-number">6.3.</span> <span class="toc-text">for while</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for"><span class="toc-number">6.3.1.</span> <span class="toc-text">for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C风格的for"><span class="toc-number">6.3.2.</span> <span class="toc-text">C风格的for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#while"><span class="toc-number">6.3.3.</span> <span class="toc-text">while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无限循环"><span class="toc-number">6.3.4.</span> <span class="toc-text">无限循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#until"><span class="toc-number">6.3.5.</span> <span class="toc-text">until</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#case"><span class="toc-number">6.4.</span> <span class="toc-text">case</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#amp-amp-和"><span class="toc-number">6.5.</span> <span class="toc-text">&amp;&amp; 和 ||</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件包含"><span class="toc-number">7.</span> <span class="toc-text">文件包含</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户输入"><span class="toc-number">8.</span> <span class="toc-text">用户输入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#执行脚本时传入"><span class="toc-number">8.1.</span> <span class="toc-text">执行脚本时传入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本运行中输入"><span class="toc-number">8.2.</span> <span class="toc-text">脚本运行中输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select菜单"><span class="toc-number">8.3.</span> <span class="toc-text">select菜单</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stdin和stdout"><span class="toc-number">9.</span> <span class="toc-text">stdin和stdout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用的命令"><span class="toc-number">10.</span> <span class="toc-text">常用的命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">10.1.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep"><span class="toc-number">10.2.</span> <span class="toc-text">grep</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排除grep自身"><span class="toc-number">10.2.1.</span> <span class="toc-text">排除grep自身</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找与target相邻的结果"><span class="toc-number">10.2.2.</span> <span class="toc-text">查找与target相邻的结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#awk"><span class="toc-number">10.3.</span> <span class="toc-text">awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">10.4.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入"><span class="toc-number">10.4.1.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换"><span class="toc-number">10.4.2.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-number">10.4.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xargs"><span class="toc-number">10.5.</span> <span class="toc-text">xargs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#curl"><span class="toc-number">10.6.</span> <span class="toc-text">curl</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">11.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Makefile-中判断一个文件是否存在"><span class="toc-number">12.</span> <span class="toc-text">Makefile 中判断一个文件是否存在</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">13.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -111,7 +114,23 @@
 <h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><h2 id="定义变量"><a href="#定义变量" class="headerlink" title="定义变量"></a>定义变量</h2><p>定义变量时，变量名不加美元符号 <code>$</code>，如：</p>
 <pre><code>your_name=&quot;test&quot;</code></pre><p>注意，<strong>变量名和等号之间不能有空格</strong>。</p>
 <p>除了显式地直接赋值，还可以用语句给变量赋值，如：</p>
-<pre><code>for file in `ls /etc`</code></pre><h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><p>使用一个定义过的变量，只要在变量名前面加美元符号 <code>$</code> 即可，如：</p>
+<pre><code>for file in `ls /etc`</code></pre><h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><ol>
+<li><p>声明数组  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">declare -a array</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>直接定义</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(1) array=(var1 var2 var3 ... varN)</span><br><span class="line">(2) array=([0]=var1 [1]=var2 [2]=var3 ... [n]=varN)</span><br><span class="line">(3) array[0]=var1</span><br><span class="line">    arrya[1]=var2</span><br><span class="line">    ...</span><br><span class="line">    array[n]=varN</span><br></pre></td></tr></table></figure>
+
+<p>使用数组：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$&#123;array[i]&#125;                     # 引用数组</span><br><span class="line">$&#123;array[*]&#125; 或$&#123;array[@]&#125;       # 数组所有成员</span><br><span class="line">$&#123;!array[*]&#125; 或$&#123;!array[@]&#125;     # 数组所有下标</span><br><span class="line">$&#123;#array[*]&#125; 或$&#123;#array[@]&#125;     # 数组元素个数</span><br><span class="line">$&#123;#array[0]&#125;                    # 数组第一个成员的长度</span><br></pre></td></tr></table></figure>
+
+<p>比如：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">COLOR=(&quot;red&quot; &quot;green&quot; &quot;yellow&quot; &quot;blue&quot; [5]=&quot;orange&quot;)</span><br><span class="line">echo $&#123;#COLOR[*]&#125;</span><br><span class="line">&gt; 5</span><br><span class="line"></span><br><span class="line">echo $&#123;!COLOR[*]&#125;</span><br><span class="line">&gt; 0 1 2 3 5</span><br><span class="line"></span><br><span class="line">for item in $&#123;COLOR[*]&#125;</span><br><span class="line">do</span><br><span class="line">    printf &quot;   %s/n&quot; $item</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://blog.csdn.net/ilovemilk/java/article/details/4959747" target="_blank" rel="noopener">https://blog.csdn.net/ilovemilk/java/article/details/4959747</a></p>
+<h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><p>使用一个定义过的变量，只要在变量名前面加美元符号 <code>$</code> 即可，如：</p>
 <pre><code>your_name=&quot;test&quot;
 echo $your_name
 echo ${your_name}</code></pre><p>变量名外面的花括号是可选的，加不加都行，加花括号是为了帮助解释器识别变量的边界，比如下面这种情况：</p>
@@ -132,12 +151,12 @@ echo $your_name</code></pre><p>这样写是合法的，但注意，第二次赋�
 <li><code>$*</code> - 传入 Bash 脚本所有参数.</li>
 <li><code>$@</code> - 传递给脚本或函数的所有参数。被双引号(“ “)包含时，与 $* 稍有不同。</li>
 <li><code>$?</code> - 上个命令的退出状态，或函数的返回值.</li>
-<li><code>$$</code> - 当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。.</li>
-<li>$USER - The username of the user running the script.</li>
-<li>$HOSTNAME - The hostname of the machine the script is running on.</li>
-<li>$SECONDS - The number of seconds since the script was started.</li>
-<li>$RANDOM - Returns a different random number each time is it referred to.</li>
-<li>$LINENO - Returns the current line number in the Bash script.</li>
+<li><code>$$</code> - 当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。  </li>
+<li><code>$USER</code> - The username of the user running the script.</li>
+<li><code>$HOSTNAME</code> - The hostname of the machine the script is running on.</li>
+<li><code>$SECONDS</code> - The number of seconds since the script was started.</li>
+<li><code>$RANDOM</code> - Returns a different random number each time is it referred to.</li>
+<li><code>$LINENO</code> - Returns the current line number in the Bash script.</li>
 </ul>
 <h3 id="脚本传参"><a href="#脚本传参" class="headerlink" title="脚本传参"></a>脚本传参</h3><p><a href="https://unix.stackexchange.com/a/31419" target="_blank" rel="noopener">How can I pass a command line argument into a shell script?</a><br>“<code>$0</code>“ 为脚本名称。<br>“<code>$1</code>“, “<code>$2</code>“, “<code>$3</code>“等分别为第1、第2、第3个参数。<br><code>$#</code> 为参数数量。  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;First arg: $1&quot;</span><br></pre></td></tr></table></figure>
@@ -297,7 +316,8 @@ do
     ...
     commandN
 done</code></pre><p>写成一行：</p>
-<pre><code>for var in item1 item2 ... itemN; do command1; command2… done;</code></pre><h3 id="C风格的for"><a href="#C风格的for" class="headerlink" title="C风格的for"></a>C风格的for</h3><pre><code>for (( EXP1; EXP2; EXP3 ))
+<pre><code>for var in item1 item2 ... itemN; do command1; command2… done;</code></pre><p>循环内部同样可以使用 <code>break</code> 、 <code>continue</code> 等命令。  </p>
+<h3 id="C风格的for"><a href="#C风格的for" class="headerlink" title="C风格的for"></a>C风格的for</h3><pre><code>for (( EXP1; EXP2; EXP3 ))
 do
     command1
     command2
@@ -374,6 +394,13 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 
 <p><a href="https://unix.stackexchange.com/a/264239" target="_blank" rel="noopener">How can I execute a script as root, execute some commands in it as a specific user and just one command as root</a><br><a href="https://askubuntu.com/questions/294736/run-a-shell-script-as-another-user-that-has-no-password" target="_blank" rel="noopener">Run a shell script as another user that has no password</a><br><a href="https://stackoverflow.com/a/10220200" target="_blank" rel="noopener">How to write a shell script that runs some commands as superuser and some commands not as superuser, without having to babysit it?</a>  </p>
 <ul>
+<li>获得版本  </li>
+</ul>
+<p><a href="https://stackoverflow.com/a/6245903" target="_blank" rel="noopener">Extract version number from file in shell script</a>  </p>
+<p>获得CUDA 版本号  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">version=<span class="string">"<span class="variable">$(cat /usr/local/cuda/version.txt | head -n1|cut -d " " -f3)</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$version</span></span><br><span class="line"></span><br><span class="line">majorminor=<span class="variable">$&#123;version%.*&#125;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$majorminor</span></span><br></pre></td></tr></table></figure>
+
+<ul>
 <li>比较版本</li>
 </ul>
 <p><a href="https://unix.stackexchange.com/a/285928" target="_blank" rel="noopener">How to compare a program’s version in a shell script?</a><br><a href="https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash" target="_blank" rel="noopener">How to compare two strings in dot separated version format in Bash?</a></p>
@@ -421,7 +448,7 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2018/04/16/shell脚本编程简介/" data-title="shell脚本编程简介 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2018/04/16/shell%E8%84%9A%E6%9C%AC%E7%BC%96%E7%A8%8B%E7%AE%80%E4%BB%8B/" data-title="shell脚本编程简介 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -434,9 +461,9 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2018/04/18/实验吧-web-writeup/" title="实验吧 web writeup">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   实验吧 web writeup</span>
 </a>
@@ -444,8 +471,8 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 
 
 <div class="next">
-<a href="/2018/04/13/kvm虚拟机磁盘扩容/" title="kvm虚拟机磁盘扩容">
- <strong>下一篇：</strong><br> 
+<a href="/2018/04/13/kvm虚拟机磁盘扩容/"  title="kvm虚拟机磁盘扩容">
+ <strong>下一篇：</strong><br/> 
  <span>kvm虚拟机磁盘扩容
 </span>
 </a>
@@ -465,7 +492,7 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#解释器"><span class="toc-number">1.</span> <span class="toc-text">解释器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-number">2.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义变量"><span class="toc-number">2.1.</span> <span class="toc-text">定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用变量"><span class="toc-number">2.2.</span> <span class="toc-text">使用变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重定义变量"><span class="toc-number">2.3.</span> <span class="toc-text">重定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊变量"><span class="toc-number">2.4.</span> <span class="toc-text">特殊变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#脚本传参"><span class="toc-number">2.4.1.</span> <span class="toc-text">脚本传参</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-number">4.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单引号"><span class="toc-number">4.1.</span> <span class="toc-text">单引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双引号"><span class="toc-number">4.2.</span> <span class="toc-text">双引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串操作"><span class="toc-number">4.3.</span> <span class="toc-text">字符串操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拼接字符串"><span class="toc-number">4.3.1.</span> <span class="toc-text">拼接字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取字符串长度："><span class="toc-number">4.3.2.</span> <span class="toc-text">获取字符串长度：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#提取子字符串"><span class="toc-number">4.3.3.</span> <span class="toc-text">提取子字符串</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多"><span class="toc-number">4.4.</span> <span class="toc-text">更多</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试"><span class="toc-number">5.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-number">6.</span> <span class="toc-text">条件判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#流程控制"><span class="toc-number">6.1.</span> <span class="toc-text">流程控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if-else"><span class="toc-number">6.2.</span> <span class="toc-text">if else</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#if"><span class="toc-number">6.2.1.</span> <span class="toc-text">if</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-1"><span class="toc-number">6.2.2.</span> <span class="toc-text">if else</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-if-else"><span class="toc-number">6.2.3.</span> <span class="toc-text">if else-if else</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-while"><span class="toc-number">6.3.</span> <span class="toc-text">for while</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for"><span class="toc-number">6.3.1.</span> <span class="toc-text">for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C风格的for"><span class="toc-number">6.3.2.</span> <span class="toc-text">C风格的for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#while"><span class="toc-number">6.3.3.</span> <span class="toc-text">while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无限循环"><span class="toc-number">6.3.4.</span> <span class="toc-text">无限循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#until"><span class="toc-number">6.3.5.</span> <span class="toc-text">until</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#case"><span class="toc-number">6.4.</span> <span class="toc-text">case</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#amp-amp-和"><span class="toc-number">6.5.</span> <span class="toc-text">&amp;&amp; 和 ||</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件包含"><span class="toc-number">7.</span> <span class="toc-text">文件包含</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户输入"><span class="toc-number">8.</span> <span class="toc-text">用户输入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#执行脚本时传入"><span class="toc-number">8.1.</span> <span class="toc-text">执行脚本时传入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本运行中输入"><span class="toc-number">8.2.</span> <span class="toc-text">脚本运行中输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select菜单"><span class="toc-number">8.3.</span> <span class="toc-text">select菜单</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stdin和stdout"><span class="toc-number">9.</span> <span class="toc-text">stdin和stdout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用的命令"><span class="toc-number">10.</span> <span class="toc-text">常用的命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">10.1.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep"><span class="toc-number">10.2.</span> <span class="toc-text">grep</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排除grep自身"><span class="toc-number">10.2.1.</span> <span class="toc-text">排除grep自身</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找与target相邻的结果"><span class="toc-number">10.2.2.</span> <span class="toc-text">查找与target相邻的结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#awk"><span class="toc-number">10.3.</span> <span class="toc-text">awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">10.4.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入"><span class="toc-number">10.4.1.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换"><span class="toc-number">10.4.2.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-number">10.4.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xargs"><span class="toc-number">10.5.</span> <span class="toc-text">xargs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#curl"><span class="toc-number">10.6.</span> <span class="toc-text">curl</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">11.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Makefile-中判断一个文件是否存在"><span class="toc-number">12.</span> <span class="toc-text">Makefile 中判断一个文件是否存在</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">13.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#解释器"><span class="toc-number">1.</span> <span class="toc-text">解释器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-number">2.</span> <span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义变量"><span class="toc-number">2.1.</span> <span class="toc-text">定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组"><span class="toc-number">2.2.</span> <span class="toc-text">数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用变量"><span class="toc-number">2.3.</span> <span class="toc-text">使用变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重定义变量"><span class="toc-number">2.4.</span> <span class="toc-text">重定义变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊变量"><span class="toc-number">2.5.</span> <span class="toc-text">特殊变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#脚本传参"><span class="toc-number">2.5.1.</span> <span class="toc-text">脚本传参</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-number">4.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单引号"><span class="toc-number">4.1.</span> <span class="toc-text">单引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双引号"><span class="toc-number">4.2.</span> <span class="toc-text">双引号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串操作"><span class="toc-number">4.3.</span> <span class="toc-text">字符串操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拼接字符串"><span class="toc-number">4.3.1.</span> <span class="toc-text">拼接字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取字符串长度："><span class="toc-number">4.3.2.</span> <span class="toc-text">获取字符串长度：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#提取子字符串"><span class="toc-number">4.3.3.</span> <span class="toc-text">提取子字符串</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多"><span class="toc-number">4.4.</span> <span class="toc-text">更多</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试"><span class="toc-number">5.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-number">6.</span> <span class="toc-text">条件判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#流程控制"><span class="toc-number">6.1.</span> <span class="toc-text">流程控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#if-else"><span class="toc-number">6.2.</span> <span class="toc-text">if else</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#if"><span class="toc-number">6.2.1.</span> <span class="toc-text">if</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-1"><span class="toc-number">6.2.2.</span> <span class="toc-text">if else</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-else-if-else"><span class="toc-number">6.2.3.</span> <span class="toc-text">if else-if else</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-while"><span class="toc-number">6.3.</span> <span class="toc-text">for while</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#for"><span class="toc-number">6.3.1.</span> <span class="toc-text">for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C风格的for"><span class="toc-number">6.3.2.</span> <span class="toc-text">C风格的for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#while"><span class="toc-number">6.3.3.</span> <span class="toc-text">while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无限循环"><span class="toc-number">6.3.4.</span> <span class="toc-text">无限循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#until"><span class="toc-number">6.3.5.</span> <span class="toc-text">until</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#case"><span class="toc-number">6.4.</span> <span class="toc-text">case</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#amp-amp-和"><span class="toc-number">6.5.</span> <span class="toc-text">&amp;&amp; 和 ||</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件包含"><span class="toc-number">7.</span> <span class="toc-text">文件包含</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户输入"><span class="toc-number">8.</span> <span class="toc-text">用户输入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#执行脚本时传入"><span class="toc-number">8.1.</span> <span class="toc-text">执行脚本时传入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本运行中输入"><span class="toc-number">8.2.</span> <span class="toc-text">脚本运行中输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#select菜单"><span class="toc-number">8.3.</span> <span class="toc-text">select菜单</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stdin和stdout"><span class="toc-number">9.</span> <span class="toc-text">stdin和stdout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用的命令"><span class="toc-number">10.</span> <span class="toc-text">常用的命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ps"><span class="toc-number">10.1.</span> <span class="toc-text">ps</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep"><span class="toc-number">10.2.</span> <span class="toc-text">grep</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排除grep自身"><span class="toc-number">10.2.1.</span> <span class="toc-text">排除grep自身</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查找与target相邻的结果"><span class="toc-number">10.2.2.</span> <span class="toc-text">查找与target相邻的结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#awk"><span class="toc-number">10.3.</span> <span class="toc-text">awk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">10.4.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入"><span class="toc-number">10.4.1.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换"><span class="toc-number">10.4.2.</span> <span class="toc-text">替换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-number">10.4.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xargs"><span class="toc-number">10.5.</span> <span class="toc-text">xargs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#curl"><span class="toc-number">10.6.</span> <span class="toc-text">curl</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实战"><span class="toc-number">11.</span> <span class="toc-text">实战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Makefile-中判断一个文件是否存在"><span class="toc-number">12.</span> <span class="toc-text">Makefile 中判断一个文件是否存在</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">13.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -477,7 +504,7 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -492,7 +519,7 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -500,15 +527,19 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -517,6 +548,10 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -536,7 +571,7 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -580,11 +615,11 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -593,10 +628,6 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -617,11 +648,11 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -633,11 +664,11 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -654,10 +685,6 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -681,11 +708,15 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -716,7 +747,7 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -725,12 +756,12 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -750,7 +781,7 @@ esac</code></pre><p>case的语法和C family语言差别很大，它需要一个
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -940,7 +971,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

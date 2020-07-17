@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>NVIDIA GPU 硬件介绍 | TO DO</title>
@@ -12,18 +12,18 @@
 
     
     <meta name="description" content="本文介绍NVIDIA GPU的硬件组成，为全面了解GPU的架构和逆向GPU结构，全虚拟化GPU提供硬件背景知识。">
-<meta name="keywords" content="GPU,hardware">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NVIDIA GPU 硬件介绍">
-<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/14/NVIDIA-GPU-硬件介绍/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/07/14/NVIDIA-GPU-%E7%A1%AC%E4%BB%B6%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本文介绍NVIDIA GPU的硬件组成，为全面了解GPU的架构和逆向GPU结构，全虚拟化GPU提供硬件背景知识。">
-<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://juniorprincewang.github.io/2018/07/14/NVIDIA-GPU-%E7%A1%AC%E4%BB%B6%E4%BB%8B%E7%BB%8D/gpu_management_model.png">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.202Z">
+<meta property="article:published_time" content="2018-07-14T08:52:26.000Z">
+<meta property="article:modified_time" content="2019-06-12T06:41:26.202Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="GPU">
+<meta property="article:tag" content="hardware">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NVIDIA GPU 硬件介绍">
-<meta name="twitter:description" content="本文介绍NVIDIA GPU的硬件组成，为全面了解GPU的架构和逆向GPU结构，全虚拟化GPU提供硬件背景知识。">
 <meta name="twitter:image" content="http://juniorprincewang.github.io/2018/07/14/NVIDIA-GPU-%E7%A1%AC%E4%BB%B6%E4%BB%8B%E7%BB%8D/gpu_management_model.png">
 
     
@@ -36,16 +36,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -68,13 +72,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -90,7 +94,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2018-07-14T08:52:26.000Z" itemprop="datePublished"> Published 2018-07-14</time>
     
   </p>
@@ -100,7 +104,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#nVidia-GPU-Model"><span class="toc-number">1.</span> <span class="toc-text">nVidia GPU Model</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCIe-应用程序编程"><span class="toc-number">1.1.</span> <span class="toc-text">PCIe 应用程序编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCI-PCIE-AGP-bus-interface-and-card-management-logic"><span class="toc-number">1.2.</span> <span class="toc-text">PCI/PCIE/AGP bus interface and card management logic</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PCI-BARs-and-other-means-of-accessing-the-GPU"><span class="toc-number">1.2.1.</span> <span class="toc-text">PCI BARs and other means of accessing the GPU</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Nvidia-GPU-BARs-IO-ports-and-memory-areas"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">Nvidia GPU BARs, IO ports, and memory areas</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看方法"><span class="toc-number">1.2.2.</span> <span class="toc-text">查看方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PFIFO"><span class="toc-number">1.3.</span> <span class="toc-text">PFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#channel"><span class="toc-number">1.3.1.</span> <span class="toc-text">channel</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#channel-mode"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">channel mode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#command"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">command</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-pusher"><span class="toc-number">1.3.2.</span> <span class="toc-text">The pusher</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-puller"><span class="toc-number">1.3.3.</span> <span class="toc-text">The puller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pause-unpause-the-PFIFO"><span class="toc-number">1.4.</span> <span class="toc-text">Pause/unpause the PFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NV50-amp-NVC0"><span class="toc-number">1.4.1.</span> <span class="toc-text">NV50 &amp; NVC0</span></a></li></ol></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#nVidia-GPU-Model"><span class="toc-number">1.</span> <span class="toc-text">nVidia GPU Model</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCIe-应用程序编程"><span class="toc-number">1.1.</span> <span class="toc-text">PCIe 应用程序编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCI-PCIE-AGP-bus-interface-and-card-management-logic"><span class="toc-number">1.2.</span> <span class="toc-text">PCI&#x2F;PCIE&#x2F;AGP bus interface and card management logic</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PCI-BARs-and-other-means-of-accessing-the-GPU"><span class="toc-number">1.2.1.</span> <span class="toc-text">PCI BARs and other means of accessing the GPU</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Nvidia-GPU-BARs-IO-ports-and-memory-areas"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">Nvidia GPU BARs, IO ports, and memory areas</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看方法"><span class="toc-number">1.2.2.</span> <span class="toc-text">查看方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PFIFO"><span class="toc-number">1.3.</span> <span class="toc-text">PFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#channel"><span class="toc-number">1.3.1.</span> <span class="toc-text">channel</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#channel-mode"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">channel mode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#command"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">command</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-pusher"><span class="toc-number">1.3.2.</span> <span class="toc-text">The pusher</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-puller"><span class="toc-number">1.3.3.</span> <span class="toc-text">The puller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pause-unpause-the-PFIFO"><span class="toc-number">1.4.</span> <span class="toc-text">Pause&#x2F;unpause the PFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NV50-amp-NVC0"><span class="toc-number">1.4.1.</span> <span class="toc-text">NV50 &amp; NVC0</span></a></li></ol></li></ol></li></ol>
 		
 		</div>
 		
@@ -355,7 +359,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2018/07/14/NVIDIA-GPU-硬件介绍/" data-title="NVIDIA GPU 硬件介绍 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2018/07/14/NVIDIA-GPU-%E7%A1%AC%E4%BB%B6%E4%BB%8B%E7%BB%8D/" data-title="NVIDIA GPU 硬件介绍 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -368,9 +372,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2018/07/18/nouveau资料整理/" title="nouveau资料整理">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   nouveau资料整理</span>
 </a>
@@ -378,8 +382,8 @@
 
 
 <div class="next">
-<a href="/2018/07/09/PCI-driver-model/" title="PCI driver model">
- <strong>下一篇：</strong><br> 
+<a href="/2018/07/09/PCI-driver-model/"  title="PCI driver model">
+ <strong>下一篇：</strong><br/> 
  <span>PCI driver model
 </span>
 </a>
@@ -399,7 +403,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#nVidia-GPU-Model"><span class="toc-number">1.</span> <span class="toc-text">nVidia GPU Model</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCIe-应用程序编程"><span class="toc-number">1.1.</span> <span class="toc-text">PCIe 应用程序编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCI-PCIE-AGP-bus-interface-and-card-management-logic"><span class="toc-number">1.2.</span> <span class="toc-text">PCI/PCIE/AGP bus interface and card management logic</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PCI-BARs-and-other-means-of-accessing-the-GPU"><span class="toc-number">1.2.1.</span> <span class="toc-text">PCI BARs and other means of accessing the GPU</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Nvidia-GPU-BARs-IO-ports-and-memory-areas"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">Nvidia GPU BARs, IO ports, and memory areas</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看方法"><span class="toc-number">1.2.2.</span> <span class="toc-text">查看方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PFIFO"><span class="toc-number">1.3.</span> <span class="toc-text">PFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#channel"><span class="toc-number">1.3.1.</span> <span class="toc-text">channel</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#channel-mode"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">channel mode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#command"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">command</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-pusher"><span class="toc-number">1.3.2.</span> <span class="toc-text">The pusher</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-puller"><span class="toc-number">1.3.3.</span> <span class="toc-text">The puller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pause-unpause-the-PFIFO"><span class="toc-number">1.4.</span> <span class="toc-text">Pause/unpause the PFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NV50-amp-NVC0"><span class="toc-number">1.4.1.</span> <span class="toc-text">NV50 &amp; NVC0</span></a></li></ol></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#nVidia-GPU-Model"><span class="toc-number">1.</span> <span class="toc-text">nVidia GPU Model</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PCIe-应用程序编程"><span class="toc-number">1.1.</span> <span class="toc-text">PCIe 应用程序编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCI-PCIE-AGP-bus-interface-and-card-management-logic"><span class="toc-number">1.2.</span> <span class="toc-text">PCI&#x2F;PCIE&#x2F;AGP bus interface and card management logic</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PCI-BARs-and-other-means-of-accessing-the-GPU"><span class="toc-number">1.2.1.</span> <span class="toc-text">PCI BARs and other means of accessing the GPU</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Nvidia-GPU-BARs-IO-ports-and-memory-areas"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">Nvidia GPU BARs, IO ports, and memory areas</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看方法"><span class="toc-number">1.2.2.</span> <span class="toc-text">查看方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PFIFO"><span class="toc-number">1.3.</span> <span class="toc-text">PFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#channel"><span class="toc-number">1.3.1.</span> <span class="toc-text">channel</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#channel-mode"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">channel mode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#command"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">command</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-pusher"><span class="toc-number">1.3.2.</span> <span class="toc-text">The pusher</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-puller"><span class="toc-number">1.3.3.</span> <span class="toc-text">The puller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pause-unpause-the-PFIFO"><span class="toc-number">1.4.</span> <span class="toc-text">Pause&#x2F;unpause the PFIFO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NV50-amp-NVC0"><span class="toc-number">1.4.1.</span> <span class="toc-text">NV50 &amp; NVC0</span></a></li></ol></li></ol></li></ol>
  
   </div>
 
@@ -411,7 +415,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -426,7 +430,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -434,15 +438,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -451,6 +459,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -470,7 +482,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -514,11 +526,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -527,10 +539,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -551,11 +559,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -567,11 +575,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -588,10 +596,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -615,11 +619,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -650,7 +658,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -659,12 +667,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -684,7 +692,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -874,7 +882,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

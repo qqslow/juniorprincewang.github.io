@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>rCUDA | TO DO</title>
@@ -12,17 +12,17 @@
 
     
     <meta name="description" content="本篇博客讲述rCUDA、rCUDA的安装。">
-<meta name="keywords" content="GPU,rCUDA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rCUDA">
 <meta property="og:url" content="http://juniorprincewang.github.io/2017/11/01/rCUDA/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客讲述rCUDA、rCUDA的安装。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.261Z">
+<meta property="article:published_time" content="2017-11-01T02:37:23.000Z">
+<meta property="article:modified_time" content="2020-03-11T08:19:02.592Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="GPU">
+<meta property="article:tag" content="rCUDA">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rCUDA">
-<meta name="twitter:description" content="本篇博客讲述rCUDA、rCUDA的安装。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -34,16 +34,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -66,13 +70,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -88,7 +92,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2017-11-01T02:37:23.000Z" itemprop="datePublished"> Published 2017-11-01</time>
     
   </p>
@@ -186,19 +190,24 @@
 KVM acceleration can be used</code></pre><h3 id="安装KVM相关以依赖"><a href="#安装KVM相关以依赖" class="headerlink" title="安装KVM相关以依赖"></a>安装KVM相关以依赖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install kvm qemu-kvm libvirt-bin virtinst bridge-utils</span><br></pre></td></tr></table></figure>
 
 <p>它们的作用分别为：</p>
-<pre><code>kvm: KVM的内核，通常linux系统自带
-qemu-kvm: KVM的设备模拟器，实际上kvm只是负责加速，qemu才是虚拟机管理器
-libvirt-bin: libvirt库，虚拟机命令行管理工具，包含很多实用工具，如后面需要大量使用的virsh。（安装之后会生成一个名为virbr0的网桥）
-virtinst: 虚拟机创建（virt-install）和克隆工具（vrit-clone）等
-birdge-utils: 用于桥接网卡的工具，如命令brctl）
-    如果有图形化桌面，推荐安装virt-manager，这个工具可以非常方便地图形化管理虚拟机，就像常见的virtualbox/vmware界面那样，可以通过点点鼠标来完成虚拟机的管理。</code></pre><p>KVM管理工具的一些注解及一些实用工具</p>
-<pre><code>libvirt：操作和管理KVM虚机的虚拟化API，使用C语言编写，可以由Python,Ruby, Perl, PHP, Java等语言调用。可以操作包括KVM，vmware，XEN，Hyper-v, LXC，virtualbox等 Hypervisor。
-virsh：基于libvirt的命令行工具，后面需要大量使用。
-virt-v2v：虚机格式迁移工具，该工具与virt-sysprep都包含在包libguestfs-tools中，后面布署中会用到
-virt-install：创建KVM虚机的命令行工具
-virt-viewer：连接到虚拟机屏幕的工具，需要主机有桌面环境，该工具需要单独安装sudo apt-get install virt-viewer
-virt-clone：虚机克隆工具
-virt-top：类似于linux系统下的top命令，可以显示所有虚拟机CPU、内存等使用情况，该工具需要单独安装sudo apt-get install virt-top</code></pre><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1] <a href="http://notes.maxwi.com/2016/11/29/kvm-create-and-manage" target="_blank" rel="noopener">Ubuntu Server/Debian下的KVM虚拟机创建及管理详解</a><br>[2] <a href="http://mirror.pnl.gov/releases/xenial/" target="_blank" rel="noopener">Ubuntu 16.04.3 LTS (Xenial Xerus)下载地址</a></p>
+<ul>
+<li>kvm: KVM的内核，通常linux系统自带</li>
+<li>qemu-kvm: KVM的设备模拟器，实际上kvm只是负责加速，qemu才是虚拟机管理器 </li>
+<li>libvirt-bin: libvirt库，虚拟机命令行管理工具，包含很多实用工具，如后面需要大量使用的virsh。（安装之后会生成一个名为virbr0的网桥） </li>
+<li>virtinst: 虚拟机创建（virt-install）和克隆工具（vrit-clone）等 </li>
+<li>birdge-utils: 用于桥接网卡的工具，如命令brctl），如果有图形化桌面，推荐安装virt-manager，这个工具可以非常方便地图形化管理虚拟机，就像常见的virtualbox/vmware界面那样，可以通过点点鼠标来完成虚拟机的管理。</li>
+</ul>
+<p>KVM管理工具的一些注解及一些实用工具</p>
+<ul>
+<li>libvirt：操作和管理KVM虚机的虚拟化API，使用C语言编写，可以由Python,Ruby, Perl, PHP, Java等语言调用。<br>可以操作包括KVM，vmware，XEN，Hyper-v, LXC，virtualbox等 Hypervisor。</li>
+<li>virsh：基于libvirt的命令行工具，后面需要大量使用。  </li>
+<li>virt-v2v：虚机格式迁移工具，该工具与virt-sysprep都包含在包libguestfs-tools中，后面布署中会用到 </li>
+<li>virt-install：创建KVM虚机的命令行工具 </li>
+<li>virt-viewer：连接到虚拟机屏幕的工具，需要主机有桌面环境，该工具需要单独安装<code>sudo apt-get install virt-viewer</code> </li>
+<li>virt-clone：虚机克隆工具 </li>
+<li>virt-top：类似于linux系统下的top命令，可以显示所有虚拟机CPU、内存等使用情况，该工具需要单独安装<code>sudo apt-get install virt-top</code></li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[1] <a href="http://notes.maxwi.com/2016/11/29/kvm-create-and-manage" target="_blank" rel="noopener">Ubuntu Server/Debian下的KVM虚拟机创建及管理详解</a><br>[2] <a href="http://mirror.pnl.gov/releases/xenial/" target="_blank" rel="noopener">Ubuntu 16.04.3 LTS (Xenial Xerus)下载地址</a></p>
 <h2 id="rCUDA-client"><a href="#rCUDA-client" class="headerlink" title="rCUDA client"></a>rCUDA client</h2><h3 id="设置环境变量。-1"><a href="#设置环境变量。-1" class="headerlink" title="设置环境变量。"></a>设置环境变量。</h3><p>client使用的库<code>LD_LIBRARY_PATH</code>是<strong>rCUDA</strong>的<code>lib</code>库。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/usr/local/cuda-8.0/bin #CUDA的路径</span><br><span class="line">export LD_LIBRARY_PATH=$HOME/rCUDA/lib:$LD_LIBRARY_PATH #rCUDA 库路径</span><br><span class="line"># 配置远端GPU</span><br><span class="line">export RCUDA_DEVICE_COUNT=1 #远端GPU的数量</span><br><span class="line">export RCUDA_DEVICE_0 = 192.168.151.134:0 #第1个GPU</span><br></pre></td></tr></table></figure>
 
@@ -267,7 +276,7 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2017/11/01/rCUDA/" data-title="rCUDA | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2017/11/01/rCUDA/" data-title="rCUDA | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -280,9 +289,9 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2018/01/12/CUDA逻辑概念/" title="CUDA 介绍">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   CUDA 介绍</span>
 </a>
@@ -290,8 +299,8 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 
 
 <div class="next">
-<a href="/2017/10/04/vim操作/" title="vim操作">
- <strong>下一篇：</strong><br> 
+<a href="/2017/10/04/vim操作/"  title="vim操作">
+ <strong>下一篇：</strong><br/> 
  <span>vim操作
 </span>
 </a>
@@ -323,7 +332,7 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -338,7 +347,7 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -346,15 +355,19 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -363,6 +376,10 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -382,7 +399,7 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -426,11 +443,11 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -439,10 +456,6 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -463,11 +476,11 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -479,11 +492,11 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -500,10 +513,6 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -527,11 +536,15 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -562,7 +575,7 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -571,12 +584,12 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -596,7 +609,7 @@ stream specifies a stream the invocation is associated to</code></pre><p><code>r
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -786,7 +799,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

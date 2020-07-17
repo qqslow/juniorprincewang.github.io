@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>PCI driver model | TO DO</title>
@@ -11,19 +11,18 @@
     
 
     
-    <meta name="description" content="由于要研究NVIDIA GPU的工作原理，需要对PCIe的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和访问。">
-<meta name="keywords" content="pci">
+    <meta name="description" content="由于要研究NVIDIA GPU的工作原理，需要对PCI(e)的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和PCI驱动程序。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PCI driver model">
 <meta property="og:url" content="http://juniorprincewang.github.io/2018/07/09/PCI-driver-model/index.html">
 <meta property="og:site_name" content="TO DO">
-<meta property="og:description" content="由于要研究NVIDIA GPU的工作原理，需要对PCIe的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和访问。">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:description" content="由于要研究NVIDIA GPU的工作原理，需要对PCI(e)的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和PCI驱动程序。">
 <meta property="og:image" content="http://juniorprincewang.github.io/2018/07/09/PCI-driver-model/450px-Pci-config-space.svg.png">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.212Z">
+<meta property="article:published_time" content="2018-07-09T12:12:10.000Z">
+<meta property="article:modified_time" content="2020-03-21T01:01:42.191Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="pci">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PCI driver model">
-<meta name="twitter:description" content="由于要研究NVIDIA GPU的工作原理，需要对PCIe的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和访问。">
 <meta name="twitter:image" content="http://juniorprincewang.github.io/2018/07/09/PCI-driver-model/450px-Pci-config-space.svg.png">
 
     
@@ -36,16 +35,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -68,13 +71,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -90,7 +93,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2018-07-09T12:12:10.000Z" itemprop="datePublished"> Published 2018-07-09</time>
     
   </p>
@@ -100,58 +103,211 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI设备信息查看及寻址方式"><span class="toc-number">1.</span> <span class="toc-text">PCI设备信息查看及寻址方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lspci命令"><span class="toc-number">1.1.</span> <span class="toc-text">lspci命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件系统"><span class="toc-number">1.2.</span> <span class="toc-text">文件系统</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI-配置空间"><span class="toc-number">2.</span> <span class="toc-text">PCI 配置空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-PCI设备驱动结构体"><span class="toc-number">3.</span> <span class="toc-text">Linux PCI设备驱动结构体</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-PCI设备配置空间访问"><span class="toc-number">4.</span> <span class="toc-text">Linux PCI设备配置空间访问</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-PCI设备驱动程序探测及注册："><span class="toc-number">5.</span> <span class="toc-text">Linux PCI设备驱动程序探测及注册：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI设备信息查看及寻址方式"><span class="toc-number">1.</span> <span class="toc-text">PCI设备信息查看及寻址方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lspci命令"><span class="toc-number">1.1.</span> <span class="toc-text">lspci命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件系统"><span class="toc-number">1.2.</span> <span class="toc-text">文件系统</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI-配置空间"><span class="toc-number">2.</span> <span class="toc-text">PCI 配置空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI-Device-Driver-Specifics"><span class="toc-number">3.</span> <span class="toc-text">PCI Device Driver Specifics</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Driver-Registeration"><span class="toc-number">3.1.</span> <span class="toc-text">Driver Registeration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#设备初始化步骤"><span class="toc-number">3.1.1.</span> <span class="toc-text">设备初始化步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Driver-Unregister"><span class="toc-number">3.2.</span> <span class="toc-text">Driver Unregister</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-PCI-Driver-Demo："><span class="toc-number">4.</span> <span class="toc-text">Linux PCI Driver Demo：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
-		<p>由于要研究NVIDIA GPU的工作原理，需要对PCIe的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和访问。</p>
+		<p>由于要研究NVIDIA GPU的工作原理，需要对PCI(e)的原理掌握清楚，在此整理了一些知识点，包括PCI配置空间和PCI驱动程序。</p>
 <a id="more"></a>
 
 <p>Peripheral Component Interconnect Bus(PCI) 是一种总线接口。<br>每个总线设备有256字节的配置内存，可通过 <code>CONFIG_ADDRESS</code> 和 <code>CONFIG_DATA</code> 寄存器获取。<br>设备驱动的开发人员仅需知道设备的基地址 <code>base address</code> 和设备使用的 <code>IRQ line</code> 。<br>PCI设备的配置信息是小端存储 <code>Little Endian</code> 。</p>
 <h1 id="PCI设备信息查看及寻址方式"><a href="#PCI设备信息查看及寻址方式" class="headerlink" title="PCI设备信息查看及寻址方式"></a>PCI设备信息查看及寻址方式</h1><h2 id="lspci命令"><a href="#lspci命令" class="headerlink" title="lspci命令"></a>lspci命令</h2><p>Linux 下可以通过 <code>lspci</code> 查看PCI设备。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ lspci</span><br><span class="line">01:00.0 VGA compatible controller: NVIDIA Corporation GK110B [GeForce GTX TITAN Black] (rev a1)</span><br><span class="line">|  |  |_Function Number</span><br><span class="line">|  |_PCI Device Number</span><br><span class="line">|_PCI Bus Number</span><br></pre></td></tr></table></figure>
 
-<p>三个数字分别是 01： Bus Number, 00: Device Number, 0: Function Number。</p>
+<p><strong>BDF</strong>：三个数字分别是 01： Bus Number, 00: Device Number, 0: Function Number。</p>
 <p>设备驱动的配置信息，可以通过 <code>lspci</code>的 选项 <code>-x</code>， <code>-xxx</code>， <code>-xxxx</code> 打印出来，不过要用 <code>root</code> 用户执行。</p>
-<p><img src="../PCI-driver-model/450px-Pci-config-space.svg.png" alt="450px-Pci-config-space.svg"></p>
-<p>为了确定PCI设备的位置，PCI设备必须能够映射到系统的IO端口地址空间或者内存映射的地址空间。<br>系统的固件、设备驱动或操作系统编排BARs，通过将配置命令写入到PCI控制器中来通知设备的地址映射。</p>
-<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><p>系统中的PCI设备信息可以从 <code>/proc/bus/pci/device</code> , <code>/sys/bus/pci/device</code> 文件系统中查看；<br>其中设备信息的表示格式为： <code>总线域（16位）</code>：<code>总线编号（8位）</code>：<code>设备编号（5位）</code>.<code>功能编号（3位）</code><br>由以上信息可以知道：每个总线域最多有256个PCI总线，每个总线最多有32个PCI设备，每个设备最多有8个功能；</p>
-<h1 id="PCI-配置空间"><a href="#PCI-配置空间" class="headerlink" title="PCI 配置空间"></a>PCI 配置空间</h1><p>在驱动已探测到设备后, 它常常需要读或写 3 个地址空间: 内存, 端口, 和配置。 特别地, 存取配置空间对驱动是至关重要的, 因为这是唯一的找到设备被映射到内存和 I/O 空间的位置的方法。</p>
-<p>Linux 将配置空间中的 <code>venderId</code>, <code>deviceId</code>, <code>classcode</code>, <code>subvendorId</code>, <code>subdeviceId</code>, <code>class_mask</code>, <code>driver_data</code>(kernel_ulong_t，不是必须的)抽象为 <code>struct pci_device_id</code> 结构体，PCI驱动程序用该结构体告诉内核，本身支持什么样的PCI设备列表；</p>
-<p>这个结构包含不同的成员:<code>__u32 vendor</code> ; <code>__u32 device</code> 。这些指定一个设备的 PCI 供应商和设备 ID. 如果驱动可处理任何供应商或者设备<br>ID, 这些成员取值 <code>PCI_ANY_ID</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MODULE_DEVICE_TABLE(pci,ids);</span><br></pre></td></tr></table></figure>
+<p>为了确定PCI设备的位置，PCI设备必须能够映射到系统的IO端口地址空间或者内存映射的地址空间。<br>系统的固件、设备驱动或操作系统编排BARs，通过将配置命令写入到PCI控制器中来通知设备的地址映射。  </p>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><p>系统中的PCI设备信息可以从 <code>/proc/bus/pci/device</code> , <code>/sys/bus/pci/device</code> 文件系统中查看；<br>其中设备信息的表示格式为： <code>总线域（16位）</code>：<code>总线编号（8位）</code>：<code>设备编号（5位）</code>.<code>功能编号（3位）</code>，表示为<code>AAAA:BB:CC:D</code>。  
+由以上信息可以知道：  </p>
+<ul>
+<li>每个总线域最多有256个PCI总线，</li>
+<li>每个总线最多有32个PCI设备，</li>
+<li>每个设备最多有8个功能；</li>
+</ul>
+<h1 id="PCI-配置空间"><a href="#PCI-配置空间" class="headerlink" title="PCI 配置空间"></a>PCI 配置空间</h1><p>在驱动已探测到设备后, 它常常需要读或写 3 个地址空间: 内存（Device Memory）, 端口（I/O port，PIO）, 和配置（Configuration Space）。 特别地, 存取配置空间对驱动是至关重要的, 因为这是唯一的找到设备被映射到内存和 I/O 空间的位置的方法。</p>
+<p><img src="../PCI-driver-model/450px-Pci-config-space.svg.png" alt="PCI设备配置空间"></p>
+<p>PCI配置空间寄存器定义在 <em>include/uapi/linux/pci_regs.h</em> 。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Under PCI, each device has 256 bytes of configuration address space,</span></span><br><span class="line"><span class="comment"> * of which the first 64 bytes are standardized as follows:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_STD_HEADER_SIZEOF	64</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_VENDOR_ID		0x00	<span class="comment">/* 16 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_DEVICE_ID		0x02	<span class="comment">/* 16 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_COMMAND		0x04	<span class="comment">/* 16 bits */</span></span></span><br><span class="line">...</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_STATUS		0x06	<span class="comment">/* 16 bits */</span></span></span><br><span class="line">...</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CLASS_REVISION	0x08	<span class="comment">/* High 24 bits are class, low 8 revision */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_REVISION_ID		0x08	<span class="comment">/* Revision ID */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CLASS_PROG		0x09	<span class="comment">/* Reg. Level Programming Interface */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CLASS_DEVICE	0x0a	<span class="comment">/* Device class */</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CACHE_LINE_SIZE	0x0c	<span class="comment">/* 8 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_LATENCY_TIMER	0x0d	<span class="comment">/* 8 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_HEADER_TYPE		0x0e	<span class="comment">/* 8 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BIST		0x0f	<span class="comment">/* 8 bits */</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Base addresses specify locations in memory or I/O space.</span></span><br><span class="line"><span class="comment"> * Decoded size can be determined by writing a value of</span></span><br><span class="line"><span class="comment"> * 0xffffffff to the register, and reading it back.  Only</span></span><br><span class="line"><span class="comment"> * 1 bits are decoded.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BASE_ADDRESS_0	0x10	<span class="comment">/* 32 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BASE_ADDRESS_1	0x14	<span class="comment">/* 32 bits [htype 0,1 only] */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BASE_ADDRESS_2	0x18	<span class="comment">/* 32 bits [htype 0 only] */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BASE_ADDRESS_3	0x1c	<span class="comment">/* 32 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BASE_ADDRESS_4	0x20	<span class="comment">/* 32 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BASE_ADDRESS_5	0x24	<span class="comment">/* 32 bits */</span></span></span><br><span class="line"><span class="comment">/* Header type 0 (normal devices) */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CARDBUS_CIS		0x28</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_SUBSYSTEM_VENDOR_ID	0x2c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_SUBSYSTEM_ID	0x2e</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_ROM_ADDRESS		0x30	<span class="comment">/* Bits 31..11 are address, 10..1 reserved */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CAPABILITY_LIST	0x34	<span class="comment">/* Offset of first capability list entry */</span></span></span><br><span class="line"><span class="comment">/* 0x35-0x3b are reserved */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_INTERRUPT_LINE	0x3c	<span class="comment">/* 8 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_INTERRUPT_PIN	0x3d	<span class="comment">/* 8 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_MIN_GNT		0x3e	<span class="comment">/* 8 bits */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_MAX_LAT		0x3f	<span class="comment">/* 8 bits */</span></span></span><br></pre></td></tr></table></figure>
 
-<p>使用该宏将pci驱动程序支持的设备列表导出到用户空间，供热插拔系统为设备查找驱动程序使用；在编译模块的时候编译系统会抽取该宏数据并导出到用户空间。</p>
-<h1 id="Linux-PCI设备驱动结构体"><a href="#Linux-PCI设备驱动结构体" class="headerlink" title="Linux PCI设备驱动结构体"></a>Linux PCI设备驱动结构体</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;linux/pci.h&gt;</span><br></pre></td></tr></table></figure>
+<p>PCI 设备由<code>VendorID</code>, <code>DeviceIDs</code>, 和 <code>Class Codes</code> 标识，定义在 <em>include/linux/pci_ids.h</em> 。<br><code>Class Code</code> 指定了设备的功能，在 <code>0x0b</code>偏移处标识 base code class, <code>0xa</code>偏移处标识了sub-class code结合指定了设备的功能。比如  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* include/linux/pci_ids.h */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BASE_CLASS_MEMORY       0x05</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CLASS_MEMORY_RAM        0x0500</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_BASE_CLASS_DISPLAY      0x03</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CLASS_DISPLAY_VGA       0x0300  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CLASS_DISPLAY_XGA       0x0301</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCI_CLASS_DISPLAY_3D		0x0302</span></span><br></pre></td></tr></table></figure>
 
-<pre><code>包含 PCI 寄存器的符号名和几个供应商和设备 ID 值的头文件.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct pci_dev;</span><br></pre></td></tr></table></figure>
+<p>可以通过PCI的配置空间来查看 VendorID, DeviceID, Class Code, Subsystem VendorID (i.e. SVendor) and SubsystemID(i.e. SDevice)值。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexdump /sys/devices/pci0000\:00/0000\:01\:00.0/config</span><br></pre></td></tr></table></figure>
 
-<pre><code>表示内核中一个 PCI 设备的结构.</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct pci_driver;</span><br></pre></td></tr></table></figure>
+<h1 id="PCI-Device-Driver-Specifics"><a href="#PCI-Device-Driver-Specifics" class="headerlink" title="PCI Device Driver Specifics"></a>PCI Device Driver Specifics</h1><p>根据<a href="https://www.kernel.org/doc/html/latest/PCI/pci.html" target="_blank" rel="noopener">Kernel关于PCI Driver文件，How To Write Linux PCI Drivers</a>的说法，PCI device初始化的流程为：</p>
+<pre><code>Register the device driver and find the device
+Enable the device
+Request MMIO/PIO resources
+Set the DMA mask size (for both coherent and streaming DMA)
+Allocate and initialize shared control data (pci_allocate_coherent())
+Access device configuration space (if needed)
+Register IRQ handler (request_irq())
+Initialize non-PCI (i.e. LAN/SCSI/etc parts of the chip)
+Enable DMA/processing engines</code></pre><h2 id="Driver-Registeration"><a href="#Driver-Registeration" class="headerlink" title="Driver Registeration"></a>Driver Registeration</h2><ul>
+<li>device configuration  </li>
+</ul>
+<p>Linux 将配置空间中的 <code>venderId</code>, <code>deviceId</code>, <code>classcode</code>, <code>Subsystem VendorID(subvendorId)</code>, <code>SubsystemID(subdeviceId)</code>, <code>class_mask</code>, <code>driver_data</code>(kernel_ulong_t，不是必须的)抽象为 <code>struct pci_device_id</code> 结构体，PCI驱动程序用该结构体告诉内核，本身支持什么样的PCI设备列表；  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /include/linux/mod_devicetable.h */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pci_device_id</span> &#123;</span></span><br><span class="line">	__u32 vendor, device;		<span class="comment">/* Vendor and device ID or PCI_ANY_ID*/</span></span><br><span class="line">	__u32 subvendor, subdevice;	<span class="comment">/* Subsystem ID's or PCI_ANY_ID */</span></span><br><span class="line">	__u32 <span class="class"><span class="keyword">class</span>, <span class="title">class_mask</span>;</span>	<span class="comment">/* (class,subclass,prog-if) triplet */</span></span><br><span class="line">	<span class="keyword">kernel_ulong_t</span> driver_data;	<span class="comment">/* Data private to the driver */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>代表一个 <code>PCI 驱动</code> 结构，该结构体是 <code>PCI设备</code> 与 <code>PCI设备驱动程序</code> 的联系桥梁，通过该结构体可以查询到驱动程序的设备并初始化设备；<br>比较重要的字段如下：</p>
+<p>这个结构包含不同的成员:<code>__u32 vendor</code> ; <code>__u32 device</code> 。这些指定一个设备的 PCI 供应商和设备 ID. 如果驱动可处理任何供应商或者设备<br>ID, 这些成员取值 <code>PCI_ANY_ID</code>。  
+具体参数见 <a href="https://www.kernel.org/doc/html/latest/PCI/pci.html#c.pci_device_id" target="_blank" rel="noopener">https://www.kernel.org/doc/html/latest/PCI/pci.html#c.pci_device_id</a>。  
+<code>PCI_DEVICE(vendor, device)</code> 和 <code>PCI_DEVICE_CLASS(device_class, device_class_mask)</code> 可用于初始化 <code>struct pci_device_id</code> 的不同字段。<br>为了将<code>struct pci_device_id</code> 导出到用户空间，供热插拔系统为设备查找驱动程序使用，则需要使用宏 <code>MODULE_DEVICE_TABLE(pci,ids);</code> ，在编译模块的时候编译系统会抽取该宏数据并导出到用户空间。  </p>
+<ul>
+<li>register PCI deriver:  </li>
+</ul>
+<p>PCI设备的结构体和函数定义在文件 <em>include/linux/pci.h</em> 中，需要引入头文件 <code>#include &lt;linux/pci.h&gt;</code>。  
+其中重要的结构体包括：<br><code>struct pci_dev</code> 表示内核中一个 <strong>PCI 设备</strong>的结构。<br>关于<code>struct pci_dev</code> 可以参见<a href="https://dri.freedesktop.org/docs/drm/driver-api/driver-model/overview.html" target="_blank" rel="noopener">The Linux Kernel Device Model</a>。  
+<code>struct pci_driver</code> 代表一个 <strong>PCI 驱动</strong> 结构，该结构体是 <strong>PCI设备</strong> 与 <strong>PCI设备驱动</strong> 的联系桥梁，通过该结构体可以查询到驱动程序的设备并初始化设备；<br>比较重要的字段如下，可参见具体<a href="https://www.kernel.org/doc/html/latest/PCI/pci.html#c.pci_driver" target="_blank" rel="noopener">struct pci_driver</a>的描述。  ：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct pci_driver&#123;</span><br><span class="line">	char *name;</span><br><span class="line">	struct pci_device_id *ids;</span><br><span class="line">	int (*probe)(struct pci_dev *dev,struct pci_device_id *id);</span><br><span class="line">	void (*remove)(struct pci_dev *dev);</span><br><span class="line">	int (*suspend)(struct pci_dev *dev,u32 state);</span><br><span class="line">	int (*resume)(struct pci_dev *dev);</span><br><span class="line">	... ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct pci_device_id;</span><br></pre></td></tr></table></figure>
+<p>PCI对 <code>struct pci_driver *</code> 指向的对象进行PCI驱动的注册。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_register_driver</span><span class="params">(struct pci_driver *drv)</span></span>;</span><br></pre></td></tr></table></figure>
 
-<pre><code>描述这个驱动支持的 PCI 设备类型的结构.</code></pre><h1 id="Linux-PCI设备配置空间访问"><a href="#Linux-PCI设备配置空间访问" class="headerlink" title="Linux PCI设备配置空间访问"></a>Linux PCI设备配置空间访问</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct pci_dev *pci_find_device(unsigned int vendor, unsigned int device, struct pci_dev *from);</span><br><span class="line">struct pci_dev *pci_find_device_reverse(unsigned int vendor, unsigned int device, const struct pci_dev *from);</span><br><span class="line">struct pci_dev *pci_find_subsys (unsigned int vendor, unsigned int device, unsigned int ss_vendor, unsigned int ss_device, const struct pci_dev *from);</span><br><span class="line">struct pci_dev *pci_find_class(unsigned int class, struct pci_dev *from);</span><br></pre></td></tr></table></figure>
-
-<p>在设备列表中搜寻带有一个特定签名的设备, 或者属于一个特定类的. 返回值是 NULL 如果没找到. from 用来继续一个搜索; 在你第一次调用任一个函数时它必须是 NULL, 并且它必须指向刚刚找到的设备如果你寻找更多的设备. 这些函数不推荐使用, 用 pci_get_ 变体来代替.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">struct pci_dev *pci_get_device(unsigned int vendor, unsigned int device, struct pci_dev *from);</span><br><span class="line">struct pci_dev *pci_get_subsys(unsigned int vendor, unsigned int device, unsigned int ss_vendor, unsigned int ss_device, struct pci_dev *from);</span><br><span class="line">struct pci_dev *pci_get_slot(struct pci_bus *bus, unsigned int devfn);</span><br></pre></td></tr></table></figure>
-
-<p>在设备列表中搜索一个特定签名的设备，或者属于一个特定类。如果没找到，返回值是 NULL。 <code>from</code> 用来继续搜索； 在第一次调用任一个函数时它必须是 NULL， 并且如果想要搜寻更多的设备，它必须指向刚刚找到的设备。返回的结构使它的引用计数递增，并且在调用者完成它, 函数 pci_dev_put 必须被调用.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int pci_read_config_byte(struct pci_dev *dev, int where, u8 *val);</span><br><span class="line">int pci_read_config_word(struct pci_dev *dev, int where, u16 *val);</span><br><span class="line">int pci_read_config_dword(struct pci_dev *dev, int where, u32 *val);</span><br><span class="line">int pci_write_config_byte (struct pci_dev *dev, int where, u8 *val);</span><br><span class="line">int pci_write_config_word (struct pci_dev *dev, int where, u16 *val);</span><br><span class="line">int pci_write_config_dword (struct pci_dev *dev, int where, u32 *val);</span><br></pre></td></tr></table></figure>
-
-<p>读或写 PCI 配置寄存器的函数。尽管 Linux 内核负责字节序, 必须小心字节序，尤其从单个字节组合多字节值时. PCI 总线是小端。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unsigned long pci_resource_start(struct pci_dev *dev, int bar);</span><br><span class="line">unsigned long pci_resource_end(struct pci_dev *dev, int bar);</span><br><span class="line">unsigned long pci_resource_flags(struct pci_dev *dev, int bar);</span><br></pre></td></tr></table></figure>
-
-<p>处理 PCI 设备资源的函数。</p>
-<h1 id="Linux-PCI设备驱动程序探测及注册："><a href="#Linux-PCI设备驱动程序探测及注册：" class="headerlink" title="Linux PCI设备驱动程序探测及注册："></a>Linux PCI设备驱动程序探测及注册：</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int pci_register_driver(struct pci_driver *drv);</span><br><span class="line">int pci_module_init(struct pci_driver *drv);</span><br><span class="line">void pci_unregister_driver(struct pci_driver *drv);</span><br></pre></td></tr></table></figure>
-
-<p>从内核注册或注销一个 PCI 驱动的函数.</p>
+<p>PCI driver通过 <code>pci_register_driver()</code> 发现PCI设备。<br>具体地，用<code>struct pci_driver</code> 结构的<code>id_table</code>和所有PCI设备的<code>id_table</code>比较，找到匹配项，然后取出该PCI设备的<code>struct pci_dev *</code> 对象，最后调用<code>struct pci_driver</code>对象的<code>probe</code>回调方法进行初始化。</p>
+<h3 id="设备初始化步骤"><a href="#设备初始化步骤" class="headerlink" title="设备初始化步骤"></a>设备初始化步骤</h3><p><code>probe</code> 回调函数的步骤。  </p>
+<ul>
+<li>使能设备  </li>
+</ul>
+<p>在 <code>probe</code> 函数中使用，在driver能够访问设备资源（I/O区域或中断）前，使能PCI设备。<br>如果设备suspended，wake up device。  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int pci_enable_device(struct pci_dev *dev);</span><br></pre></td></tr></table></figure>
 
-<p>使能一个 PCI 设备.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">int pci_probe(struct pci_dev *dev,struct pci_device_id *id)&#123;</span><br><span class="line"></span><br><span class="line">	struct pci_privdata *data=NULL;</span><br><span class="line"></span><br><span class="line">	struct resource *resource=NULL;</span><br><span class="line"></span><br><span class="line">	if(pci_device_is_present(dev))&#123;</span><br><span class="line">		//1,不支持pci总线;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">                                      </span><br><span class="line">	if(pci_enable_device(dev))&#123;</span><br><span class="line"></span><br><span class="line">		//2,使能设备;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//3,从配置空间获取信息；</span><br><span class="line"></span><br><span class="line">	data=kmalloc(sizeof(struct pci_privdata),GFP_KERNEL);</span><br><span class="line"></span><br><span class="line">	data-&gt;phy_addr=pci_resource_start(dev,1);</span><br><span class="line"></span><br><span class="line">	data-&gt;size          =pci_resource_len(dev,1);</span><br><span class="line"></span><br><span class="line">	data-&gt;flags         =pci_resource_flags(dev,1);</span><br><span class="line"></span><br><span class="line">	if(data-&gt;flags != IORESOURCE_MEM)&#123;</span><br><span class="line"></span><br><span class="line">		//4,判断是否为内存空间或IO端口空间；</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//resource=request_mem_region(data-&gt;phy_addr,data-&gt;size,NAME);</span><br><span class="line"></span><br><span class="line">	resource=pci_request_region(data-&gt;phy_addr,data-&gt;size,NAME);</span><br><span class="line"></span><br><span class="line">	if(!resource)&#123;</span><br><span class="line"></span><br><span class="line">		//5,独占设备;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//6, io内存映射，映射到内核虚拟地址空间;</span><br><span class="line"></span><br><span class="line">	data-&gt;addr=ioremap(data-&gt;phy_addr,data-&gt;size);</span><br><span class="line"></span><br><span class="line">	//7,设置PCI设备私有数据;</span><br><span class="line"></span><br><span class="line">	pci_set_drvdata(dev,data);</span><br><span class="line"></span><br><span class="line">	//8,设置PCI设备为DMA主设备;</span><br><span class="line"></span><br><span class="line">	pci_set_master(dev);</span><br><span class="line"></span><br><span class="line">	return0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int  pci_remove(struct pci_dev *dev)&#123;</span><br><span class="line"></span><br><span class="line">	//与probe函数相反的顺序将probe函数中的资源都释放掉;</span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//在驱动模块中注册驱动数据结构;</span><br><span class="line"></span><br><span class="line">static int __init pci_module_init(void)&#123;</span><br><span class="line"></span><br><span class="line">	return pci_register_driver(&amp;pci_driver);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果首次调用<code>pci_enable_device()</code>，则使能设备，可以包括为设备赋值PIO，内存和中断。若不是首次，则增加设备的usage count。  </p>
+<p>对应的disable函数：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void pci_disable_device(struct pci_dev * dev);</span><br></pre></td></tr></table></figure>
+
+<p>PCI设备包括三种能够寻址的regions：configuration space,PIO和memory。<br>对于configuration space，kernel提供6种helper function。<br>读或写 PCI 配置寄存器的函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_read_config_byte</span><span class="params">(struct pci_dev *dev, <span class="keyword">int</span> where, u8 *val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_read_config_word</span><span class="params">(struct pci_dev *dev, <span class="keyword">int</span> where, u16 *val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_read_config_dword</span><span class="params">(struct pci_dev *dev, <span class="keyword">int</span> where, u32 *val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_write_config_byte</span> <span class="params">(struct pci_dev *dev, <span class="keyword">int</span> where, u8 *val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_write_config_word</span> <span class="params">(struct pci_dev *dev, <span class="keyword">int</span> where, u16 *val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_write_config_dword</span> <span class="params">(struct pci_dev *dev, <span class="keyword">int</span> where, u32 *val)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>offset</code> 表示配置空间的偏移量，可以在 <em>include/uapi/linux/pci_regs.h</em>查看PCI配置空间寄存器 。  </p>
+<p>尽管 Linux 内核负责字节序, 必须小心字节序，尤其从单个字节组合多字节值时. PCI 总线是小端。<br>比如，从PCI配置空间读取 PCI_INTERRUPT_LINE：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">u8 val;</span><br><span class="line">pci_read_config_byte(dev, PCI_INTERRUPT_LINE, &amp;val);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>请求PIO/MMIO resource  </li>
+</ul>
+<p>CPU不能直接从PCI配置空间访问MMIO和PIO 地址，需要映射到CPU的地址空间后才可以。<br>PCI有6 个address regions，每个region包括I/O地址或内存地址，包括 BAR0 - BAR5 (the base address register)。<br>不像常规的内存，I/O控制寄存器的内存是非预取的（nonprefetchable）。<br>region是内存映射或端口映射的I/O地址内存。<br>设备驱动需要调用<code>pci_request_region()</code> 确保没有其他设备使用此地址region，保留PCI IO和内存resource；再调用<code>pci_release_region()</code>释放此PIO，memory resource。 </p>
+<p><code>pci_request_region()</code> 将与PCI设备@pdev关联的所有PCI region标记为所有者@res_name保留。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *	pci_request_region - Reserve PCI I/O and memory resource</span><br><span class="line"> *	@pdev: PCI device whose resources are to be reserved</span><br><span class="line"> *	@bar: BAR to be reserved</span><br><span class="line"> *	@res_name: Name to be associated with resource</span><br><span class="line"> *</span><br><span class="line"> *	Mark the PCI region associated with PCI device @pdev BAR @bar as</span><br><span class="line"> *	being reserved by owner @res_name.  Do not access any</span><br><span class="line"> *	address inside the PCI regions unless this call returns</span><br><span class="line"> *	successfully.</span><br><span class="line"> *</span><br><span class="line"> *	Returns 0 on success, or %EBUSY on error.  A warning</span><br><span class="line"> *	message is also printed on failure.</span><br><span class="line"> */</span><br><span class="line">int pci_request_region(struct pci_dev *pdev, int bar, const char *res_name)</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> *	pci_release_region - Release a PCI bar</span><br><span class="line"> *	@pdev: PCI device whose resources were previously reserved by pci_request_region</span><br><span class="line"> *	@bar: BAR to release</span><br><span class="line"> *</span><br><span class="line"> *	Releases the PCI I/O and memory resources previously reserved by a</span><br><span class="line"> *	successful call to pci_request_region.  Call this function only</span><br><span class="line"> *	after all use of the PCI regions has ceased.</span><br><span class="line"> */</span><br><span class="line">void pci_release_region(struct pci_dev *pdev, int bar)</span><br></pre></td></tr></table></figure>
+
+<p><code>pci_request_region()</code>的通用类型是<code>request_mem_region()</code>（用于MMIO范围）和<code>request_region()</code>（用于IO端口范围）。  </p>
+<p>内核还提供了相关的函数：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*drivers/pci/pci.c*/</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *	pci_request_regions - Reserved PCI I/O and memory resources</span></span><br><span class="line"><span class="comment"> *	@pdev: PCI device whose resources are to be reserved</span></span><br><span class="line"><span class="comment"> *	@res_name: Name to be associated with resource.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *	Mark all PCI regions associated with PCI device @pdev as</span></span><br><span class="line"><span class="comment"> *	being reserved by owner @res_name.  Do not access any</span></span><br><span class="line"><span class="comment"> *	address inside the PCI regions unless this call returns</span></span><br><span class="line"><span class="comment"> *	successfully.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *	Returns 0 on success, or %EBUSY on error.  A warning</span></span><br><span class="line"><span class="comment"> *	message is also printed on failure.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_request_regions</span><span class="params">(struct pci_dev *pdev, <span class="keyword">const</span> <span class="keyword">char</span> *res_name)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> pci_request_selected_regions(pdev, ((<span class="number">1</span> &lt;&lt; <span class="number">6</span>) - <span class="number">1</span>), res_name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *	pci_release_regions - Release reserved PCI I/O and memory resources</span></span><br><span class="line"><span class="comment"> *	@pdev: PCI device whose resources were previously reserved by pci_request_regions</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *	Releases all PCI I/O and memory resources previously reserved by a</span></span><br><span class="line"><span class="comment"> *	successful call to pci_request_regions.  Call this function only</span></span><br><span class="line"><span class="comment"> *	after all use of the PCI regions has ceased.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pci_release_regions</span><span class="params">(struct pci_dev *pdev)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	pci_release_selected_regions(pdev, (<span class="number">1</span> &lt;&lt; <span class="number">6</span>) - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>为操作PIO和memory regions，内核同样提供了helper functions：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> pci_resource_[start|len|end|flags] (struct pci_dev *pdev, <span class="keyword">int</span> bar);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*include/linux/pci.h*/</span></span><br><span class="line"><span class="comment">// Returns bus start address for a given PCI region</span></span><br><span class="line"><span class="keyword">resource_size_t</span> start = pci_resource_start(dev, bar);</span><br><span class="line"><span class="comment">// Returns the byte length of a PCI region</span></span><br><span class="line"><span class="keyword">resource_size_t</span> len = pci_resource_len(dev, bar)</span><br><span class="line"><span class="comment">// Returns bus end address for a given PCI region</span></span><br><span class="line"><span class="keyword">resource_size_t</span> end = pci_resource_end(dev, bar);</span><br><span class="line"><span class="comment">// Returns the flags associated with this resource.</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> flags = pci_resource_flags(dev, bar);</span><br></pre></td></tr></table></figure>
+
+<p>由于这些是宏，参数<code>dev</code> 类型为 <code>struct pci_dev *</code>，<code>bar</code>类型为 <code>int</code>，表示BAR index。 返回类型<code>resource_size_t</code>为 <code>typedef phys_addr_t resource_size_t;</code> 。<br>resource flag 最重要的两个为 <code>IORESOURCE_IO</code> <code>IORESOURCE_MEM</code>。  </p>
+<p><strong>PIO region</strong>  </p>
+<p>为操作PIO region，比如device control registers，需要进行以下三个步骤：  </p>
+<ol>
+<li><p>从configuration address的BAR中获得IO base address。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> io_base = pci_resource_start(pdev, bar);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对此region标记占有者owner。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request_region(io_base, length, <span class="string">"my_driver"</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><code>length</code> 表示控制寄存器空间大小；<code>&quot;my_driver&quot;</code>表示此region的拥有者，而此entry可在<em>/proc/ioports</em>查看。<br>当然也可以使用上面提到的 <code>pci_request_region()</code> 。  </p>
+<ol start="3">
+<li>对相应偏移位置的寄存器进行读写操作  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Read */</span></span><br><span class="line">register_data = inl(io_base + REGISTER_OFFSET);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Write */</span></span><br><span class="line">outl(register_data, iobase + REGISTER_OFFSET);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><code>inX()</code> 和 <code>outX()</code> 可以被通用的 <code>ioreadX()</code> 与 <code>iowriteX()</code> 替换。  </p>
+<p><strong>memory region</strong></p>
+<p>对memory region的操作与PIO region不同，比如PCI video card的frame buffer。</p>
+<ol>
+<li><p>首先获得memory region的base address, length, flags。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> mmio_base   = pci_resource_start(pdev, bar);</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> mmio_length = pci_resource_length(pdev, bar);</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> mmio_flags  = pci_resource_flags(pdev, bar);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>标记此memory region的拥有者  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request_mem_region(mmio_base, mmio_length, <span class="string">"my_driver"</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>当然也可以使用 <code>pci_reguest_region()</code>。  </p>
+<ol start="3">
+<li>获取CPU能够访问的memory regions  </li>
+</ol>
+<ul>
+<li>获取CPU能够访问的PIO和memory regions</li>
+</ul>
+<p><code>pci_iomap()</code>可用于创建PCI BAR的虚拟映射cookie，是对 <code>ioremap</code> 的封装。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* lib/pci_iomap.c*/</span></span><br><span class="line"><span class="comment">/* pci_iomap - create a virtual mapping cookie for a PCI BAR</span></span><br><span class="line"><span class="comment"> * @dev: PCI device that owns the BAR</span></span><br><span class="line"><span class="comment"> * @bar: BAR number</span></span><br><span class="line"><span class="comment"> * @maxlen: length of the memory to map, If you want to get access to</span></span><br><span class="line"><span class="comment"> * the complete BAR without checking for its length first, pass %0 here.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">void</span> __<span class="function">iomem *<span class="title">pci_iomap</span><span class="params">(struct pci_dev *dev, <span class="keyword">int</span> bar, <span class="keyword">unsigned</span> <span class="keyword">long</span> maxlen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pci_iomap_range(dev, bar, <span class="number">0</span>, maxlen);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> __<span class="function">iomem *<span class="title">pci_iomap_range</span><span class="params">(struct pci_dev *dev,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">int</span> bar,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">unsigned</span> <span class="keyword">long</span> offset,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">unsigned</span> <span class="keyword">long</span> maxlen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">resource_size_t</span> start = pci_resource_start(dev, bar);</span><br><span class="line">    <span class="keyword">resource_size_t</span> len = pci_resource_len(dev, bar);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> flags = pci_resource_flags(dev, bar);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (len &lt;= offset || !start)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    len -= offset;</span><br><span class="line">    start += offset;</span><br><span class="line">    <span class="keyword">if</span> (maxlen &amp;&amp; len &gt; maxlen)</span><br><span class="line">        len = maxlen;</span><br><span class="line">    <span class="keyword">if</span> (flags &amp; IORESOURCE_IO)</span><br><span class="line">        <span class="keyword">return</span> __pci_ioport_map(dev, start, len);</span><br><span class="line">    <span class="keyword">if</span> (flags &amp; IORESOURCE_MEM)</span><br><span class="line">        <span class="keyword">return</span> ioremap(start, len);</span><br><span class="line">    <span class="comment">/* What? */</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>pci_iomap()</code>返回 <code>__iomem</code> 地址后，kernel就可以对MMIO进行 <code>read[b|w|l|q]()</code> 和 <code>write[b|w|l|q]()</code> （<em>include/asm-generic/io.h</em>）的读写操作了。  </p>
+<p>从PIO或者MMIO内存 IOMEM 读取或写入的通用API包括： <code>ioread[8|16|16be|32|32be](void __iomem *addr)</code> 和 <code>iowrite[8|16|16be|32|32be](u[8|16|32] val, void __iomem *addr)</code> （<em>lib/iomap.c</em>）的读写操作了。 </p>
+<ul>
+<li>注册IRQ handler  </li>
+</ul>
+<p>许多设备都支持基于引脚的中断（pin-based interrupts）和消息信号中断（MSI），注册一个引脚中断：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">request_irq</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> irq, <span class="keyword">irq_handler_t</span> handler, <span class="keyword">unsigned</span> <span class="keyword">long</span> flags, </span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">void</span> *dev)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>根据 <em>Documentation/PCI/pci.txt</em> ，所有基于引脚的中断都需要将flags设置为 IRQF_SHARED。  </p>
+<ul>
+<li>DMA  allocation and mmap</li>
+</ul>
+<p><a href="https://stackoverflow.com/a/17915149" target="_blank" rel="noopener">how to instantiate and use a dma driver linux module</a><br><a href="http://web.archive.org/web/20151126082733/http://nairobi-embedded.org/mmap_mmio_dma.html" target="_blank" rel="noopener">mmaping MMIO and DMA Regions, Case Studies with QEMU Virtual Devices</a>  </p>
+<p>强烈建议先看一遍 <a href="https://www.kernel.org/doc/Documentation/DMA-API-HOWTO.txt" target="_blank" rel="noopener">Documentation/DMA-API-HOWTO.txt</a> 和 <a href="https://www.kernel.org/doc/Documentation/DMA-API.txt" target="_blank" rel="noopener">Dynamic DMA mapping using the generic device</a>  。  </p>
+<p>DMA mapping分为 Consistent DMA mappings 和 Streaming DMA mappings。<br>Consistent DMA mappings 保证CPU和Device访问数据的一致性，不需要显式flush数据，可以理解为同步操作，一般在驱动初始化时map并在驱动卸载时unmap；但 Streaming DMA mappings 是只为一次DMA transfer时map并在使用后unmap，如果要使用多次则需要则显式flush，可以理解为异步操作。<br>kernel doc建议使用consistent DMA mapping。  </p>
+<p>分配大内存的DMA regions使用<code>dma_alloc_coherent()</code>，分配小的DMA regions，使用 <code>dma_pool_create()</code>。    </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*include/linux/dma-mapping.h*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/dma-mapping.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> * <span class="title">dma_alloc_coherent</span><span class="params">(struct device *dev, <span class="keyword">size_t</span> size,</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="keyword">dma_addr_t</span> *dma_handle, <span class="keyword">gfp_t</span> flag)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dma_free_coherent</span><span class="params">(struct device *dev, <span class="keyword">size_t</span> size, <span class="keyword">void</span> *cpu_addr,</span></span></span><br><span class="line"><span class="function"><span class="params">              <span class="keyword">dma_addr_t</span> dma_handle)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">struct dma_pool * <span class="title">dma_pool_create</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, struct device *dev,</span></span></span><br><span class="line"><span class="function"><span class="params">			<span class="keyword">size_t</span> size, <span class="keyword">size_t</span> align, <span class="keyword">size_t</span> alloc)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>dma_alloc_coherent()</code> 返回虚拟地址，并且返回总线地址 <code>dma_handle</code> 给设备使用。  </p>
+<p><strong>DMA寻址限制</strong>  </p>
+<p>默认情况下，kernel认为设备的DMA可以访问系统总线地址为32位。如果有寻址限制，则在probe函数中，通知kernel设备的DMA寻址限制，那么需要设置DMA mask。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置 streaming 和 coherent DMA mask </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dma_set_mask_and_coherent</span><span class="params">(struct device *dev, u64 mask)</span></span>;</span><br><span class="line"><span class="comment">// 设置 streaming DMA mask</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dma_set_mask</span><span class="params">(struct device *dev, u64 mask)</span></span>;</span><br><span class="line"><span class="comment">// 设置 coherent DMA mask</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dma_set_coherent_mask</span><span class="params">(struct device *dev, u64 mask)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>比如，设置只能驱动低24位地址，</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (dma_set_mask(dev, DMA_BIT_MASK(<span class="number">24</span>))) &#123;</span><br><span class="line">		dev_warn(dev, <span class="string">"mydev: 24-bit DMA addressing not available\n"</span>);</span><br><span class="line">		<span class="keyword">goto</span> ignore_this_device;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内核分配完内存后，需要将CPU的内存物理地址和设备的总线地址关联起来，即IOMMU将DMA bus address翻译到physical address。<br><code>dma_map_[single|sg|page]()</code> 的工作就是将内核虚拟地址与DMA总线地址映射。  </p>
+<p><code>dma_map_single()</code> 映射单个region，<code>dma_map_sg()</code> 映射多个regions的scatterlists，<code>dma_map_page()</code> 映射HIGHMEM memory，传入 page/offset 参数。需要做好错误处理。  </p>
+<p><strong>mmaping the DMA allocation</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*include/linux/dma-mapping.h*/</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * dma_mmap_attrs - map a coherent DMA allocation into user space</span></span><br><span class="line"><span class="comment"> * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices</span></span><br><span class="line"><span class="comment"> * @vma: vm_area_struct describing requested user mapping</span></span><br><span class="line"><span class="comment"> * @cpu_addr: kernel CPU-view address returned from dma_alloc_attrs</span></span><br><span class="line"><span class="comment"> * @handle: device-view address returned from dma_alloc_attrs</span></span><br><span class="line"><span class="comment"> * @size: size of memory originally requested in dma_alloc_attrs</span></span><br><span class="line"><span class="comment"> * @attrs: attributes of mapping properties requested in dma_alloc_attrs</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Map a coherent DMA buffer previously allocated by dma_alloc_attrs</span></span><br><span class="line"><span class="comment"> * into user space.  The coherent DMA buffer must not be freed by the</span></span><br><span class="line"><span class="comment"> * driver until the user space mapping has been released.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span></span><br><span class="line">dma_mmap_attrs(struct device *dev, struct vm_area_struct *vma, <span class="keyword">void</span> *cpu_addr,</span><br><span class="line">           <span class="keyword">dma_addr_t</span> dma_addr, <span class="keyword">size_t</span> size, <span class="keyword">unsigned</span> <span class="keyword">long</span> attrs);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dma_mmap_coherent(d, v, c, h, s) dma_mmap_attrs(d, v, c, h, s, 0)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> dma_addr_t <span class="title">dma_map_single_attrs</span><span class="params">(struct device *dev, <span class="keyword">void</span> *ptr,</span></span></span><br><span class="line"><span class="function"><span class="params">					      <span class="keyword">size_t</span> size,</span></span></span><br><span class="line"><span class="function"><span class="params">					      <span class="keyword">enum</span> dma_data_direction dir,</span></span></span><br><span class="line"><span class="function"><span class="params">					      <span class="keyword">unsigned</span> <span class="keyword">long</span> attrs)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dma_map_single(d, a, s, r) dma_map_single_attrs(d, a, s, r, 0)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">dma_unmap_single_attrs</span><span class="params">(struct device *dev, <span class="keyword">dma_addr_t</span> addr,</span></span></span><br><span class="line"><span class="function"><span class="params">					  <span class="keyword">size_t</span> size,</span></span></span><br><span class="line"><span class="function"><span class="params">					  <span class="keyword">enum</span> dma_data_direction dir,</span></span></span><br><span class="line"><span class="function"><span class="params">					  <span class="keyword">unsigned</span> <span class="keyword">long</span> attrs)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dma_unmap_single(d, a, s, r) dma_unmap_single_attrs(d, a, s, r, 0)</span></span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">dma_map_sg_attrs</span><span class="params">(struct device *dev, struct scatterlist *sg,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">int</span> nents, <span class="keyword">enum</span> dma_data_direction dir,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">unsigned</span> <span class="keyword">long</span> attrs)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dma_map_sg(d, s, n, r) dma_map_sg_attrs(d, s, n, r, 0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dma_unmap_sg(d, s, n, r) dma_unmap_sg_attrs(d, s, n, r, 0)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> dma_addr_t <span class="title">dma_map_page_attrs</span><span class="params">(struct device *dev,</span></span></span><br><span class="line"><span class="function"><span class="params">                        struct page *page,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">size_t</span> offset, <span class="keyword">size_t</span> size,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">enum</span> dma_data_direction dir,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">unsigned</span> <span class="keyword">long</span> attrs)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dma_map_page(d, p, o, s, r) dma_map_page_attrs(d, p, o, s, r, 0)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dma_unmap_page(d, a, s, r) dma_unmap_page_attrs(d, a, s, r, 0)</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// map direction</span></span><br><span class="line"><span class="function">DMA_NONE		no <span class="title">direction</span> <span class="params">(used <span class="keyword">for</span> debugging)</span></span></span><br><span class="line"><span class="function">DMA_TO_DEVICE		data is going from the memory to the device</span></span><br><span class="line"><span class="function">DMA_FROM_DEVICE		data is coming from the device to the memory</span></span><br><span class="line">DMA_BIDIRECTIONAL	direction isn't known</span><br></pre></td></tr></table></figure>
+
+<p>对于streaming DMA mapping而言，需要同步操作，具体就是</p>
+<ol>
+<li>CPU读取已经被设备DMA写入的值之前（指定了 <code>DMA_FROM_DEVICE</code> 的mapping）</li>
+<li>在CPU使用DMA写入了值之后（指定了 <code>DMA_TO_DEVICE</code>的mapping）</li>
+<li>如果指定了 <code>DMA_BIDIRECTIONAL</code> ，则在处理内存前和后都需要调用同步操作。  </li>
+</ol>
+<p>同步操作API为：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dma_sync_single_for_cpu</span><span class="params">(struct device *dev, <span class="keyword">dma_addr_t</span> dma_handle,</span></span></span><br><span class="line"><span class="function"><span class="params">				<span class="keyword">size_t</span> size,</span></span></span><br><span class="line"><span class="function"><span class="params">				<span class="keyword">enum</span> dma_data_direction direction)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dma_sync_single_for_device</span><span class="params">(struct device *dev, <span class="keyword">dma_addr_t</span> dma_handle,</span></span></span><br><span class="line"><span class="function"><span class="params">				   <span class="keyword">size_t</span> size,</span></span></span><br><span class="line"><span class="function"><span class="params">				   <span class="keyword">enum</span> dma_data_direction direction)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dma_sync_sg_for_cpu</span><span class="params">(struct device *dev, struct scatterlist *sg,</span></span></span><br><span class="line"><span class="function"><span class="params">			    <span class="keyword">int</span> nents,</span></span></span><br><span class="line"><span class="function"><span class="params">			    <span class="keyword">enum</span> dma_data_direction direction)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dma_sync_sg_for_device</span><span class="params">(struct device *dev, struct scatterlist *sg,</span></span></span><br><span class="line"><span class="function"><span class="params">			       <span class="keyword">int</span> nents,</span></span></span><br><span class="line"><span class="function"><span class="params">			       <span class="keyword">enum</span> dma_data_direction direction)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://stackoverflow.com/questions/5539375/linux-kernel-device-driver-to-dma-from-a-device-into-user-space-memory" target="_blank" rel="noopener">Linux kernel device driver to DMA from a device into user-space memory</a>谈到了userspace到DEVICE的DMA方法。   </p>
+<ol>
+<li><p>userspace使用mmap方式<br>即driver在mmap中通过申请物理地址连续buffer并将其进行DMA mapping并将此地址返回给userspace。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">get_free_pages()-&gt;dma_map_page()</span><br><span class="line">dma_alloc_coherent() -&gt; dma_mmap_coherent()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>userspace使用ioctl方式调用<br>使用 scatter/gather lists 来搜集可能物理地址不连续的buffer。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get_user_pages() -&gt; sg_set_page(sg, page_list[i], PAGE_SIZE, 0) -&gt; dma_map_sg()</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="Driver-Unregister"><a href="#Driver-Unregister" class="headerlink" title="Driver Unregister"></a>Driver Unregister</h2><p>PCI对 <code>struct pci_driver *</code> 指向的对象进行PCI驱动的注销。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void pci_unregister_driver(struct pci_driver *drv);</span><br></pre></td></tr></table></figure>
+
+<p>而真正注销操作，需要在 <code>struct pci_driver *</code>对象的<code>remove</code>回调函数实现。<br>对应的，使用完PCI设备后，卸载驱动的流程为：  </p>
+<pre><code>Disable the device from generating IRQs
+Release the IRQ (free_irq())
+Stop all DMA activity
+Release DMA buffers (both streaming and coherent)
+Unregister from other subsystems (e.g. scsi or netdev)
+Release MMIO/PIO resources (pci_release_region)
+Disable the device (pci_disable_device())</code></pre><h1 id="Linux-PCI-Driver-Demo："><a href="#Linux-PCI-Driver-Demo：" class="headerlink" title="Linux PCI Driver Demo："></a>Linux PCI Driver Demo：</h1><ul>
+<li><a href="http://www.zarb.org/~trem/kernel/pci/pci-driver.c" target="_blank" rel="noopener">a simple PCI driver, BAR IO Port with a virtual device</a>  </li>
+<li><a href="https://github.com/jesstess/ldd3-examples/blob/master/examples/pci/pci_skel.c" target="_blank" rel="noopener">LDD3 pci_skel.c</a>  </li>
+<li><a href="https://github.com/qemu/qemu/blob/v2.12.0/hw/misc/edu.c" target="_blank" rel="noopener">QEMU edu PCI, QEMU device</a></li>
+<li><a href="https://github.com/qemu/qemu/blob/v2.12.0/docs/specs/edu.txt" target="_blank" rel="noopener">QEMU edu PCI, specification</a></li>
+<li><a href="https://github.com/cirosantilli/linux-kernel-module-cheat/blob/master/kernel_modules/qemu_edu.c" target="_blank" rel="noopener">QEMU edu PCI, guest kernel module driver</a>   </li>
+<li><a href="https://github.com/cirosantilli/linux-kernel-module-cheat/blob/master/rootfs_overlay/lkmc/qemu_edu.sh" target="_blank" rel="noopener">QEMU edu PCI, guest userspace script</a>  </li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This table holds the list of (VendorID,DeviceID) supported by this driver</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">pci_device_id</span> <span class="title">pci_ids</span>[] = &#123;</span></span><br><span class="line">	&#123; PCI_DEVICE(<span class="number">0xabcd</span>, <span class="number">0xabcd</span>), &#125;,</span><br><span class="line">	&#123; <span class="number">0</span>, &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将pci设备导出到用户空间</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">MODULE_DEVICE_TABLE(pci, pci_ids);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pci_probe</span><span class="params">(struct pci_dev *dev,struct pci_device_id *id)</span></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">pci_privdata</span> *<span class="title">data</span>=<span class="title">NULL</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">resource</span> *<span class="title">resource</span>=<span class="title">NULL</span>;</span></span><br><span class="line">	<span class="keyword">if</span>(pci_enable_device(dev))&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	data = kmalloc(<span class="keyword">sizeof</span>(struct pci_privdata),GFP_KERNEL);</span><br><span class="line">	data-&gt;phy_addr 	= pci_resource_start(dev,<span class="number">1</span>);</span><br><span class="line">	data-&gt;size      = pci_resource_len(dev,<span class="number">1</span>);</span><br><span class="line">	data-&gt;flags     = pci_resource_flags(dev,<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span>(data-&gt;flags != IORESOURCE_MEM)&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//resource=request_mem_region(data-&gt;phy_addr,data-&gt;size,NAME);</span></span><br><span class="line">	resource = pci_request_region(data-&gt;phy_addr,data-&gt;size,NAME);</span><br><span class="line">	<span class="keyword">if</span>(!resource)&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//6, io内存映射，映射到内核虚拟地址空间;</span></span><br><span class="line">	data-&gt;addr = pci_iomap(data-&gt;phy_addr, <span class="number">1</span>, data-&gt;size);</span><br><span class="line">	pci_set_drvdata(dev,data);</span><br><span class="line">	<span class="comment">//8,设置PCI设备为DMA主设备;</span></span><br><span class="line">	pci_set_master(dev);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span>  <span class="title">pci_remove</span><span class="params">(struct pci_dev *dev)</span></span>&#123;</span><br><span class="line">	<span class="comment">//与probe函数相反的顺序将probe函数中的资源都释放掉;</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">pci_driver</span> <span class="title">pchar_driver</span> = &#123;</span></span><br><span class="line">	.name		= <span class="string">"pci-char"</span>,</span><br><span class="line">	.id_table	= pci_ids, </span><br><span class="line">	.probe		= pci_probe,</span><br><span class="line">	.remove     = pci_remove,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __<span class="function">init <span class="title">pci_module_init</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">	pci_register_driver(&amp;pci_driver);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __<span class="function"><span class="built_in">exit</span> <span class="title">pci_module_exit</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">	pci_unregister_driver(&amp;pci_driver);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="https://en.wikipedia.org/wiki/PCI_configuration_space" target="_blank" rel="noopener">PCI configuration space</a></li>
@@ -164,7 +320,10 @@
 <li><a href="https://wiki.osdev.org/PCI_Express" target="_blank" rel="noopener">PCI Express</a></li>
 <li>Linux Device Driver, Third Edition</li>
 <li><a href="http://www.deansys.com/doc/ldd3/ch12.html#ThePCIInterface.sect1" target="_blank" rel="noopener">第 12 章 PCI 驱动</a></li>
-<li><a href="https://blog.csdn.net/a372048518/article/details/54143059" target="_blank" rel="noopener">LDD之PCI设备</a><br>（<a href="https://github.com/cirosantilli/linux-kernel-module-cheat/blob/6788a577c394a2fc512d8f3df0806d84dc09f355/kernel_module/pci.c）" target="_blank" rel="noopener">https://github.com/cirosantilli/linux-kernel-module-cheat/blob/6788a577c394a2fc512d8f3df0806d84dc09f355/kernel_module/pci.c）</a></li>
+<li><a href="https://blog.csdn.net/a372048518/article/details/54143059" target="_blank" rel="noopener">LDD之PCI设备</a>  </li>
+<li><a href="http://web.archive.org/web/20151115031755/http://nairobi-embedded.org/linux_pci_device_driver.html" target="_blank" rel="noopener">Writing a PCI Device Driver, A Tutorial with a QEMU Virtual Device</a>  </li>
+<li><a href="https://www.kernel.org/doc/html/latest/PCI/pci.html" target="_blank" rel="noopener">Kernel Doc: How To Write Linux PCI Drivers</a>  </li>
+<li><a href="http://www.embeddedlinux.org.cn/essentiallinuxdevicedrivers/final/ch10lev1sec3.html" target="_blank" rel="noopener">Accessing PCI Regions</a>  </li>
 </ol>
   
 	</div>
@@ -188,7 +347,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2018/07/09/PCI-driver-model/" data-title="PCI driver model | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2018/07/09/PCI-driver-model/" data-title="PCI driver model | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -201,9 +360,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2018/07/14/NVIDIA-GPU-硬件介绍/" title="NVIDIA GPU 硬件介绍">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   NVIDIA GPU 硬件介绍</span>
 </a>
@@ -211,8 +370,8 @@
 
 
 <div class="next">
-<a href="/2018/07/09/NVIDIA-GPU虚拟内存/" title="NVIDIA GPU虚拟内存">
- <strong>下一篇：</strong><br> 
+<a href="/2018/07/09/NVIDIA-GPU虚拟内存/"  title="NVIDIA GPU虚拟内存">
+ <strong>下一篇：</strong><br/> 
  <span>NVIDIA GPU虚拟内存
 </span>
 </a>
@@ -232,7 +391,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI设备信息查看及寻址方式"><span class="toc-number">1.</span> <span class="toc-text">PCI设备信息查看及寻址方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lspci命令"><span class="toc-number">1.1.</span> <span class="toc-text">lspci命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件系统"><span class="toc-number">1.2.</span> <span class="toc-text">文件系统</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI-配置空间"><span class="toc-number">2.</span> <span class="toc-text">PCI 配置空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-PCI设备驱动结构体"><span class="toc-number">3.</span> <span class="toc-text">Linux PCI设备驱动结构体</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-PCI设备配置空间访问"><span class="toc-number">4.</span> <span class="toc-text">Linux PCI设备配置空间访问</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-PCI设备驱动程序探测及注册："><span class="toc-number">5.</span> <span class="toc-text">Linux PCI设备驱动程序探测及注册：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">6.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI设备信息查看及寻址方式"><span class="toc-number">1.</span> <span class="toc-text">PCI设备信息查看及寻址方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lspci命令"><span class="toc-number">1.1.</span> <span class="toc-text">lspci命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件系统"><span class="toc-number">1.2.</span> <span class="toc-text">文件系统</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI-配置空间"><span class="toc-number">2.</span> <span class="toc-text">PCI 配置空间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PCI-Device-Driver-Specifics"><span class="toc-number">3.</span> <span class="toc-text">PCI Device Driver Specifics</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Driver-Registeration"><span class="toc-number">3.1.</span> <span class="toc-text">Driver Registeration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#设备初始化步骤"><span class="toc-number">3.1.1.</span> <span class="toc-text">设备初始化步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Driver-Unregister"><span class="toc-number">3.2.</span> <span class="toc-text">Driver Unregister</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-PCI-Driver-Demo："><span class="toc-number">4.</span> <span class="toc-text">Linux PCI Driver Demo：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -244,7 +403,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -259,7 +418,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -267,15 +426,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -284,6 +447,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -303,7 +470,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -347,11 +514,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -360,10 +527,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -384,11 +547,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -400,11 +563,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -421,10 +584,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -448,11 +607,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -483,7 +646,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -492,12 +655,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -517,7 +680,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -707,7 +870,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>TO DO</title>
@@ -17,10 +17,8 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/page/4/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="文章本天成，妙手偶得之。">
-<meta property="og:locale" content="zh-Hans">
+<meta property="article:author" content="Max">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TO DO">
-<meta name="twitter:description" content="文章本天成，妙手偶得之。">
 
     
     <link rel="alternative" href="/atom.xml" title="TO DO" type="application/atom+xml">
@@ -32,16 +30,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -64,13 +66,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -82,25 +84,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/07/格式化字符串漏洞/" title="格式化字符串漏洞" itemprop="url">格式化字符串漏洞</a>
+      <a href="/2018/07/20/qemu内存虚拟化/" title="QEMU-KVM内存虚拟化" itemprop="url">QEMU-KVM内存虚拟化</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2017-08-07T12:38:44.000Z" itemprop="datePublished"> Published 2017-08-07</time>
+  <p class="article-time">
+    <time datetime="2018-07-20T08:59:26.000Z" itemprop="datePublished"> Published 2018-07-20</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>格式化漏洞的原理<br>printf函数在处理参数的时候，每遇到一个%开头的标记，就会根据这个%开头的字符所规定的规则执行，即使没有传入参数，也会认定栈上相应的位置为参数。<br>每一个格式化字符串的 % 之后可以跟一个十进制的常数再跟一个 $ 符号, 表示格式化指定位置的参数</p>
+        <p>qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 <code>GPA</code> 转换成 <code>HVA</code> 。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/07/格式化字符串漏洞/#more">Read More</a>
+            <a href="/2018/07/20/qemu%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/#more">Read More</a>
           
        </p>
     </div>
@@ -109,13 +111,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/pwn/">pwn</a><a href="/tags/格式化字符串/">格式化字符串</a>
+  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/vm/">vm</a>
   </div>
 
 </div>
@@ -143,27 +145,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/04/搭建vps/" title="搭建vps" itemprop="url">搭建vps</a>
+      <a href="/2019/07/31/cuda-wiki/" title="cuda wiki" itemprop="url">cuda wiki</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2017-08-04T08:47:02.000Z" itemprop="datePublished"> Published 2017-08-04</time>
+  <p class="article-time">
+    <time datetime="2019-07-31T11:16:45.000Z" itemprop="datePublished"> Published 2019-07-31</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本篇讲述了自己动手翻墙访问谷歌的过程。</p>
-<p>利用服务商Vultr的海外专用虚拟网络主机(VPS)搭建Shadowsocks的服务，利用VPN技术实现访问代理。</p>
-<p>增加了利用IPv6访问谷歌学术的方法。</p>
+        <p>本片博客收录了cuda学习过程中的遇到的知识点总结。  </p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/04/搭建vps/#more">Read More</a>
+            <a href="/2019/07/31/cuda-wiki/#more">Read More</a>
           
        </p>
     </div>
@@ -172,13 +172,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/vps/">vps</a>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/CUDA/">CUDA</a>►<a class="article-category-link" href="/categories/wiki/">wiki</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/vps/">vps</a>
+  <span></span> <a href="/tags/CUDA/">CUDA</a>
   </div>
 
 </div>
@@ -206,25 +206,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/08/14/搭建git服务器/" title="搭建git服务器" itemprop="url">搭建git服务器</a>
+      <a href="/2019/08/22/float-point/" title="浮点数拾遗" itemprop="url">浮点数拾遗</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-08-14T06:21:38.000Z" itemprop="datePublished"> Published 2018-08-14</time>
+  <p class="article-time">
+    <time datetime="2019-08-22T01:04:44.389Z" itemprop="datePublished"> Published 2019-08-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本篇博客介绍在ubuntu 16.04中搭建git服务器的过程，操作平台是windows 10。</p>
+        <p>对浮点数做知识点整理，包括表示方式和与十进制转换。  </p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/08/14/搭建git服务器/#more">Read More</a>
+            <a href="/2019/08/22/float-point/#more">Read More</a>
           
        </p>
     </div>
@@ -234,7 +234,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/git/">git</a>
+  <span></span> <a href="/tags/float-point/">float point</a>
   </div>
 
 </div>
@@ -262,86 +262,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/18/实验吧-web-writeup/" title="实验吧 web writeup" itemprop="url">实验吧 web writeup</a>
+      <a href="/2019/08/17/Curve25519学习/" title="Curve25519学习" itemprop="url">Curve25519学习</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-04-18T11:03:31.000Z" itemprop="datePublished"> Published 2018-04-18</time>
+  <p class="article-time">
+    <time datetime="2019-08-17T10:53:51.000Z" itemprop="datePublished"> Published 2019-08-17</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本篇博客连续更新实验吧的web篇解题思路。</p>
+        <p>补课：椭圆曲线密码算法X25519密钥交换算法学习，原理、实现、应用等，尽量写。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/04/18/实验吧-web-writeup/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/sql注入/">sql注入</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/sql/">sql</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/08/06/密码学EXM/" title="密码学EXM?" itemprop="url">密码学EXM?</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  </p><p class="article-time">
-    <time datetime="2017-08-06T02:41:42.000Z" itemprop="datePublished"> Published 2017-08-06</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>搞安全怎么能离开密码学。武功再高，也怕菜刀。<br>骐骥一跃，不能十步。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/08/06/密码学EXM/#more">Read More</a>
+            <a href="/2019/08/17/Curve25519%E5%AD%A6%E4%B9%A0/#more">Read More</a>
           
        </p>
     </div>
@@ -356,7 +295,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/cryptography/">cryptography</a><a href="/tags/国产密码/">国产密码</a><a href="/tags/ECDSA/">ECDSA</a><a href="/tags/SM/">SM</a><a href="/tags/RSA/">RSA</a><a href="/tags/AES/">AES</a>
+  <span></span> <a href="/tags/curve25519/">curve25519</a><a href="/tags/x25519/">x25519</a>
   </div>
 
 </div>
@@ -384,25 +323,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/23/堆溢出之fastbin/" title="堆溢出之fastbin" itemprop="url">堆溢出之fastbin</a>
+      <a href="/2019/08/15/SSL-TLS/" title="SSL/TLS" itemprop="url">SSL/TLS</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2017-08-23T05:59:56.000Z" itemprop="datePublished"> Published 2017-08-23</time>
+  <p class="article-time">
+    <time datetime="2019-08-15T07:49:26.000Z" itemprop="datePublished"> Published 2019-08-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>简单的fastbin堆溢出漏洞利用。</p>
+        <p>汇总整理SSL/TLS的知识点。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/23/堆溢出之fastbin/#more">Read More</a>
+            <a href="/2019/08/15/SSL-TLS/#more">Read More</a>
           
        </p>
     </div>
@@ -411,13 +350,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/crypto/">crypto</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a><a href="/tags/堆溢出/">堆溢出</a>
+  <span></span> <a href="/tags/TLS/">TLS</a><a href="/tags/SSL/">SSL</a>
   </div>
 
 </div>
@@ -445,25 +384,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/09/01/堆溢出之Werewolf/" title="堆溢出之Werewolf" itemprop="url">堆溢出之Werewolf</a>
+      <a href="/2018/05/14/linux下文件查找与文件内容查找/" title="linux下文件查找与文件内容查找" itemprop="url">linux下文件查找与文件内容查找</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2017-09-01T07:11:42.000Z" itemprop="datePublished"> Published 2017-09-01</time>
+  <p class="article-time">
+    <time datetime="2018-05-14T08:52:15.000Z" itemprop="datePublished"> Published 2018-05-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>堆溢出small bin的unlink利用</p>
+        <p><code>Linux</code> 下文件查找主要使用 <code>find</code> 命令，而根据文件内容查找主要使用 <code>grep</code> 命令。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/09/01/堆溢出之Werewolf/#more">Read More</a>
+            <a href="/2018/05/14/linux%E4%B8%8B%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE%E4%B8%8E%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%9F%A5%E6%89%BE/#more">Read More</a>
           
        </p>
     </div>
@@ -472,13 +411,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/pwn/">pwn</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/堆溢出/">堆溢出</a>
+  <span></span> <a href="/tags/find/">find</a><a href="/tags/grep/">grep</a>
   </div>
 
 </div>
@@ -506,25 +445,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/03/22/可加载内核模块编程1/" title="可加载内核模块编程" itemprop="url">可加载内核模块编程</a>
+      <a href="/2018/05/14/Linux下查看二进制文件/" title="Linux下查看二进制文件" itemprop="url">Linux下查看二进制文件</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-03-22T11:30:24.000Z" itemprop="datePublished"> Published 2018-03-22</time>
+  <p class="article-time">
+    <time datetime="2018-05-14T03:50:44.000Z" itemprop="datePublished"> Published 2018-05-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>由于自己要动手修改virtio源码，需要重新编写位于客户机前端virtio驱动，因此需要了解可加载内核模块（loadable kernel module, LKM）。在网上和书里面找了些资料，总结一下。</p>
+        <p>Linux 平台下想要查看二进制文件，可以通过 <code>xxd</code>、 <code>hexdump</code> 或者通过 <code>VIM</code> 与 <code>xxd</code> 结合使用。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/03/22/可加载内核模块编程1/#more">Read More</a>
+            <a href="/2018/05/14/Linux%E4%B8%8B%E6%9F%A5%E7%9C%8B%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6/#more">Read More</a>
           
        </p>
     </div>
@@ -533,13 +472,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/kernel/">kernel</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/kernel/">kernel</a><a href="/tags/LKM/">LKM</a>
+  <span></span> <a href="/tags/xxd/">xxd</a><a href="/tags/vim/">vim</a>
   </div>
 
 </div>
@@ -567,25 +506,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/29/vim插件/" title="vim插件" itemprop="url">vim插件</a>
+      <a href="/2018/11/20/Linux-od-命令/" title="Linux od 命令" itemprop="url">Linux od 命令</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2018-01-29T11:49:33.000Z" itemprop="datePublished"> Published 2018-01-29</time>
+  <p class="article-time">
+    <time datetime="2018-11-20T02:08:17.000Z" itemprop="datePublished"> Published 2018-11-20</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>为了提高编程效率，需要多利用现有的工具，比如插件！本篇博客介绍好使的vim插件。</p>
+        <p>linux中的<code>od</code>命令用于将文件内容以八进制或其他进制的编码方式显示。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/29/vim插件/#more">Read More</a>
+            <a href="/2018/11/20/Linux-od-%E5%91%BD%E4%BB%A4/#more">Read More</a>
           
        </p>
     </div>
@@ -594,13 +533,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/vim/">vim</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/vim/">vim</a>
+  <span></span> <a href="/tags/od/">od</a>
   </div>
 
 </div>
@@ -628,25 +567,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/08/14/unlink/" title="unlink" itemprop="url">unlink</a>
+      <a href="/2018/11/20/Linux-dd-命令/" title="Linux dd 命令" itemprop="url">Linux dd 命令</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
-    <time datetime="2017-08-14T13:17:15.000Z" itemprop="datePublished"> Published 2017-08-14</time>
+  <p class="article-time">
+    <time datetime="2018-11-20T01:41:04.000Z" itemprop="datePublished"> Published 2018-11-20</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>pwnable.kr 中简单的堆溢出利用。<br>堆溢出的原理：用精心构造的数据去溢出下一个堆块的块首，改写堆块的前向指针和后向指针，然后再分配、释放、合并等操作发生时伺机获取一次向内存任意地址写入任意数据的机会。</p>
+        <p>Linux中dd命令用于复制文件并对原文件的内容进行转换和格式化处理。dd命令功能很强大，本篇博客按照网上的资源整理下来。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/08/14/unlink/#more">Read More</a>
+            <a href="/2018/11/20/Linux-dd-%E5%91%BD%E4%BB%A4/#more">Read More</a>
           
        </p>
     </div>
@@ -655,13 +594,74 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/pwnable-kr/">pwnable.kr</a>►<a class="article-category-link" href="/categories/security/">security</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a>
+  <span></span> <a href="/tags/dd/">dd</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/11/20/Linux内核宏offsetof与container-of/" title="Linux内核宏offsetof与container_of" itemprop="url">Linux内核宏offsetof与container_of</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  <p class="article-time">
+    <time datetime="2018-11-20T13:38:54.000Z" itemprop="datePublished"> Published 2018-11-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><code>offsetof</code> 宏是用来判断结构体中成员的偏移位置，<code>container_of</code>宏用来根据成员的地址来获取结构体的地址。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/11/20/Linux%E5%86%85%E6%A0%B8%E5%AE%8Foffsetof%E4%B8%8Econtainer-of/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/container-of/">container_of</a><a href="/tags/offsetof/">offsetof</a>
   </div>
 
 </div>
@@ -685,7 +685,7 @@
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/3/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/3/">&lt;span&gt;&lt;&#x2F;span&gt;Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
   </nav>
 
 </div>
@@ -701,7 +701,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -716,7 +716,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -724,15 +724,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -741,6 +745,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -760,7 +768,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -804,11 +812,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -817,10 +825,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -841,11 +845,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -857,11 +861,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -878,10 +882,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -905,11 +905,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -940,7 +944,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -949,12 +953,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -974,7 +978,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -1087,7 +1091,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>QEMU 学习 | TO DO</title>
@@ -12,18 +12,20 @@
 
     
     <meta name="description" content="本篇博客记录了在学习使用QEMU时的资料。包括 QEMU 的整体架构和命令行。">
-<meta name="keywords" content="QEMU,emulate,virtio,KVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="QEMU 学习">
-<meta property="og:url" content="http://juniorprincewang.github.io/2018/11/15/QEMU学习/index.html">
+<meta property="og:url" content="http://juniorprincewang.github.io/2018/11/15/QEMU%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客记录了在学习使用QEMU时的资料。包括 QEMU 的整体架构和命令行。">
-<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://juniorprincewang.github.io/2018/11/15/QEMU%E5%AD%A6%E4%B9%A0/QEMU-KVM.webp">
-<meta property="og:updated_time" content="2019-06-12T06:41:26.220Z">
+<meta property="article:published_time" content="2018-11-15T12:22:10.000Z">
+<meta property="article:modified_time" content="2019-06-12T06:41:26.220Z">
+<meta property="article:author" content="Max">
+<meta property="article:tag" content="QEMU">
+<meta property="article:tag" content="emulate">
+<meta property="article:tag" content="virtio">
+<meta property="article:tag" content="KVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="QEMU 学习">
-<meta name="twitter:description" content="本篇博客记录了在学习使用QEMU时的资料。包括 QEMU 的整体架构和命令行。">
 <meta name="twitter:image" content="http://juniorprincewang.github.io/2018/11/15/QEMU%E5%AD%A6%E4%B9%A0/QEMU-KVM.webp">
 
     
@@ -36,16 +38,20 @@
     <link rel="apple-touch-icon" href="/img/batman.png">
     <link rel="apple-touch-icon-precomposed" href="/img/batman.png">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"></a>
+				<a href="/"><img src="/img/logo.png" alt="TO DO" title="TO DO"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -68,13 +74,13 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search">
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:juniorprincewang.github.io">
 					</form>
 					
 					</li>
 				</ul>
-			</ul></nav>			
+			</nav>			
 </div>
     </header>
     <div id="container">
@@ -90,7 +96,7 @@
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
-  </p><p class="article-time">
+  <p class="article-time">
     <time datetime="2018-11-15T12:22:10.000Z" itemprop="datePublished"> Published 2018-11-15</time>
     
   </p>
@@ -100,7 +106,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载指定版本"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发知识"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内部架构"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest/host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载指定版本"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发知识"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内部架构"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest&#x2F;host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -189,7 +195,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://juniorprincewang.github.io/2018/11/15/QEMU学习/" data-title="QEMU 学习 | TO DO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://juniorprincewang.github.io/2018/11/15/QEMU%E5%AD%A6%E4%B9%A0/" data-title="QEMU 学习 | TO DO" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -202,9 +208,9 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev">
+ <div class="prev" >
  <a href="/2018/11/16/编写Linux内核模块/" title="编写Linux内核模块">
-  <strong>上一篇：</strong><br>
+  <strong>上一篇：</strong><br/>
   <span>
   编写Linux内核模块</span>
 </a>
@@ -212,8 +218,8 @@
 
 
 <div class="next">
-<a href="/2018/10/22/alf-nu-ReturnTrue-总结/" title="alf.nu/ReturnTrue 总结">
- <strong>下一篇：</strong><br> 
+<a href="/2018/10/22/alf-nu-ReturnTrue-总结/"  title="alf.nu/ReturnTrue 总结">
+ <strong>下一篇：</strong><br/> 
  <span>alf.nu/ReturnTrue 总结
 </span>
 </a>
@@ -233,7 +239,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载指定版本"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发知识"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内部架构"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest/host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载指定版本"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发知识"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内部架构"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest&#x2F;host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -245,7 +251,7 @@
 <div class="github-card">
 <p class="asidetitle">Github Card</p>
 <div class="github-card" data-github="juniorprincewang" data-theme="medium"></div>
-<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
 
@@ -260,7 +266,7 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>19</sup></a></li>
 		  
 		
 		  
@@ -268,15 +274,19 @@
 		  
 		
 		  
-			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>5</sup></a></li>
+			<li><a href="/categories/linux/Makefile/" title="Makefile">Makefile<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/linux/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/QEMU/" title="QEMU">QEMU<sup>7</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/c/" title="c">c<sup>1</sup></a></li>
+			<li><a href="/categories/GPU/amd/" title="amd">amd<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/c/" title="c">c<sup>2</sup></a></li>
 		  
 		
 		  
@@ -285,6 +295,10 @@
 		
 		  
 			<li><a href="/categories/ctf/" title="ctf">ctf<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gdb/" title="gdb">gdb<sup>1</sup></a></li>
 		  
 		
 		  
@@ -304,7 +318,7 @@
 		  
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>20</sup></a></li>
+			<li><a href="/categories/linux/" title="linux">linux<sup>19</sup></a></li>
 		  
 		
 		  
@@ -348,11 +362,11 @@
 		  
 		
 		  
-			<li><a href="/categories/虚拟化/virtio/" title="virtio">virtio<sup>1</sup></a></li>
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+			<li><a href="/categories/vulkan/" title="vulkan">vulkan<sup>1</sup></a></li>
 		  
 		
 		  
@@ -361,10 +375,6 @@
 		
 		  
 			<li><a href="/categories/wiki/" title="wiki">wiki<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/虚拟化/" title="虚拟化">虚拟化<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -385,11 +395,11 @@
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>8</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>9</sup></a></li>
 			
 		
 			
@@ -401,11 +411,11 @@
 			
 		
 			
-				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
+				<li><a href="/tags/virtio/" title="virtio">virtio<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/virtio/" title="virtio">virtio<sup>3</sup></a></li>
+				<li><a href="/tags/vim/" title="vim">vim<sup>3</sup></a></li>
 			
 		
 			
@@ -422,10 +432,6 @@
 		
 			
 				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -449,11 +455,15 @@
 			
 		
 			
-				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
+				<li><a href="/tags/git/" title="git">git<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/virtual-memory/" title="virtual memory">virtual memory<sup>2</sup></a></li>
 			
 		
 		</ul>
@@ -484,7 +494,7 @@
 	</div>
 </div>
     </div>
-    <footer><div id="footer">
+    <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -493,12 +503,12 @@
 	
 	
 	<section class="info">
-		<p>  <br>
+		<p>  <br/>
 			上网不涉密，涉密不上网。</p>
 	</section>
 	 
 
-	<div class="social-font">
+	<div class="social-font" class="clearfix">
 		
 		
 		<a href="https://github.com/juniorprincewang" target="_blank" class="icon-github" title="github"></a>
@@ -518,7 +528,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
 		
 		<a href="/about" target="_blank" title="Max">Max</a>
 		
@@ -708,7 +718,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
