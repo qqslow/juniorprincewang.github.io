@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2018/12/11/Linux%E5%86%85%E6%A0%B8debugfs/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="debugfs 虚拟文件系统是一种内核空间与用户空间的接口，基于libfs库实现，专用于开发人员调试，便于向用户空间导出内核空间数据。">
+<meta property="og:locale">
 <meta property="article:published_time" content="2018-12-11T02:04:56.000Z">
 <meta property="article:modified_time" content="2019-06-12T09:01:21.646Z">
 <meta property="article:author" content="Max">
@@ -38,7 +39,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -101,7 +104,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#挂载debugfs文件系统"><span class="toc-number">1.</span> <span class="toc-text">挂载debugfs文件系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建目录和文件"><span class="toc-number">2.1.</span> <span class="toc-text">创建目录和文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导出基本的数据类型变量"><span class="toc-number">2.2.</span> <span class="toc-text">导出基本的数据类型变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#销毁目录和文件"><span class="toc-number">2.3.</span> <span class="toc-text">销毁目录和文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%82%E8%BD%BDdebugfs%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">挂载debugfs文件系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.</span> <span class="toc-text">创建目录和文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">导出基本的数据类型变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%80%E6%AF%81%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">销毁目录和文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -224,7 +227,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#挂载debugfs文件系统"><span class="toc-number">1.</span> <span class="toc-text">挂载debugfs文件系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建目录和文件"><span class="toc-number">2.1.</span> <span class="toc-text">创建目录和文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导出基本的数据类型变量"><span class="toc-number">2.2.</span> <span class="toc-text">导出基本的数据类型变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#销毁目录和文件"><span class="toc-number">2.3.</span> <span class="toc-text">销毁目录和文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%82%E8%BD%BDdebugfs%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">挂载debugfs文件系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.</span> <span class="toc-text">创建目录和文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">导出基本的数据类型变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%80%E6%AF%81%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">销毁目录和文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -251,11 +254,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -271,7 +274,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -319,7 +322,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -368,11 +371,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -738,24 +741,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

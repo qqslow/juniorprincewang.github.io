@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2017/10/01/pwnable-tw%E4%B9%8Bcalc/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本题考查的是对程序逻辑的理解，达到任意地址读写的目的，并最终利用ROP技术执行execve(&#39;&#x2F;bin&#x2F;sh&#39;)。">
+<meta property="og:locale">
 <meta property="article:published_time" content="2017-10-01T10:19:50.000Z">
 <meta property="article:modified_time" content="2019-06-12T06:41:26.257Z">
 <meta property="article:author" content="Max">
@@ -40,7 +41,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -103,7 +106,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#题目分析"><span class="toc-number">1.</span> <span class="toc-text">题目分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#parse-expr分析"><span class="toc-number">1.1.</span> <span class="toc-text">parse_expr分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逆向思考"><span class="toc-number">1.2.</span> <span class="toc-text">逆向思考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码"><span class="toc-number">2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">题目分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#parse-expr%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">parse_expr分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%86%E5%90%91%E6%80%9D%E8%80%83"><span class="toc-number">1.2.</span> <span class="toc-text">逆向思考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -230,7 +233,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#题目分析"><span class="toc-number">1.</span> <span class="toc-text">题目分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#parse-expr分析"><span class="toc-number">1.1.</span> <span class="toc-text">parse_expr分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逆向思考"><span class="toc-number">1.2.</span> <span class="toc-text">逆向思考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码"><span class="toc-number">2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">题目分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#parse-expr%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">parse_expr分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%86%E5%90%91%E6%80%9D%E8%80%83"><span class="toc-number">1.2.</span> <span class="toc-text">逆向思考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -257,11 +260,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -277,7 +280,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -325,7 +328,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -374,11 +377,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -744,24 +747,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

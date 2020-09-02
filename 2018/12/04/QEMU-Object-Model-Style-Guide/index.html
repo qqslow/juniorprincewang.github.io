@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2018/12/04/QEMU-Object-Model-Style-Guide/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客主要讲述了QOM编程的教程，翻译了QEMU Object Model Style Guide 。">
+<meta property="og:locale">
 <meta property="article:published_time" content="2018-12-04T01:11:33.000Z">
 <meta property="article:modified_time" content="2019-06-12T06:41:26.217Z">
 <meta property="article:author" content="Max">
@@ -39,7 +40,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -102,7 +105,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#动机"><span class="toc-number">2.</span> <span class="toc-text">动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建简单类型"><span class="toc-number">3.</span> <span class="toc-text">创建简单类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用方法创建类型"><span class="toc-number">4.</span> <span class="toc-text">使用方法创建类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现设备和重载方法"><span class="toc-number">5.</span> <span class="toc-text">实现设备和重载方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用实例初始化"><span class="toc-number">6.</span> <span class="toc-text">使用实例初始化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户提供的状态（属性）"><span class="toc-number">7.</span> <span class="toc-text">用户提供的状态（属性）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#子属性和链接属性"><span class="toc-number">8.</span> <span class="toc-text">子属性和链接属性</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%AE%80%E5%8D%95%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">创建简单类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">使用方法创建类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E8%AE%BE%E5%A4%87%E5%92%8C%E9%87%8D%E8%BD%BD%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">实现设备和重载方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">使用实例初始化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%8F%90%E4%BE%9B%E7%9A%84%E7%8A%B6%E6%80%81%EF%BC%88%E5%B1%9E%E6%80%A7%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">用户提供的状态（属性）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%90%E5%B1%9E%E6%80%A7%E5%92%8C%E9%93%BE%E6%8E%A5%E5%B1%9E%E6%80%A7"><span class="toc-number">8.</span> <span class="toc-text">子属性和链接属性</span></a></li></ol>
 		
 		</div>
 		
@@ -291,7 +294,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#动机"><span class="toc-number">2.</span> <span class="toc-text">动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建简单类型"><span class="toc-number">3.</span> <span class="toc-text">创建简单类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用方法创建类型"><span class="toc-number">4.</span> <span class="toc-text">使用方法创建类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实现设备和重载方法"><span class="toc-number">5.</span> <span class="toc-text">实现设备和重载方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用实例初始化"><span class="toc-number">6.</span> <span class="toc-text">使用实例初始化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#用户提供的状态（属性）"><span class="toc-number">7.</span> <span class="toc-text">用户提供的状态（属性）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#子属性和链接属性"><span class="toc-number">8.</span> <span class="toc-text">子属性和链接属性</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">动机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%AE%80%E5%8D%95%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">创建简单类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">使用方法创建类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E8%AE%BE%E5%A4%87%E5%92%8C%E9%87%8D%E8%BD%BD%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">实现设备和重载方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AE%9E%E4%BE%8B%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">使用实例初始化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%8F%90%E4%BE%9B%E7%9A%84%E7%8A%B6%E6%80%81%EF%BC%88%E5%B1%9E%E6%80%A7%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">用户提供的状态（属性）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%90%E5%B1%9E%E6%80%A7%E5%92%8C%E9%93%BE%E6%8E%A5%E5%B1%9E%E6%80%A7"><span class="toc-number">8.</span> <span class="toc-text">子属性和链接属性</span></a></li></ol>
  
   </div>
 
@@ -318,11 +321,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -338,7 +341,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -386,7 +389,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -435,11 +438,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -805,24 +808,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

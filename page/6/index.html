@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/page/6/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="文章本天成，妙手偶得之。">
+<meta property="og:locale">
 <meta property="article:author" content="Max">
 <meta name="twitter:card" content="summary">
 
@@ -35,7 +36,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -77,129 +80,6 @@
     </header>
     <div id="container">
       <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/08/06/sql注入入门/" title="sql注入入门" itemprop="url">sql注入入门</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  <p class="article-time">
-    <time datetime="2017-08-06T02:08:25.000Z" itemprop="datePublished"> Published 2017-08-06</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>本篇记录了尝试从零基础入门SQL注入，包括简单的注入、宽字符注入、利用报错信息注入…</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/08/06/sql%E6%B3%A8%E5%85%A5%E5%85%A5%E9%97%A8/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/sql%E6%B3%A8%E5%85%A5/">sql注入</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/sql注入/">sql注入</a><a href="/tags/web安全/">web安全</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/02/08/python之pickle的任意代码执行漏洞/" title="python之pickle的任意代码执行漏洞" itemprop="url">python之pickle的任意代码执行漏洞</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  <p class="article-time">
-    <time datetime="2018-02-08T07:30:48.000Z" itemprop="datePublished"> Published 2018-02-08</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <pre><code>Warning The pickle module is not secure against erroneous or maliciously constructed data. 
-Never unpickle data received from an untrusted or unauthenticated source.</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/02/08/python%E4%B9%8Bpickle%E7%9A%84%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/python/">python</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/pickle/">pickle</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
 
    
     
@@ -674,6 +554,123 @@ Never unpickle data received from an untrusted or unauthenticated source.</code>
 
 
 
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/20/kernel源码中编译nouveau-module/" title="kernel源码中编译nouveau module" itemprop="url">kernel源码中编译nouveau module</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  <p class="article-time">
+    <time datetime="2019-05-20T02:54:03.000Z" itemprop="datePublished"> Published 2019-05-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>nouveau可以从单独的module中编译，也可以从kernel source code中单独编译出nouveau.ko。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2019/05/20/kernel%E6%BA%90%E7%A0%81%E4%B8%AD%E7%BC%96%E8%AF%91nouveau-module/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/nouveau/">nouveau</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/nouveau/">nouveau</a><a href="/tags/kernel/">kernel</a><a href="/tags/module/">module</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/09/11/how2heap之unsafe-unlink/" title="how2heap之unsafe unlink" itemprop="url">how2heap之unsafe unlink</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  <p class="article-time">
+    <time datetime="2017-09-11T11:56:32.000Z" itemprop="datePublished"> Published 2017-09-11</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我学习<a href="https://github.com/shellphish/how2heap" target="_blank" rel="noopener">https://github.com/shellphish/how2heap</a>的时候，遇到unsafe_unlink.c卡住了，琢磨了好久才弄通一些，整理下思路。<br>unsafe unlink是利用<code>unlink</code>将已经构造好的chunk块释放掉达到任意地址写的目的。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/09/11/how2heap%E4%B9%8Bunsafe-unlink/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/pwn/">pwn</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/5/">&lt;span&gt;&lt;&#x2F;span&gt;Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
@@ -707,11 +704,11 @@ Never unpickle data received from an untrusted or unauthenticated source.</code>
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -727,7 +724,7 @@ Never unpickle data received from an untrusted or unauthenticated source.</code>
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -775,7 +772,7 @@ Never unpickle data received from an untrusted or unauthenticated source.</code>
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -824,11 +821,11 @@ Never unpickle data received from an untrusted or unauthenticated source.</code>
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -1117,24 +1114,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
  </html>

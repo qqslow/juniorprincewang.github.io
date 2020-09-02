@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2017/08/20/passcode/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="多种想法，运来GOT表这么覆盖！">
+<meta property="og:locale">
 <meta property="article:published_time" content="2017-08-20T15:55:21.000Z">
 <meta property="article:modified_time" content="2019-06-12T06:41:26.256Z">
 <meta property="article:author" content="Max">
@@ -40,7 +41,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -103,7 +106,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#查看汇编代码中fflush函数的代码"><span class="toc-number">1.</span> <span class="toc-text">查看汇编代码中fflush函数的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用objdump-R-passcode查看"><span class="toc-number">2.</span> <span class="toc-text">使用objdump -R passcode查看</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number"></span> <span class="toc-text">参考文献</span></a>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81%E4%B8%ADfflush%E5%87%BD%E6%95%B0%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">查看汇编代码中fflush函数的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8objdump-R-passcode%E6%9F%A5%E7%9C%8B"><span class="toc-number">2.</span> <span class="toc-text">使用objdump -R passcode查看</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number"></span> <span class="toc-text">参考文献</span></a>
 		
 		</div>
 		
@@ -227,7 +230,7 @@ pattern offset value 定位字符串 </code></pre><figure class="highlight plain
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#查看汇编代码中fflush函数的代码"><span class="toc-number">1.</span> <span class="toc-text">查看汇编代码中fflush函数的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用objdump-R-passcode查看"><span class="toc-number">2.</span> <span class="toc-text">使用objdump -R passcode查看</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文献"><span class="toc-number"></span> <span class="toc-text">参考文献</span></a>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81%E4%B8%ADfflush%E5%87%BD%E6%95%B0%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text">查看汇编代码中fflush函数的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8objdump-R-passcode%E6%9F%A5%E7%9C%8B"><span class="toc-number">2.</span> <span class="toc-text">使用objdump -R passcode查看</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number"></span> <span class="toc-text">参考文献</span></a>
  
   </div>
 
@@ -254,11 +257,11 @@ pattern offset value 定位字符串 </code></pre><figure class="highlight plain
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -274,7 +277,7 @@ pattern offset value 定位字符串 </code></pre><figure class="highlight plain
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -322,7 +325,7 @@ pattern offset value 定位字符串 </code></pre><figure class="highlight plain
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -371,11 +374,11 @@ pattern offset value 定位字符串 </code></pre><figure class="highlight plain
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -741,24 +744,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

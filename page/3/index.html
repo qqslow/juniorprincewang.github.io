@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/page/3/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="文章本天成，妙手偶得之。">
+<meta property="og:locale">
 <meta property="article:author" content="Max">
 <meta name="twitter:card" content="summary">
 
@@ -35,7 +36,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -84,25 +87,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/03/22/可加载内核模块编程1/" title="可加载内核模块编程" itemprop="url">可加载内核模块编程</a>
+      <a href="/2018/04/24/Makefile语法/" title="make 命令" itemprop="url">make 命令</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
 		
   <p class="article-time">
-    <time datetime="2018-03-22T11:30:24.000Z" itemprop="datePublished"> Published 2018-03-22</time>
+    <time datetime="2018-04-24T09:29:39.000Z" itemprop="datePublished"> Published 2018-04-24</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>由于自己要动手修改virtio源码，需要重新编写位于客户机前端virtio驱动，因此需要了解可加载内核模块（loadable kernel module, LKM）。在网上和书里面找了些资料，总结一下。</p>
+        <p>Makefile 文件由 make 命令构建，make 只是一个根据指定的 Shell 命令进行构建的工具。本篇讲解 make 的命令。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/03/22/%E5%8F%AF%E5%8A%A0%E8%BD%BD%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E7%BC%96%E7%A8%8B1/#more">Read More</a>
+            <a href="/2018/04/24/Makefile%E8%AF%AD%E6%B3%95/#more">Read More</a>
           
        </p>
     </div>
@@ -111,13 +114,196 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/kernel/">kernel</a>
+  <a class="article-category-link" href="/categories/linux/">linux</a>►<a class="article-category-link" href="/categories/linux/Makefile/">Makefile</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/kernel/">kernel</a><a href="/tags/LKM/">LKM</a>
+  <span></span> <a href="/tags/Makefile/">Makefile</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/11/21/C语言printf中-s/" title="C语言printf中%.*s" itemprop="url">C语言printf中%.*s</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  <p class="article-time">
+    <time datetime="2018-11-21T07:05:55.000Z" itemprop="datePublished"> Published 2018-11-21</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><code>printf</code> 的格式化参数<code>printf(&quot;%.*s&quot;, len, buffer)</code>。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/11/21/C%E8%AF%AD%E8%A8%80printf%E4%B8%AD-s/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/c/">c</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/printf/">printf</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/08/24/C程序和代码执行时间/" title="C程序和代码执行时间" itemprop="url">C程序和代码执行时间</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  <p class="article-time">
+    <time datetime="2019-08-24T09:26:42.000Z" itemprop="datePublished"> Published 2019-08-24</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>记录执行c代码和c程序的时间，benchmark执行时间。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2019/08/24/C%E7%A8%8B%E5%BA%8F%E5%92%8C%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/c/">c</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/time/">time</a><a href="/tags/c/">c</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/11/01/rCUDA/" title="rCUDA" itemprop="url">rCUDA</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-01T02:37:23.000Z" itemprop="datePublished"> Published 2017-11-01</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>本篇博客讲述rCUDA、rCUDA的安装。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/11/01/rCUDA/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/GPU/">GPU</a>►<a class="article-category-link" href="/categories/GPU/CUDA/">CUDA</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/GPU/">GPU</a><a href="/tags/rCUDA/">rCUDA</a>
   </div>
 
 </div>
@@ -206,67 +392,6 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/20/qemu内存虚拟化/" title="QEMU-KVM内存虚拟化" itemprop="url">QEMU-KVM内存虚拟化</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  <p class="article-time">
-    <time datetime="2018-07-20T08:59:26.000Z" itemprop="datePublished"> Published 2018-07-20</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>qemu-kvm的内存虚拟化方案，是由qemu和kvm共同完成的，所以可以分为两部分。qemu完成内存的申请，kvm实现内存的管理。内部实现及其复杂，本篇博客尽量整理搜集相关资料，目的是分析出如何将 <code>GPA</code> 转换成 <code>HVA</code> 。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/07/20/qemu%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/QEMU/">QEMU</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/QEMU/">QEMU</a><a href="/tags/vm/">vm</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
       <a href="/2019/07/31/cuda-wiki/" title="cuda wiki" itemprop="url">cuda wiki</a>
   </h1>
   <p class="article-author">By
@@ -301,128 +426,6 @@
   <div class="article-tags">
   
   <span></span> <a href="/tags/CUDA/">CUDA</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2019/08/17/Curve25519学习/" title="Curve25519学习" itemprop="url">Curve25519学习</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  <p class="article-time">
-    <time datetime="2019-08-17T10:53:51.000Z" itemprop="datePublished"> Published 2019-08-17</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>补课：椭圆曲线密码算法X25519密钥交换算法学习，原理、实现、应用等，尽量写。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2019/08/17/Curve25519%E5%AD%A6%E4%B9%A0/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/crypto/">crypto</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/curve25519/">curve25519</a><a href="/tags/x25519/">x25519</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2019/08/15/SSL-TLS/" title="SSL/TLS" itemprop="url">SSL/TLS</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="Max" target="_blank" itemprop="author">Max</a>
-		
-  <p class="article-time">
-    <time datetime="2019-08-15T07:49:26.000Z" itemprop="datePublished"> Published 2019-08-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>汇总整理SSL/TLS的知识点。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2019/08/15/SSL-TLS/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/security/">security</a>►<a class="article-category-link" href="/categories/security/crypto/">crypto</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/TLS/">TLS</a><a href="/tags/SSL/">SSL</a>
   </div>
 
 </div>
@@ -721,11 +724,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -741,7 +744,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -789,7 +792,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -838,11 +841,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -1131,24 +1134,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
  </html>

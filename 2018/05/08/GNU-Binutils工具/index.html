@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2018/05/08/GNU-Binutils%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="由于平时经常分析 ELF 格式的文件，经常用到 objdump 、 readelf 、 nm 程序，而它们都属于 GNU Binutils工具，所以在此简单总结各个程序的用法和参数。">
+<meta property="og:locale">
 <meta property="article:published_time" content="2018-05-08T02:35:37.000Z">
 <meta property="article:modified_time" content="2019-06-12T06:41:26.186Z">
 <meta property="article:author" content="Max">
@@ -42,7 +43,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -105,7 +108,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#binutils"><span class="toc-number">1.</span> <span class="toc-text">binutils</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#objdump"><span class="toc-number">2.</span> <span class="toc-text">objdump</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#选项"><span class="toc-number">2.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">2.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#readelf"><span class="toc-number">3.</span> <span class="toc-text">readelf</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#选项-1"><span class="toc-number">3.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子-1"><span class="toc-number">3.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nm"><span class="toc-number">4.</span> <span class="toc-text">nm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#strings"><span class="toc-number">5.</span> <span class="toc-text">strings</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c-filt"><span class="toc-number">6.</span> <span class="toc-text">c++filt</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#binutils"><span class="toc-number">1.</span> <span class="toc-text">binutils</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#objdump"><span class="toc-number">2.</span> <span class="toc-text">objdump</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E9%A1%B9"><span class="toc-number">2.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">2.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#readelf"><span class="toc-number">3.</span> <span class="toc-text">readelf</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E9%A1%B9-1"><span class="toc-number">3.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="toc-number">3.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nm"><span class="toc-number">4.</span> <span class="toc-text">nm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#strings"><span class="toc-number">5.</span> <span class="toc-text">strings</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c-filt"><span class="toc-number">6.</span> <span class="toc-text">c++filt</span></a></li></ol>
 		
 		</div>
 		
@@ -504,7 +507,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#binutils"><span class="toc-number">1.</span> <span class="toc-text">binutils</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#objdump"><span class="toc-number">2.</span> <span class="toc-text">objdump</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#选项"><span class="toc-number">2.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">2.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#readelf"><span class="toc-number">3.</span> <span class="toc-text">readelf</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#选项-1"><span class="toc-number">3.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子-1"><span class="toc-number">3.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nm"><span class="toc-number">4.</span> <span class="toc-text">nm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#strings"><span class="toc-number">5.</span> <span class="toc-text">strings</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c-filt"><span class="toc-number">6.</span> <span class="toc-text">c++filt</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#binutils"><span class="toc-number">1.</span> <span class="toc-text">binutils</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#objdump"><span class="toc-number">2.</span> <span class="toc-text">objdump</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E9%A1%B9"><span class="toc-number">2.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">2.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#readelf"><span class="toc-number">3.</span> <span class="toc-text">readelf</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E9%A1%B9-1"><span class="toc-number">3.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="toc-number">3.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nm"><span class="toc-number">4.</span> <span class="toc-text">nm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#strings"><span class="toc-number">5.</span> <span class="toc-text">strings</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c-filt"><span class="toc-number">6.</span> <span class="toc-text">c++filt</span></a></li></ol>
  
   </div>
 
@@ -531,11 +534,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -551,7 +554,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -599,7 +602,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -648,11 +651,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -1018,24 +1021,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

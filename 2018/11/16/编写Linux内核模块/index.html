@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2018/11/16/%E7%BC%96%E5%86%99Linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="Linux 内核模块是设备和用户应用程序之间的桥梁，可以通过标准系统调用，为应用程序屏蔽设备细节。本篇文章就记录下写内核模块需要注意的点。">
+<meta property="og:locale">
 <meta property="article:published_time" content="2018-11-16T11:37:38.000Z">
 <meta property="article:modified_time" content="2019-06-12T06:41:26.375Z">
 <meta property="article:author" content="Max">
@@ -38,7 +39,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -101,7 +104,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#内核模块和应用程序区别"><span class="toc-number">1.</span> <span class="toc-text">内核模块和应用程序区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核的并发"><span class="toc-number">2.</span> <span class="toc-text">内核的并发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核模块编程"><span class="toc-number">3.</span> <span class="toc-text">内核模块编程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译模块"><span class="toc-number">4.</span> <span class="toc-text">编译模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加载和卸载模块"><span class="toc-number">5.</span> <span class="toc-text">加载和卸载模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#宏-EXPORT-SYMBOL"><span class="toc-number">6.</span> <span class="toc-text">宏 EXPORT_SYMBOL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL宏的作用"><span class="toc-number">6.1.</span> <span class="toc-text">EXPORT_SYMBOL宏的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL使用方法"><span class="toc-number">6.2.</span> <span class="toc-text">EXPORT_SYMBOL使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL示范"><span class="toc-number">6.3.</span> <span class="toc-text">EXPORT_SYMBOL示范</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E5%92%8C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">内核模块和应用程序区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E7%9A%84%E5%B9%B6%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">内核的并发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E7%BC%96%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">内核模块编程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%A8%A1%E5%9D%97"><span class="toc-number">4.</span> <span class="toc-text">编译模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%8D%B8%E8%BD%BD%E6%A8%A1%E5%9D%97"><span class="toc-number">5.</span> <span class="toc-text">加载和卸载模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%8F-EXPORT-SYMBOL"><span class="toc-number">6.</span> <span class="toc-text">宏 EXPORT_SYMBOL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL%E5%AE%8F%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">6.1.</span> <span class="toc-text">EXPORT_SYMBOL宏的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">6.2.</span> <span class="toc-text">EXPORT_SYMBOL使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL%E7%A4%BA%E8%8C%83"><span class="toc-number">6.3.</span> <span class="toc-text">EXPORT_SYMBOL示范</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -280,7 +283,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#内核模块和应用程序区别"><span class="toc-number">1.</span> <span class="toc-text">内核模块和应用程序区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核的并发"><span class="toc-number">2.</span> <span class="toc-text">内核的并发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内核模块编程"><span class="toc-number">3.</span> <span class="toc-text">内核模块编程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编译模块"><span class="toc-number">4.</span> <span class="toc-text">编译模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#加载和卸载模块"><span class="toc-number">5.</span> <span class="toc-text">加载和卸载模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#宏-EXPORT-SYMBOL"><span class="toc-number">6.</span> <span class="toc-text">宏 EXPORT_SYMBOL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL宏的作用"><span class="toc-number">6.1.</span> <span class="toc-text">EXPORT_SYMBOL宏的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL使用方法"><span class="toc-number">6.2.</span> <span class="toc-text">EXPORT_SYMBOL使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL示范"><span class="toc-number">6.3.</span> <span class="toc-text">EXPORT_SYMBOL示范</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E5%92%8C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%8C%BA%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">内核模块和应用程序区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E7%9A%84%E5%B9%B6%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">内核的并发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E7%BC%96%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">内核模块编程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%A8%A1%E5%9D%97"><span class="toc-number">4.</span> <span class="toc-text">编译模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%8D%B8%E8%BD%BD%E6%A8%A1%E5%9D%97"><span class="toc-number">5.</span> <span class="toc-text">加载和卸载模块</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%8F-EXPORT-SYMBOL"><span class="toc-number">6.</span> <span class="toc-text">宏 EXPORT_SYMBOL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL%E5%AE%8F%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">6.1.</span> <span class="toc-text">EXPORT_SYMBOL宏的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">6.2.</span> <span class="toc-text">EXPORT_SYMBOL使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EXPORT-SYMBOL%E7%A4%BA%E8%8C%83"><span class="toc-number">6.3.</span> <span class="toc-text">EXPORT_SYMBOL示范</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">7.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -307,11 +310,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -327,7 +330,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -375,7 +378,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -424,11 +427,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -794,24 +797,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

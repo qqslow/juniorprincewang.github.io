@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2019/01/16/Gitlab%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客记录如何使用 Gitlab 服务和邮件配置。">
+<meta property="og:locale">
 <meta property="article:published_time" content="2019-01-16T00:56:55.000Z">
 <meta property="article:modified_time" content="2019-06-12T06:41:26.188Z">
 <meta property="article:author" content="Max">
@@ -38,7 +39,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -101,7 +104,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#配置邮箱"><span class="toc-number">1.</span> <span class="toc-text">配置邮箱</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#配置163-邮箱"><span class="toc-number">2.</span> <span class="toc-text">配置163 邮箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#重新配置服务"><span class="toc-number">2.1.</span> <span class="toc-text">重新配置服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试发送邮件"><span class="toc-number">2.2.</span> <span class="toc-text">测试发送邮件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#遇到问题"><span class="toc-number">3.</span> <span class="toc-text">遇到问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%82%AE%E7%AE%B1"><span class="toc-number">1.</span> <span class="toc-text">配置邮箱</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE163-%E9%82%AE%E7%AE%B1"><span class="toc-number">2.</span> <span class="toc-text">配置163 邮箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.1.</span> <span class="toc-text">重新配置服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">测试发送邮件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">遇到问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -225,7 +228,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#配置邮箱"><span class="toc-number">1.</span> <span class="toc-text">配置邮箱</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#配置163-邮箱"><span class="toc-number">2.</span> <span class="toc-text">配置163 邮箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#重新配置服务"><span class="toc-number">2.1.</span> <span class="toc-text">重新配置服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试发送邮件"><span class="toc-number">2.2.</span> <span class="toc-text">测试发送邮件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#遇到问题"><span class="toc-number">3.</span> <span class="toc-text">遇到问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%82%AE%E7%AE%B1"><span class="toc-number">1.</span> <span class="toc-text">配置邮箱</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE163-%E9%82%AE%E7%AE%B1"><span class="toc-number">2.</span> <span class="toc-text">配置163 邮箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.1.</span> <span class="toc-text">重新配置服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">测试发送邮件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">遇到问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -252,11 +255,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -272,7 +275,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -320,7 +323,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -369,11 +372,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -739,24 +742,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

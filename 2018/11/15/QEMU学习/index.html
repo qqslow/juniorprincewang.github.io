@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2018/11/15/QEMU%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="本篇博客记录了在学习使用QEMU时的资料。包括 QEMU 的整体架构和命令行。">
+<meta property="og:locale">
 <meta property="og:image" content="http://juniorprincewang.github.io/2018/11/15/QEMU%E5%AD%A6%E4%B9%A0/QEMU-KVM.webp">
 <meta property="article:published_time" content="2018-11-15T12:22:10.000Z">
 <meta property="article:modified_time" content="2019-06-12T06:41:26.220Z">
@@ -43,7 +44,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -106,7 +109,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载指定版本"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发知识"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内部架构"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest&#x2F;host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU%E5%86%85%E9%83%A8%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest&#x2F;host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -239,7 +242,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载指定版本"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发知识"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU内部架构"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest&#x2F;host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC"><span class="toc-number">1.1.</span> <span class="toc-text">下载指定版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86"><span class="toc-number">1.3.</span> <span class="toc-text">开发知识</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU%E5%86%85%E9%83%A8%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">QEMU内部架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QEMU-process-model"><span class="toc-number">2.1.</span> <span class="toc-text">QEMU process model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main-loop"><span class="toc-number">2.2.</span> <span class="toc-text">Main loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device-emulation"><span class="toc-number">2.3.</span> <span class="toc-text">Device emulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hardware-emulation-model"><span class="toc-number">2.3.1.</span> <span class="toc-text">Hardware emulation model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-host-device-split"><span class="toc-number">2.3.2.</span> <span class="toc-text">Guest&#x2F;host device split</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Guest-device-emulation"><span class="toc-number">2.3.3.</span> <span class="toc-text">Guest device emulation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#QEMU-monitor"><span class="toc-number">3.</span> <span class="toc-text">QEMU monitor</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#info"><span class="toc-number">4.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -266,11 +269,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -286,7 +289,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -334,7 +337,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -383,11 +386,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -753,24 +756,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

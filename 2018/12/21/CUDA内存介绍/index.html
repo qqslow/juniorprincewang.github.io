@@ -17,6 +17,7 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2018/12/21/CUDA%E5%86%85%E5%AD%98%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="CUDA内存分类和变量类型限定符总结。">
+<meta property="og:locale">
 <meta property="og:image" content="http://juniorprincewang.github.io/2018/12/21/CUDA%E5%86%85%E5%AD%98%E4%BB%8B%E7%BB%8D/hardware-model.png">
 <meta property="article:published_time" content="2018-12-21T10:27:11.000Z">
 <meta property="article:modified_time" content="2020-05-21T15:07:08.315Z">
@@ -41,7 +42,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -104,7 +107,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#内存类型"><span class="toc-number">1.</span> <span class="toc-text">内存类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#片上内存"><span class="toc-number">2.</span> <span class="toc-text">片上内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类型限定符标"><span class="toc-number">3.</span> <span class="toc-text">类型限定符标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">内存类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%87%E4%B8%8A%E5%86%85%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">片上内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6%E6%A0%87"><span class="toc-number">3.</span> <span class="toc-text">类型限定符标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
 		
 		</div>
 		
@@ -248,7 +251,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#内存类型"><span class="toc-number">1.</span> <span class="toc-text">内存类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#片上内存"><span class="toc-number">2.</span> <span class="toc-text">片上内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#类型限定符标"><span class="toc-number">3.</span> <span class="toc-text">类型限定符标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">内存类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%87%E4%B8%8A%E5%86%85%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">片上内存</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6%E6%A0%87"><span class="toc-number">3.</span> <span class="toc-text">类型限定符标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
  
   </div>
 
@@ -275,11 +278,11 @@
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -295,7 +298,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -343,7 +346,7 @@
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -392,11 +395,11 @@
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -762,24 +765,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>

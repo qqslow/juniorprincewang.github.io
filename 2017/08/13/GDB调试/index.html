@@ -17,8 +17,9 @@
 <meta property="og:url" content="http://juniorprincewang.github.io/2017/08/13/GDB%E8%B0%83%E8%AF%95/index.html">
 <meta property="og:site_name" content="TO DO">
 <meta property="og:description" content="针对GDB总结的操作命令。">
+<meta property="og:locale">
 <meta property="article:published_time" content="2017-08-13T08:01:14.000Z">
-<meta property="article:modified_time" content="2020-03-29T14:20:16.376Z">
+<meta property="article:modified_time" content="2020-07-22T12:23:30.692Z">
 <meta property="article:author" content="Max">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="gdb">
@@ -39,7 +40,9 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="/custom_css_source.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -102,7 +105,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#常用命令"><span class="toc-number">1.</span> <span class="toc-text">常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#break"><span class="toc-number">1.1.</span> <span class="toc-text">break</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序运行参数"><span class="toc-number">1.2.</span> <span class="toc-text">程序运行参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">1.3.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-amp-next"><span class="toc-number">1.4.</span> <span class="toc-text">step &amp; next</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stepi-amp-nexti"><span class="toc-number">1.5.</span> <span class="toc-text">stepi &amp; nexti</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finish"><span class="toc-number">1.6.</span> <span class="toc-text">finish</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#info"><span class="toc-number">1.7.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-number">1.8.</span> <span class="toc-text">list</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print"><span class="toc-number">1.9.</span> <span class="toc-text">print</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#格式化输出"><span class="toc-number">1.9.1.</span> <span class="toc-text">格式化输出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#examine"><span class="toc-number">1.10.</span> <span class="toc-text">examine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#backtrace"><span class="toc-number">1.11.</span> <span class="toc-text">backtrace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#quit"><span class="toc-number">1.12.</span> <span class="toc-text">quit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attach"><span class="toc-number">1.13.</span> <span class="toc-text">attach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-number">1.14.</span> <span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#whatis-amp-ptype"><span class="toc-number">1.15.</span> <span class="toc-text">whatis &amp; ptype</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考网站"><span class="toc-number">2.</span> <span class="toc-text">参考网站</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#break"><span class="toc-number">1.1.</span> <span class="toc-text">break</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">程序运行参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">1.3.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-amp-next"><span class="toc-number">1.4.</span> <span class="toc-text">step &amp; next</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stepi-amp-nexti"><span class="toc-number">1.5.</span> <span class="toc-text">stepi &amp; nexti</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finish"><span class="toc-number">1.6.</span> <span class="toc-text">finish</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#info"><span class="toc-number">1.7.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-number">1.8.</span> <span class="toc-text">list</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print"><span class="toc-number">1.9.</span> <span class="toc-text">print</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA"><span class="toc-number">1.9.1.</span> <span class="toc-text">格式化输出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#examine"><span class="toc-number">1.10.</span> <span class="toc-text">examine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#backtrace"><span class="toc-number">1.11.</span> <span class="toc-text">backtrace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#quit"><span class="toc-number">1.12.</span> <span class="toc-text">quit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attach"><span class="toc-number">1.13.</span> <span class="toc-text">attach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-number">1.14.</span> <span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#whatis-amp-ptype"><span class="toc-number">1.15.</span> <span class="toc-text">whatis &amp; ptype</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E7%BD%91%E7%AB%99"><span class="toc-number">2.</span> <span class="toc-text">参考网站</span></a></li></ol>
 		
 		</div>
 		
@@ -126,7 +129,8 @@ Type &quot;help&quot; followed by a class name for a list of commands in that cl
 Type &quot;help all&quot; for the list of all commands.
 Type &quot;help&quot; followed by command name for full documentation.
 Type &quot;apropos word&quot; to search for commands related to &quot;word&quot;.
-Command name abbreviations are allowed if unambiguous.</code></pre><p>gdb命令很多，这是gdb按照类别列出的命令。help命令只是例出gdb的命令种类，如果要看种类中的命令，可以使用<code>help</code>命令，如：<code>help breakpoints</code>，查看设置断点的所有命令。也可以直接<code>help</code>来查看命令的帮助。 </p>
+Command name abbreviations are allowed if unambiguous.</code></pre>
+<p>gdb命令很多，这是gdb按照类别列出的命令。help命令只是例出gdb的命令种类，如果要看种类中的命令，可以使用<code>help</code>命令，如：<code>help breakpoints</code>，查看设置断点的所有命令。也可以直接<code>help</code>来查看命令的帮助。 </p>
 <p>对C/C++程序的调试，需要在编译前就加上 <code>-g</code> 选项:  </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$g</span>++ -g hello.cpp -o hello</span><br></pre></td></tr></table></figure>
 
@@ -136,15 +140,14 @@ b &lt;函数名称&gt;
 b *&lt;函数名称&gt;
 b *&lt;代码地址&gt;
 d [编号]
-d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所有断点。断点编号从1开始递增。</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b 8</span><br><span class="line">(gdb) b main</span><br><span class="line">(gdb) b *main</span><br><span class="line">(gdb) b *0x804835c</span><br><span class="line">(gdb) d</span><br><span class="line">(gdb) disable b 1 #禁止第一个断点</span><br><span class="line">(gdb) enable b 1 # 允许使用第一个断点</span><br></pre></td></tr></table></figure>
+d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所有断点。断点编号从1开始递增。</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b 8</span><br><span class="line">(gdb) b main</span><br><span class="line">(gdb) b *main</span><br><span class="line">(gdb) b *0x804835c</span><br><span class="line">(gdb) d</span><br><span class="line">(gdb) disable b 1 #禁止第一个断点</span><br><span class="line">(gdb) enable b 1 # 允许使用第一个断点</span><br></pre></td></tr></table></figure>
 
-<h2 id="程序运行参数"><a href="#程序运行参数" class="headerlink" title="程序运行参数"></a>程序运行参数</h2><p><code>set args</code>可指定运行时参数。（如：set args 10 20 30 40 50）<br><code>show args</code>命令可以查看设置好的运行参数。 </p>
+<h2 id="程序运行参数"><a href="#程序运行参数" class="headerlink" title="程序运行参数"></a>程序运行参数</h2><p><code>set args </code>可指定运行时参数。（如：set args 10 20 30 40 50）<br><code>show args </code>命令可以查看设置好的运行参数。 </p>
 <h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>运行调试的程序，缩写为<code>r</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) r</span><br></pre></td></tr></table></figure>
 
-<h2 id="step-amp-next"><a href="#step-amp-next" class="headerlink" title="step &amp; next"></a>step &amp; next</h2><p><code>step</code>: 执行一行源程序代码，如果此行代码中有函数调用，则进入该函数，相当于其它调试器中的<code>Step Into</code>(单步跟踪进入)，缩写为<code>s</code>；
-<code>next</code>: 执行一行源程序代码，此行代码中的函数调用也一并执行，相当于其它调试器中的<code>Step Over</code>(单步跟踪)，缩写为<code>n</code>。
-这两个命令必须在有源代码调试信息的情况下才可以使用（GCC编译时使用“-g”参数）。</p>
+<h2 id="step-amp-next"><a href="#step-amp-next" class="headerlink" title="step &amp; next"></a>step &amp; next</h2><p><code>step</code>: 执行一行源程序代码，如果此行代码中有函数调用，则进入该函数，相当于其它调试器中的<code>Step Into</code>(单步跟踪进入)，缩写为<code>s</code>；<br><code>next</code>: 执行一行源程序代码，此行代码中的函数调用也一并执行，相当于其它调试器中的<code>Step Over</code>(单步跟踪)，缩写为<code>n</code>。<br>这两个命令必须在有源代码调试信息的情况下才可以使用（GCC编译时使用“-g”参数）。</p>
 <h2 id="stepi-amp-nexti"><a href="#stepi-amp-nexti" class="headerlink" title="stepi &amp; nexti"></a>stepi &amp; nexti</h2><p><code>stepi</code>，<code>nexti</code>与<code>step</code>,<code>next</code>功能相近，只不过是执行的是汇编指令。</p>
 <h2 id="finish"><a href="#finish" class="headerlink" title="finish"></a>finish</h2><p><code>finish</code>继续执行程序，直到当前被调用的函数结束，如果该函数有返回值，把返回值也打印到控制台</p>
 <h2 id="info"><a href="#info" class="headerlink" title="info"></a>info</h2><p><code>i</code>是<code>info</code>的简写，用于显示各类信息，详情请查阅<code>help i</code>。</p>
@@ -164,7 +167,7 @@ d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所
 </ul>
 <h2 id="print"><a href="#print" class="headerlink" title="print"></a>print</h2><p>打印给定表达式的值，除了程序中的变量外，还可以是程序函数的调用，数据结构和其他它复杂对象，历史纪录的值（<code>$</code>是最后一个历史纪录变量，<code>$num</code>是倒数第num个历史纪录变量）。</p>
 <p>语法：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print [Expression]</span><br><span class="line">print $[Previous value number]</span><br><span class="line">print &#123;[Type]&#125;[Address]</span><br><span class="line">print [First element]@[Element count]</span><br><span class="line">print /[Format] [Expression]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print [Expression]</span><br><span class="line">print $[Previous value number]</span><br><span class="line">print &#123;[Type]&#125;[Address]</span><br><span class="line">print [First element]@[Element count]</span><br><span class="line">print &#x2F;[Format] [Expression]</span><br></pre></td></tr></table></figure>
 
 <h3 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h3><pre><code>print /[Format] [Expression]
     o - octal
@@ -174,24 +177,45 @@ d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所
     f - floating point
     a - address
     c - char
-    s - string</code></pre><p>比如：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) print argv[i]</span><br><span class="line">$2 = 0xbffff204 &quot;/home/bazis/test&quot;</span><br><span class="line">(gdb) print /a argv[i]</span><br><span class="line">$3 = 0xbffff204</span><br><span class="line">(gdb) print /s argv[i]</span><br><span class="line">$4 = 0xbffff204 &quot;/home/bazis/test&quot;</span><br><span class="line">(gdb) print /c argv[i]</span><br><span class="line">$5 = 4 &apos;\004&apos;</span><br></pre></td></tr></table></figure>
+    s - string</code></pre>
+<p>比如：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) print argv[i]</span><br><span class="line">$2 &#x3D; 0xbffff204 &quot;&#x2F;home&#x2F;bazis&#x2F;test&quot;</span><br><span class="line">(gdb) print &#x2F;a argv[i]</span><br><span class="line">$3 &#x3D; 0xbffff204</span><br><span class="line">(gdb) print &#x2F;s argv[i]</span><br><span class="line">$4 &#x3D; 0xbffff204 &quot;&#x2F;home&#x2F;bazis&#x2F;test&quot;</span><br><span class="line">(gdb) print &#x2F;c argv[i]</span><br><span class="line">$5 &#x3D; 4 &#39;\004&#39;</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><a href="https://www.roe.ac.uk/~ert/stacpolly/idb_manual/common/idb_the_print_command.htm" target="_blank" rel="noopener">The print Command</a>  </li>
 <li><a href="https://visualgdb.com/gdbreference/commands/print" target="_blank" rel="noopener">print command</a>  </li>
 </ul>
-<h2 id="examine"><a href="#examine" class="headerlink" title="examine"></a>examine</h2><p>简写<code>x</code>，用于查看内存地址的值<code>examine memory</code>。<code>x</code>命令的语法如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x/FMT ADDRESS</span><br></pre></td></tr></table></figure>
-
+<h2 id="examine"><a href="#examine" class="headerlink" title="examine"></a>examine</h2><p>简写<code>x</code>，用于查看内存地址的值<code>examine memory</code>。 <code>x</code>命令的语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x&#x2F;FMT ADDRESS</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>ADDRESS</code>是内存地址的表达式，比如0xff340112</li>
-<li><code>FMT</code>由3个可选参数组成。分别为内存长度<code>count</code>,显示格式<code>format</code>,字节大小<code>size</code>。<ul>
-<li><code>format</code>: <code>o</code>表示8进制，<code>x</code>表示16进制，<code>d</code>表示10进制，<code>u</code>表示无符号16进制，<code>t</code>二进制,<code>f</code>浮点数，<code>c</code>字符，<code>i</code>指令，<code>a</code>地址，<code>s</code>字符串，<code>z</code>16进制，左侧补0对齐。</li>
-<li><code>size</code>：<code>b</code>字节，<code>h</code>半字,<code>w</code>字,<code>g</code>8字节。<br>比如：命令：<code>x/3xh 0x54320</code> 表示，从内存地址0x54320读取内容，h表示以双字节为一个单位，3表示三个单位，x表示按十六进制显示。 </li>
+<li><code>FMT</code>由3个可选参数组成 <code>&lt;count/format/size&gt;</code>。分别为内存长度<code>count</code>,显示格式<code>format</code>,字节大小<code>size</code>。<ul>
+<li><code>format</code>: <ul>
+<li><code>o</code>表示8进制，</li>
+<li><code>x</code>表示16进制</li>
+<li><code>d</code>表示10进制</li>
+<li><code>u</code>表示无符号16进制</li>
+<li><code>t</code>二进制</li>
+<li><code>f</code>浮点数</li>
+<li><code>c</code>字符</li>
+<li><code>i</code>指令</li>
+<li><code>a</code>地址</li>
+<li><code>s</code>字符串</li>
+<li><code>z</code>16进制，左侧补0对齐。</li>
+</ul>
+</li>
+<li><code>size</code>：<ul>
+<li><code>b</code>字节</li>
+<li><code>h</code>半字</li>
+<li><code>w</code>字</li>
+<li><code>g</code>8字节。</li>
 </ul>
 </li>
 </ul>
+</li>
+</ul>
+<p>比如：命令：<code>x/3xh 0x54320</code> 表示，从内存地址0x54320读取内容，h表示以双字节为一个单位，3表示三个单位，x表示按十六进制显示。 </p>
+<p><code>x</code> 可以查看数组或指针指向的内存数据。  </p>
 <h2 id="backtrace"><a href="#backtrace" class="headerlink" title="backtrace"></a>backtrace</h2><p>显示程序的调用栈信息，可以用<code>bt</code>缩写</p>
 <h2 id="quit"><a href="#quit" class="headerlink" title="quit"></a>quit</h2><p>退出GDB，缩写为<code>q</code>。</p>
 <h2 id="attach"><a href="#attach" class="headerlink" title="attach"></a>attach</h2><p><code>attach process-id</code>: 在GDB状态下，开始调试一个正在运行的进程，其进程ID为process-id</p>
@@ -264,7 +288,7 @@ d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#常用命令"><span class="toc-number">1.</span> <span class="toc-text">常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#break"><span class="toc-number">1.1.</span> <span class="toc-text">break</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序运行参数"><span class="toc-number">1.2.</span> <span class="toc-text">程序运行参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">1.3.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-amp-next"><span class="toc-number">1.4.</span> <span class="toc-text">step &amp; next</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stepi-amp-nexti"><span class="toc-number">1.5.</span> <span class="toc-text">stepi &amp; nexti</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finish"><span class="toc-number">1.6.</span> <span class="toc-text">finish</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#info"><span class="toc-number">1.7.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-number">1.8.</span> <span class="toc-text">list</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print"><span class="toc-number">1.9.</span> <span class="toc-text">print</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#格式化输出"><span class="toc-number">1.9.1.</span> <span class="toc-text">格式化输出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#examine"><span class="toc-number">1.10.</span> <span class="toc-text">examine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#backtrace"><span class="toc-number">1.11.</span> <span class="toc-text">backtrace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#quit"><span class="toc-number">1.12.</span> <span class="toc-text">quit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attach"><span class="toc-number">1.13.</span> <span class="toc-text">attach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-number">1.14.</span> <span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#whatis-amp-ptype"><span class="toc-number">1.15.</span> <span class="toc-text">whatis &amp; ptype</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考网站"><span class="toc-number">2.</span> <span class="toc-text">参考网站</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#break"><span class="toc-number">1.1.</span> <span class="toc-text">break</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">程序运行参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#run"><span class="toc-number">1.3.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step-amp-next"><span class="toc-number">1.4.</span> <span class="toc-text">step &amp; next</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stepi-amp-nexti"><span class="toc-number">1.5.</span> <span class="toc-text">stepi &amp; nexti</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finish"><span class="toc-number">1.6.</span> <span class="toc-text">finish</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#info"><span class="toc-number">1.7.</span> <span class="toc-text">info</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-number">1.8.</span> <span class="toc-text">list</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print"><span class="toc-number">1.9.</span> <span class="toc-text">print</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA"><span class="toc-number">1.9.1.</span> <span class="toc-text">格式化输出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#examine"><span class="toc-number">1.10.</span> <span class="toc-text">examine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#backtrace"><span class="toc-number">1.11.</span> <span class="toc-text">backtrace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#quit"><span class="toc-number">1.12.</span> <span class="toc-text">quit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#attach"><span class="toc-number">1.13.</span> <span class="toc-text">attach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-number">1.14.</span> <span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#whatis-amp-ptype"><span class="toc-number">1.15.</span> <span class="toc-text">whatis &amp; ptype</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E7%BD%91%E7%AB%99"><span class="toc-number">2.</span> <span class="toc-text">参考网站</span></a></li></ol>
  
   </div>
 
@@ -291,11 +315,11 @@ d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所
 		  
 		
 		  
-			<li><a href="/categories/GPU/" title="GPU">GPU<sup>18</sup></a></li>
+			<li><a href="/categories/GPU/" title="GPU">GPU<sup>17</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>3</sup></a></li>
+			<li><a href="/categories/GPU/GPU虚拟化/" title="GPU虚拟化">GPU虚拟化<sup>2</sup></a></li>
 		  
 		
 		  
@@ -311,7 +335,7 @@ d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所
 		  
 		
 		  
-			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>3</sup></a></li>
+			<li><a href="/categories/security/crypto/" title="crypto">crypto<sup>1</sup></a></li>
 		  
 		
 		  
@@ -359,7 +383,7 @@ d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所
 		  
 		
 		  
-			<li><a href="/categories/security/" title="security">security<sup>11</sup></a></li>
+			<li><a href="/categories/security/" title="security">security<sup>9</sup></a></li>
 		  
 		
 		  
@@ -408,11 +432,11 @@ d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所
 			
 		
 			
-				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>11</sup></a></li>
+				<li><a href="/tags/CUDA/" title="CUDA">CUDA<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/GPU/" title="GPU">GPU<sup>9</sup></a></li>
+				<li><a href="/tags/GPU/" title="GPU">GPU<sup>8</sup></a></li>
 			
 		
 			
@@ -778,24 +802,7 @@ var _hmt = _hmt || [];
 
 <!-- Tiny_search Begin -->
 
-<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="custom_mathjax_source">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>
